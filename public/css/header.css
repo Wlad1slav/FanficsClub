@@ -1,0 +1,56 @@
+/* header */
+
+header div {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+header h1 {
+    color: var(--clr-base);
+    margin: 0;
+}
+
+header a, header p {
+    text-transform: capitalize;
+    padding: var(--indent-small);
+    text-decoration: none;
+    margin: 0;
+    cursor: pointer;
+}
+
+header a:hover, header p:hover {
+    background-color: var(--clr-cta);
+}
+
+/* greeting */
+header #greeting-line {
+    justify-content: space-between;
+    padding: var(--indent-small);
+}
+
+header #greeting-line a, header #greeting-line p {
+    color: var(--clr-black);
+}
+
+header #greeting-line a:hover, header #greeting-line p:hover {
+    color: var(--clr-base);
+}
+
+/* navigation */
+header #navigation {
+    /*padding: var(--indent-small);*/
+    background: var(--nav-background);
+}
+
+header #navigation div {
+    margin-left: var(--indent-medium);
+}
+
+header #navigation a, header #navigation p {
+    color: var(--clr-white);
+}
+
+header #navigation a:hover, header #navigation p:hover {
+    color: var(--clr-black);
+}

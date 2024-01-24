@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--clr-white);
+    color: var(--clr-text);
+}
+
+.content {
+    margin: var(--indent-on-sides);
+    padding: var(--indent-medium);
+}
+
+h1, h2, h3 {
+    margin: 0 0 var(--indent-heading) 0;
+}
+
+p, a, li, b, i, span {
+    margin: 0 0 var(--indent-text) 0;
+}
+
+.no-select {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Стандартний синтаксис */
+}
