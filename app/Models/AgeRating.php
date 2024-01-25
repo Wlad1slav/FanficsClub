@@ -9,6 +9,6 @@ class AgeRating extends Model
 {
     use HasFactory;
 
-    protected $table = 'chapters';
+    protected $table = 'age_ratings';
     protected $guarded = [];
 }
