@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('age_ratings', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255)->unique();
-            $table->string('image', 255)->nullable();
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('views')->default(0);  // unsigned - тільки позитивне число
-            $table->unsignedSmallInteger('rating')->nullable();
-            $table->boolean('is_active')->default(1);
+            $table->timestamps();
         });
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('age_ratings');
     }
 };

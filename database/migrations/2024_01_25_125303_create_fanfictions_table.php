@@ -39,6 +39,12 @@ return new class extends Migration
             $table->json('tags')->nullable();
             $table->unsignedBigInteger('views')->default(0);
 
+            $table->string('category', 255)->nullable();
+            $table->foreign('category')
+                ->references('name')
+                ->on('categories')
+                ->onDelete('set null');
+
             $table->string('age_rating', 255)->nullable();
             $table->foreign('age_rating')
                 ->references('name')
@@ -69,6 +75,8 @@ return new class extends Migration
             $table->json('users_with_access')->nullable();
 
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

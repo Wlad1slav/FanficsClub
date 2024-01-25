@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fandoms', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 255)
-                ->collation('latin1_bin')
-                ->unique();
             $table->string('name', 255)->unique();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('views')->default(0);
+            $table->unsignedSmallInteger('rating')->nullable();
+            $table->boolean('is_active')->default(1);
+
+            $table->timestamps();
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fandoms');
+        Schema::dropIfExists('categories');
     }
 };

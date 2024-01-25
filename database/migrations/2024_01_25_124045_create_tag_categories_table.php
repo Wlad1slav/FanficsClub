@@ -13,16 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tag_categories', function (Blueprint $table) {
-            $table->timestamps();
-        });
-        Schema::table('tags', function (Blueprint $table) {
-            $table->timestamps();
-        });
-        Schema::table('categories', function (Blueprint $table) {
-            $table->timestamps();
-        });
-        Schema::table('user_profiles', function (Blueprint $table) {
+        Schema::create('tag_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 255)->unique();
+            $table->bigInteger('rating')->default(0);
             $table->timestamps();
         });
     }
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('tag_categories');
     }
 };

@@ -13,22 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chapters', function (Blueprint $table) {
+        Schema::create('fandoms', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('fanfiction_id');
-            $table->foreign('fanfiction_id')
-                ->references('id')
-                ->on('fanfictions')
-                ->onDelete('cascade');
-
-            $table->string('title', 255);
             $table->string('slug', 255)
                 ->collation('latin1_bin')
                 ->unique();
-            $table->longText('content');
-            $table->json('addtional_descriptions');
-            $table->unsignedBigInteger('views')->default(0);
+            $table->string('name', 255)->unique();
+            $table->text('description')->nullable();
 
             $table->timestamps();
         });
@@ -41,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapters');
+        Schema::dropIfExists('fandoms');
     }
 };

@@ -21,12 +21,20 @@ return new class extends Migration
             $table->foreign('category')
                 ->references('name')
                 ->on('tag_categories')
-                ->onDelete('restrict');
+                ->onDelete('set null');
 
             $table->bigInteger('rating')->default(0);
             $table->text('description')->nullable();
 
-            $table->string('belonging_to_fandom', 255)->nullable();
+            $table->string('belonging_to_fandom', 255)
+                ->collation('latin1_bin')
+                ->nullable();
+            $table->foreign('belonging_to_fandom')
+                ->references('slug')
+                ->on('fandoms')
+                ->onDelete('cascade');
+
+            $table->timestamps();
         });
     }
 

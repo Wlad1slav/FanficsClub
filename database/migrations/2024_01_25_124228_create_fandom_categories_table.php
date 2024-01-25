@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('fanfictions', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('chapters', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::create('fandom_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 255)->unique();
+            $table->string('slug', 255)
+                ->collation('latin1_bin')
+                ->unique();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('fandom_categories');
     }
 };

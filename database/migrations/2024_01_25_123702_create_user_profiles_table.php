@@ -21,13 +21,11 @@ return new class extends Migration
                 ->onDelete('cascade'); // Видалення пов'язаних записів
 
             $table->binary('photo')->nullable();
-            $table->longText('profile_description')->nullable();
+            $table->text('profile_description')->nullable();
             $table->json('preferences_tags')->nullable();
-            $table->date('created_at');
-            $table->date('updated_at');
+
+            $table->timestamps();
         });
-
-
     }
 
     /**
