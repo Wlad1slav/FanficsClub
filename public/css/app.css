@@ -14,7 +14,10 @@
     --clr-base: rgb(165, 60, 60);
     --clr-dark-base: rgb(135, 30, 30);
     --clr-cta: rgb(200,200,200);
+    --clr-cta-light: rgb(210,210,210);
+    --clr-cta-dark: rgb(185,185,185);
     --clr-black: rgb(40,40,40);
+    --clr-black-transparent: rgba(40,40,40, 0.5);
     --clr-white: rgb(250,250,250);
 
     /* indents */

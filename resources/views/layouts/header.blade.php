@@ -17,12 +17,23 @@ global $navigation;
         </div>
     </div>
 
-{{--    Друга лінія--}}
-    <div id="navigation">
-        <div>
+    <!-- Навігація по сайту -->
+
+    <nav>
+
+        <ul id="navigation">
+            <!-- Основне меню -->
             @foreach($navigation as $key => $arr)
-                <p>{{ $key }}</p>
+                <li><p>{{ $key }}</p>
+                    <ul>
+                        @foreach($arr as $el => $link)
+                            <li><a href="{{ $link }}">{{ $el }}</a></li>
+                        @endforeach
+                    </ul>
+                </li>
             @endforeach
-        </div>
-    </div>
+        </ul>
+
+    </nav>
+
 </header>

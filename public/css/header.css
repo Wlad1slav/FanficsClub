@@ -1,6 +1,14 @@
 /* header */
 
-header div {
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 1px 10px var(--clr-black-transparent);
+}
+
+header div, header nav {
     display: flex;
     flex-wrap: wrap;
     align-content: center;
@@ -13,13 +21,14 @@ header h1 {
 
 header a, header p {
     text-transform: capitalize;
-    padding: var(--indent-small);
+    padding: 6px;
     text-decoration: none;
     margin: 0;
     cursor: pointer;
 }
 
-header a:hover, header p:hover {
+header a:hover:not(nav a:hover),
+header p:hover:not(nav a:hover) {
     background-color: var(--clr-cta);
 }
 
@@ -38,19 +47,59 @@ header #greeting-line a:hover, header #greeting-line p:hover {
 }
 
 /* navigation */
-header #navigation {
-    /*padding: var(--indent-small);*/
-    background: var(--nav-background);
+header nav ul {
+    list-style: none;
+}
+header nav ul li {
+    position: relative;
+    float: left;
+    /*margin-right: var(--indent-medium);*/
+    margin-top: 8px;
 }
 
-header #navigation div {
+header nav {
+    background: var(--nav-background);
+    color: var(--clr-white);
+    height: 30px;
+}
+
+nav ul#navigation {
     margin-left: var(--indent-medium);
 }
 
-header #navigation a, header #navigation p {
-    color: var(--clr-white);
+header nav ul li a {
+    display: block;
 }
 
-header #navigation a:hover, header #navigation p:hover {
+nav ul li ul {
+    position: absolute;
+    left: 0;
+    width: 180px;
+    background: var(--clr-cta);
+    display: none;
+}
+
+nav ul li:hover > ul {
+    display: initial;
+}
+
+/* залишає parent li під ефектом, коли мишка наведена на вспливаюче меню */
+nav ul#navigation li:hover {
+    color: var(--clr-black);
+    background: var(--clr-cta-dark);
+}
+
+nav ul li ul li {
+    width: 100%;
+    border-bottom: 1px solid var(--clr-cta-dark);
+    margin: 0;
+    padding: 5px 0;
+}
+
+nav ul li ul li a {
     color: var(--clr-black);
 }
+
+/*nav ul li ul li a:hover {*/
+/*    background: var(--clr-cta-light);*/
+/*}*/
