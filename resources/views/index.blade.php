@@ -1,14 +1,16 @@
 @extends('layouts.main')
 
 @section('title')
-    Fic.UA
+    {{ $title }} :: Фанфіки українською
+@endsection
+
+@section('meta-description')
 @endsection
 
 
 @section('content')
 
-    <h1>Fic.UA</h1>
-
-    {{ route('HomePage')  }}
+    <!-- Строка з найпопулярнішими ФАНДОМАМИ -->
+    @include('widgets.popular-fandoms-list')
 
 @endsection

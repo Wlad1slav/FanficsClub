@@ -1,0 +1,46 @@
+#popular-fandoms-list .list {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#popular-fandoms-list h2 {
+    text-align: center;
+}
+
+#popular-fandoms-list .fandom {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: relative;
+    width: 200px;
+    height: 300px;
+    border-radius: 5px;
+}
+
+#popular-fandoms-list .fandom .info {
+    position: absolute;
+    background-color: var(--clr-black-transparent);
+    width: 80%;
+    height: 70px;
+    padding: var(--indent-small);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    color: white;
+    text-align: center;
+}
+
+#popular-fandoms-list .fandom .info div {
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#popular-fandoms-list .fandom .info .name {
+    font-weight: var(--bond-font-weight);
+    margin-bottom: 0;
+    font-size: calc(var(--font-size)*1.2);
+}
