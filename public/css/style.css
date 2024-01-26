@@ -20,8 +20,21 @@ h1, h2, h3 {
     margin: 0 0 var(--indent-heading) 0;
 }
 
+h1 {
+    font-size: var(--heading1-size);
+}
+
+h2 {
+    font-size: var(--heading2-size);
+}
+
+h3 {
+    font-size: var(--heading3-size);
+}
+
 p, a, li, b, i, span {
     margin: 0 0 var(--indent-text) 0;
+    font-size: var(--font-size);
 }
 
 .no-select {
@@ -29,4 +42,17 @@ p, a, li, b, i, span {
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Стандартний синтаксис */
+}
+
+.clickable {
+    /* клікабельний курсор */
+    cursor: pointer;
+}
+
+/* збільшення при наведенні */
+.enlargement {
+    transition: var(--an-scale);
+}
+.enlargement:hover {
+    transform: scale(1.05);
 }
