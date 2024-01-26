@@ -34,6 +34,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->string('title', 255);
+            $table->string('image', 255)->nullable();
             $table->text('description')->nullable();
             $table->json('addtional_descriptions')->nullable();
             $table->json('tags')->nullable();

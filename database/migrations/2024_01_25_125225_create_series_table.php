@@ -35,6 +35,7 @@ return new class extends Migration
                 ->unique();
 
             $table->string('name', 255);
+            $table->string('image', 255)->nullable();
             $table->text('description')->nullable();
             $table->json('additional_descriptions')->nullable();
             $table->json('tags')->nullable();

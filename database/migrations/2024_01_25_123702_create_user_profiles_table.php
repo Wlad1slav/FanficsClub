@@ -20,7 +20,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade'); // Видалення пов'язаних записів
 
-            $table->binary('photo')->nullable();
+            $table->string('image', 255)->nullable();
             $table->text('profile_description')->nullable();
             $table->json('preferences_tags')->nullable();
 

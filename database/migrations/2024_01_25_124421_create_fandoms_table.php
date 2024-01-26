@@ -19,6 +19,7 @@ return new class extends Migration
                 ->collation('latin1_bin')
                 ->unique();
             $table->string('name', 255)->unique();
+            $table->string('image', 255)->nullable();
 
             $table->string('fandom_category', 255)
                 ->collation('latin1_bin');
@@ -30,6 +31,8 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             $table->timestamps();
+
+            $table->bigInteger('fictions_amount')->default(0);
         });
 
         Schema::table('fandoms', function (Blueprint $table) {
