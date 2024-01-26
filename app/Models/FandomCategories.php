@@ -12,13 +12,14 @@ require_once 'SlugGenerationTrait.php';
 class FandomCategories extends Model
 {
     use HasFactory;
-    use SlugGenerationTrait;
+    use BaseGenerationTrait;
 
     protected $table = 'fandom_categories';
     protected $guarded = [];
     private $db;
+    private bool $hasSlug = true;
 
-    private array $CATEGORIES = [
+    private array $BASE_ROWS = [
         ['name' => 'Медіагіганти'],
         ['name' => 'Книги & Література'],
         ['name' => 'Фільми & Серіали'],
@@ -36,21 +37,5 @@ class FandomCategories extends Model
         if ($this->db->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні категорії
             $this->generate();
-    }
-
-
-    public function generate() {
-        // Метод, що генерує категорії фандомів
-
-        foreach ($this->CATEGORIES as $num => $category) {
-            // Якщо в якомусь з масивів не задан slug для категорії фандом,
-            // то він генерується
-            if (!isset($category['slug']))
-                $category['slug'] = self::getSlug($category['name']);
-            $this->CATEGORIES[$num] = $category;
-        }
-
-        // Після перевірки коректності масиву, дані заносяться в таблицю
-        $this->db->insert($this->CATEGORIES);
     }
 }
