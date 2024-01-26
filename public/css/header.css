@@ -1,11 +1,8 @@
 /* header */
 
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     box-shadow: 0 1px 10px var(--clr-black-transparent);
+    margin-bottom: var(--indent-large);
 }
 
 header div, header nav {
