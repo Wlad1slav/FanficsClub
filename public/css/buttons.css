@@ -1,0 +1,51 @@
+.button {
+    display: flex;
+}
+
+.button a {
+    background: var(--btn-standart-bg);
+    color: var(--btn-standart-clr);
+    padding: var(--btn-padding);
+    margin: var(--indent-small) var(--indent-tiny);
+    border-radius: var(--btn-border-radius);
+    box-sizing: border-box;
+    border: var(--btn-border);
+    white-space: nowrap;
+    width: var(--btn-width);
+    text-align: center;
+    transition: var(--btn-animation);
+    position: relative;
+    text-decoration: none;
+}
+
+.button a:hover {
+    background: var(--btn-standart-bg-hover);
+    color: var(--btn-standart-clr-hover);
+    width: var(--btn-width-hover);
+    display: flex;
+    justify-content: space-between;
+}
+
+.button p, .button span {
+    text-decoration: none;
+    margin: 0;
+}
+
+.button span {
+    position: absolute;
+    right: 0;
+    bottom: -70%;
+    margin-right: var(--indent-small);
+    transform: translateY(-50%);
+    display: none;
+    font-weight: bolder;
+    font-size: 40px;
+}
+
+.button a:hover span {
+    display: initial;
+}
+
+.button.center {
+    justify-content: center;
+}

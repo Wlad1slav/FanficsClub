@@ -19,6 +19,8 @@
     --clr-black: rgb(40,40,40);
     --clr-black-transparent: rgba(40,40,40, 0.8);
     --clr-white: rgb(250,250,250);
+    --clr-bg: var(--clr-white);
+    --clr-bg-second: rgb(240,240,240);
 
     /* indents */
     --indent-tiny: 4px;
@@ -37,5 +39,18 @@
     --animation: 0.2s ease;
     --an-standart: all var(--animation);
     --an-scale: transform var(--animation);
+
+    /* buttons */
+    --btn-width: 160px;
+    --btn-width-hover: 200px;
+    --btn-padding: 10px 15px 10px 15px;
+    --btn-standart-bg: linear-gradient(0.5turn, var(--clr-cta), var(--clr-cta-dark));
+    --btn-standart-bg-hover: linear-gradient(0.5turn, var(--clr-cta-dark), var(--clr-cta));
+    --btn-standart-bg-focus: var(--clr-cta-dark);
+    --btn-standart-clr: var(--clr-black);
+    --btn-standart-clr-hover: var(--clr-base);
+    --btn-border-radius: 5px;
+    --btn-border: none;
+    --btn-animation: all 0.5s ease;
 }
 
