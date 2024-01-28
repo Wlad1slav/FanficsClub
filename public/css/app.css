@@ -5,7 +5,7 @@
     --bond-font-weight: 600;
     --clr-text: var(--clr-black);
     --clr-heading: var(--clr-text);
-    --heading1-size: 30px;
+    --heading1-size: 50px;
     --heading2-size: 40px;
     --heading3-size: 20px;
     --heading-font: var(--font-family); /* шрифт заголовку */
@@ -52,5 +52,7 @@
     --btn-border-radius: 5px;
     --btn-border: none;
     --btn-animation: all 0.5s ease;
+    --btn-width-long: 200px;
+    --btn-width-hover-long: 240px;
 }
 
