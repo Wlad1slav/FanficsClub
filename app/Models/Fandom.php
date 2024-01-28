@@ -42,7 +42,7 @@ class Fandom extends Model
             'related_media_giant' => null,
             'image' => 'images/fandoms/fandom-boku-no-hero-academia.webp'
         ],[
-            'name' => 'Всесвіт Д.Р.Р.ТОЛКІНА',
+            'name' => 'Всесвіт Д.Р.Р. ТОЛКІНА',
             'fandom_category' => 'knyhy-literatura',
             'description' => null,
             'related_media_giant' => null,
@@ -79,13 +79,32 @@ class Fandom extends Model
     }
 
     public static function getFandomsOrderedByFfAmount(int $amount)
-    {
+    { // Повертає фандоми згідно кількості фанфіків в них
         $fandoms = Fandom::orderBy('fictions_amount')->take(5)->get();
         foreach ($fandoms as $key=>$fandom) {
             $fandom['fandom_category_name'] = FandomCategories::where('slug', $fandom['fandom_category'])->first()->name;
             $fandoms[$key] = $fandom;
         }
         return $fandoms;
+    }
+
+    public static function getFandomsOrderedByCategories(?int $fandomsInOneCategory = null): array
+    {   // Повертає масив заданой кількості фандомів, відсортированих по їх категоріям.
+        // Ключем виступає назва категорії.
+        // Елементом виступає строка slug категорії і Laravel колекція з усіма фандомами, що належать категорії.
+        // Фандоми всередені Laravel колекції відсортировані по кількості фанфіків в них.
+
+        $result = [];
+        foreach (FandomCategories::all() as $category)
+            $result[$category->name] = [
+                'slug' => $category->slug,
+                'fandoms' => Fandom::where('fandom_category', $category->slug)
+                ->take($fandomsInOneCategory)
+                ->orderBy('fictions_amount')
+                ->get()
+            ];
+
+        return $result;
     }
 
 }
