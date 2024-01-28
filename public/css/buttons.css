@@ -27,8 +27,28 @@
     margin: 0;
 }
 
+/* позиціонування згідно flexbox */
 .button.center {
     justify-content: center;
+}
+
+.button.right {
+    justify-content: end;
+}
+
+/* позиціонування згідно position absolute */
+.button.a {
+    position: absolute;
+}
+
+.a.bottom {
+    bottom: 0;
+    transform: translateY(-50%);
+}
+
+.a.right {
+    right: 0;
+    transform: translateX(0%);
 }
 
 /* особливий ефект для кнопки доступний з класом hover-effect */
