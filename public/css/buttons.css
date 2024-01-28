@@ -10,10 +10,7 @@
     border-radius: var(--btn-border-radius);
     box-sizing: border-box;
     border: var(--btn-border);
-    white-space: nowrap;
-    width: var(--btn-width);
     text-align: center;
-    transition: var(--btn-animation);
     position: relative;
     text-decoration: none;
 }
@@ -21,7 +18,6 @@
 .button a:hover {
     background: var(--btn-standart-bg-hover);
     color: var(--btn-standart-clr-hover);
-    width: var(--btn-width-hover);
     display: flex;
     justify-content: space-between;
 }
@@ -29,6 +25,21 @@
 .button p, .button span {
     text-decoration: none;
     margin: 0;
+}
+
+.button.center {
+    justify-content: center;
+}
+
+/* особливий ефект для кнопки доступний з класом hover-effect */
+.button.hover-effect a {
+    white-space: nowrap;
+    width: var(--btn-width);
+    transition: var(--btn-animation);
+}
+
+.button.hover-effect a:hover {
+    width: var(--btn-width-hover);
 }
 
 .button span {
@@ -44,8 +55,4 @@
 
 .button a:hover span {
     display: initial;
-}
-
-.button.center {
-    justify-content: center;
 }
