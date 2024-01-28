@@ -5,9 +5,13 @@ header {
     background: var(--clr-white);
 }
 
-header .logo {
+header img.logo {
     width: auto;
     height: 50px;
+}
+
+header a.logo {
+    margin: 0;
 }
 
 /*header p.logo span {*/
@@ -26,7 +30,7 @@ header h1 {
     margin: 0;
 }
 
-header a, header p:not(.logo) {
+header a:not(.logo), header p:not(.logo) {
     text-transform: capitalize;
     padding: 6px;
     text-decoration: none;
@@ -34,7 +38,7 @@ header a, header p:not(.logo) {
     cursor: pointer;
 }
 
-header a:hover:not(nav a:hover),
+header a:hover:not(nav a:hover):not(.logo),
 header p:hover:not(nav a:hover):not(.logo) {
     background-color: var(--clr-cta);
 }
@@ -45,12 +49,12 @@ header #greeting-line {
     padding: var(--indent-small);
 }
 
-header #greeting-line a,
+header #greeting-line a:not(.logo),
 header #greeting-line p:not(.logo) {
     color: var(--clr-black);
 }
 
-header #greeting-line a:hover,
+header #greeting-line a:hover:not(.logo),
 header #greeting-line p:hover:not(.logo) {
     color: var(--clr-base);
 }

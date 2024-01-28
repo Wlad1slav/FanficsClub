@@ -8,7 +8,9 @@ global $navigation;
 
     <!-- Перша лінія -->
     <div id="greeting-line">
-        <img src="{{ asset('images/logo-header.webp') }}" alt="Лого сайту" class="logo no-select">
+        <a href="{{ route('HomePage') }}" class="logo">
+            <img src="{{ asset('images/logo-header.webp') }}" alt="Лого сайту" class="logo no-select">
+        </a>
         <div>
             <a href="#">Page</a>
             <a href="#">Page</a>
