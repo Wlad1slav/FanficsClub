@@ -45,3 +45,28 @@
     margin-bottom: 0;
     font-size: calc(var(--font-size)*1.2);
 }
+
+/* 1550px */
+@media (max-width: 1550px) {
+    #popular-fandoms-list .fandom {
+        width: 133px;
+        height: 200px;
+    }
+    #popular-fandoms-list .fandom .info .name {
+        font-size: calc(var(--font-size)*1.1);
+    }
+}
+
+/* 1050px */
+@media (max-width: 1050px) {
+    #popular-fandoms-list .fandom {
+        width: 100px;
+        height: 150px;
+    }
+    #popular-fandoms-list .fandom .info .name {
+        font-size: var(--font-size);
+    }
+    #popular-fandoms-list .fandom .info p {
+        margin: 0;
+    }
+}
