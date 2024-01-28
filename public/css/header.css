@@ -1,9 +1,19 @@
 /* header */
 
 header {
-    box-shadow: 0 1px 10px var(--clr-black-transparent);
-    margin-bottom: var(--indent-large);
+    /*box-shadow: 0 1px 10px var(--clr-black-transparent);*/
+    background: var(--clr-white);
 }
+
+header .logo {
+    width: auto;
+    height: 50px;
+}
+
+/*header p.logo span {*/
+/*    font-size: 40px;*/
+/*    font-weight: bolder;*/
+/*}*/
 
 header div, header nav {
     display: flex;
@@ -16,7 +26,7 @@ header h1 {
     margin: 0;
 }
 
-header a, header p {
+header a, header p:not(.logo) {
     text-transform: capitalize;
     padding: 6px;
     text-decoration: none;
@@ -25,7 +35,7 @@ header a, header p {
 }
 
 header a:hover:not(nav a:hover),
-header p:hover:not(nav a:hover) {
+header p:hover:not(nav a:hover):not(.logo) {
     background-color: var(--clr-cta);
 }
 
@@ -35,11 +45,13 @@ header #greeting-line {
     padding: var(--indent-small);
 }
 
-header #greeting-line a, header #greeting-line p {
+header #greeting-line a,
+header #greeting-line p:not(.logo) {
     color: var(--clr-black);
 }
 
-header #greeting-line a:hover, header #greeting-line p:hover {
+header #greeting-line a:hover,
+header #greeting-line p:hover:not(.logo) {
     color: var(--clr-base);
 }
 

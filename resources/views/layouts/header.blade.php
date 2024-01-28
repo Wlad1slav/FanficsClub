@@ -6,11 +6,10 @@ global $navigation;
 
 <header>
 
-    {{--        Перша лінія--}}
+    <!-- Перша лінія -->
     <div id="greeting-line">
-        <h1 class="no-select">Фанфіки українською</h1>
+        <img src="{{ asset('images/logo-header.webp') }}" alt="Лого сайту" class="logo no-select">
         <div>
-
             <a href="#">Page</a>
             <a href="#">Page</a>
             <a href="#">Page</a>
