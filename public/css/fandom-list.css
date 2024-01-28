@@ -1,7 +1,7 @@
 #popular-fandoms-list .list {
     display: flex;
     justify-content: space-evenly;
-    margin-bottom: var(--indent-medium);
+    margin-bottom: var(--indent-large);
 }
 
 #popular-fandoms-list h2 {
