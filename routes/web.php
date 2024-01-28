@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FandomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -29,3 +30,17 @@ Route::get('/doc', function () {
 Route::get('/',
     [HomeController::class, 'index']
 )->name('HomePage');
+
+
+// Сторінки пов'язані з фандомами
+
+// Усі категорії фандомів
+Route::get('/fandoms',
+    [FandomController::class, 'fandomsCategories']
+)->name('FandomsCategoriesPage');
+Route::redirect('/fandom', '/fandoms');
+
+// Певний фандом
+Route::get('/fandom/{slug}',
+    [FandomController::class, 'certainFandom']
+)->name('CertainFandomPage');
