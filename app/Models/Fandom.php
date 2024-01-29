@@ -6,6 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/*
+
+	1   id                      bigint UNSIGNED	                            Первинний індекс
+	2	slug                    varchar(255)	    latin1_bin		        Індекс UNIQUE
+	3	name                    varchar(255)	    utf8mb4_unicode_ci	    Індекс UNIQUE
+	4	image	                varchar(255)	    utf8mb4_unicode_ci
+	5	fandom_category         varchar(255)	    latin1_bin              Індекс fandom_categories('slug')
+	6	description	            text	            utf8mb4_unicode_ci
+	7	created_at	            timestamp
+	8	updated_at	            timestamp
+	9	fictions_amount	        bigint
+	10	related_media_giant     varchar(255)	    latin1_bin              Індекс fandoms('slug')
+
+*/
+
 class Fandom extends Model
 {
     use HasFactory;
@@ -79,7 +94,7 @@ class Fandom extends Model
     }
 
     public static function getFandomsOrderedByFfAmount(int $amount)
-    { // Повертає фандоми згідно кількості фанфіків в них
+    { // Повертає фандоми, сортируючи по кількості фанфіків в них
         $fandoms = Fandom::orderBy('fictions_amount')->take(5)->get();
         foreach ($fandoms as $key=>$fandom) {
             $fandom['fandom_category_name'] = FandomCategories::where('slug', $fandom['fandom_category'])->first()->name;
@@ -103,6 +118,27 @@ class Fandom extends Model
                 ->orderBy('fictions_amount')
                 ->get()
             ];
+
+        return $result;
+    }
+
+    public static function getFandomsOrderedByAlphabet(string $categorySlug): array
+    {   // Повертає масив фандомів певної категорії, відсортированих по їх алфавіту.
+        // Ключем виступає літера, на яку повинаються фандоми.
+        // Елементом виступає масив Laravel колекцій фандомів.
+
+        $result = [];
+
+        foreach (self::where('fandom_category', $categorySlug)->orderBy('name')->get() as $fandom) {
+            // Отримання першої літери назви фандому
+            // mb_substr потрібно, щоб нормально сприймало кириличеські символи
+            $firstLetter = mb_substr($fandom->name, 0, 1);
+
+            if (!isset($result[$firstLetter]))
+                $result[$firstLetter] = [];
+
+            $result[$firstLetter][] = $fandom;
+        }
 
         return $result;
     }

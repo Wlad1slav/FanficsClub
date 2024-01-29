@@ -40,6 +40,11 @@ Route::get('/fandoms',
 )->name('FandomsCategoriesPage');
 Route::redirect('/fandom', '/fandoms');
 
+// Усі фандоми за певною категорією
+Route::get('/fandoms/{category_slug}',
+    [FandomController::class, 'certainCategory']
+)->name('CertainCategoryPage');
+
 // Певний фандом
 Route::get('/fandom/{slug}',
     [FandomController::class, 'certainFandom']

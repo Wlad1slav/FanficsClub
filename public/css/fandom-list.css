@@ -70,3 +70,20 @@
         margin: 0;
     }
 }
+
+/* контейнер з фандомами */
+.alphabet {
+    margin: var(--indent-medium) 0;
+}
+
+.fandoms-container {
+    background-color: var(--clr-bg-second);
+    padding: var(--indent-small);
+    margin-bottom: var(--indent-medium);
+    width: 48%;
+}
+
+.fandoms-container h2 {
+    margin: 0;
+    font-size: calc(var(--heading2-size)/2);
+}

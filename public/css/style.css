@@ -1,9 +1,8 @@
 body {
     margin: 0;
     font-family: var(--font-family);
-    background-color: var(--clr-white);
+    background-color: var(--clr-bg-second);
     color: var(--clr-text);
-    height: 100vh;
 }
 
 * {
@@ -14,6 +13,7 @@ body {
 .content {
     margin: var(--indent-on-sides);
     padding: var(--indent-medium);
+    background-color: var(--clr-bg);
 }
 
 h1, h2, h3 {
@@ -22,6 +22,13 @@ h1, h2, h3 {
 
 h1 {
     font-size: var(--heading1-size);
+    text-align: center;
+}
+
+h1 span {
+    font-size: calc(var(--heading1-size) * 1.4);
+    /*padding-bottom: var(--indent-tiny);*/
+    border-bottom: 4px solid var(--clr-base);
 }
 
 h2 {
@@ -55,4 +62,11 @@ p, a, li, b, i, span {
 }
 .enlargement:hover {
     transform: scale(1.05);
+}
+
+/* контейнер, в якому багато контейнерів, що повинні йти один за одним */
+.containers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
