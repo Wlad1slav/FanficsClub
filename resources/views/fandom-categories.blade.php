@@ -24,14 +24,15 @@
                 <h2>{{ $categoryName }}</h2>
                 @foreach(json_decode($categoryContent['fandoms'], true) as $fandom)
                     <p>
-                        <a href="{{ route('CertainFandomPage', ['slug' => $fandom['slug']]) }}">{{ $fandom['name'] }}</a>
+                        <a class="fandom-link" href="{{ route('CertainFandomPage', ['slug' => $fandom['slug']]) }}">
+                            {{ $fandom['name'] }}</a>
                         ({{ $fandom['fictions_amount'] }})
                     </p>
                 @endforeach
 
                 @include('widgets.button', [
                     'title' => 'Більше...',
-                    'url' => '#',
+                    'url' => route('CertainCategoryPage', ['category_slug' => $categoryContent['slug']]),
                     'styles' => 'a right bottom'
                 ])
             </div>
