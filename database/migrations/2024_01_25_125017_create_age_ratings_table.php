@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('age_ratings', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255)->unique();
+            $table->string('rgb_color', 255);
             $table->text('description')->nullable();
             $table->timestamps();
         });
