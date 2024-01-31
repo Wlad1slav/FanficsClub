@@ -7,7 +7,6 @@ use App\Models\Fandom;
 use App\Models\FandomCategories;
 use App\Models\Fanfiction;
 use App\Models\Tag;
-use App\Models\TagCategory;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,11 +16,15 @@ class FandomController extends Controller
     public function certainFandom(string $slug)
     {   // CertainFandomPage
         // /fandom/{slug}
+        // Сторінка з фанфіками, що належать певному фандому
+
+        $fandom = Fandom::where('slug', $slug)->first(); // Фандом, до якого належать фанфіки
 
         $data = [
-            'title' => Fandom::where('slug', $slug)->first()->name,
+            'title' => $fandom->name,
             'metaDescription' => '',
-            'fanfics' => Fanfiction::where('fandom', $slug)->get()
+            // Отримання усіх фанфіків, що належать фандому
+            'fanfics' => $fandom->fanfictions
         ];
 
         return view('fandom-certain', $data);
