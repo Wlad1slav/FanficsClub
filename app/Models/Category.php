@@ -26,7 +26,6 @@ class Category extends Model
     protected $table = 'categories';
     protected $guarded = [];
 
-    private $db;
     private bool $hasSlug = false;
 
     private array $BASE_ROWS = [
@@ -47,18 +46,12 @@ class Category extends Model
             'rgb_color' => '255 150 240',
             'description' => 'З акцентом на романтичних відношенях між жінкою і жінкою.',
         ],
-//        [
-//            'name' => 'Змішане',
-//            'rgb_color' => '170 170 210',
-//            'description' => '',
-//        ],
     ];
 
     public function __construct()
     {
-        $this->db = DB::table($this->getTable());
 
-        if ($this->db->count() === 0)
+        if ($this->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні рядки
             $this->generate();
     }

@@ -17,7 +17,6 @@ class FandomCategories extends Model
 
     protected $table = 'fandom_categories';
     protected $guarded = [];
-    private $db;
     private bool $hasSlug = true;
 
     private array $BASE_ROWS = [
@@ -33,9 +32,8 @@ class FandomCategories extends Model
 
     public function __construct()
     {
-        $this->db = DB::table($this->getTable());
 
-        if ($this->db->count() === 0)
+        if ($this->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні категорії
             $this->generate();
     }

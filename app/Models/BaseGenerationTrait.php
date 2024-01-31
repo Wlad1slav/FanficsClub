@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
+
 trait BaseGenerationTrait
 {
     use SlugGenerationTrait;
@@ -30,7 +32,8 @@ trait BaseGenerationTrait
             }
 
         // Після перевірки коректності масиву, дані заносяться в таблицю
-        $this->db->insert($this->BASE_ROWS);
+        $db = DB::table($this->getTable());
+        $db->insert($this->BASE_ROWS);
     }
 
     public function getSlugStatus(): bool

@@ -14,7 +14,6 @@ class Character extends Model
     protected $table = 'characters';
     protected $guarded = [];
 
-    private $db;
     private bool $hasSlug = false;
 
     private array $BASE_ROWS = [
@@ -38,9 +37,8 @@ class Character extends Model
 
     public function __construct()
     {
-        $this->db = DB::table($this->getTable());
 
-        if ($this->db->count() === 0)
+        if ($this->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні рядки
             $this->generate();
     }
