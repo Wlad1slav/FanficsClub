@@ -33,7 +33,25 @@
 
     <h1>Фанфіки Українською Мовою</h1>
 
-    <!-- Строка з найпопулярнішими ФАНДОМАМИ -->
-    @include('widgets.popular-fandoms-list', ['hasCta' => true, ''])
+    <div class="section">
+        <!-- Строка з найпопулярнішими ФАНДОМАМИ -->
+        @include('widgets.popular-fandoms-list', ['hasCta' => true, ''])
+    </div>
+
+    <!-- 5 останнє оновлених фанфіків -->
+    <div class="section">
+        <h2>Нещодавно оновлені</h2>
+        @foreach($last_updated_fanfics as $fanfic)
+            @include('widgets.fanfic-container', ['fanfic' => $fanfic])
+        @endforeach
+    </div>
+
+    <!-- 5 останнє створенних фанфіків -->
+    <div class="section">
+        <h2>Нещодавно створені</h2>
+        @foreach($last_created_fanfics as $fanfic)
+            @include('widgets.fanfic-container', ['fanfic' => $fanfic])
+        @endforeach
+    </div>
 
 @endsection
