@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -19,6 +20,10 @@ $navigation = [
         'Фанфік' => '#',
         'Серію' => '#',
         'Автора' => '#',
+    ],
+    'Немає фанфіка?' => [
+        'Запросити переклад' => '#',
+        'Запросити перенос' => '#',
     ],
 ];
 
@@ -49,3 +54,10 @@ Route::get('/fandoms/{category_slug}',
 Route::get('/fandom/{slug}',
     [FandomController::class, 'certainFandom']
 )->name('CertainFandomPage');
+
+// Сторінки пов'язані з колекціями
+
+// Певна колекція
+Route::get('/collection/{id}',
+    [CollectionController::class, 'certainCollection']
+)->name('CertainCollectionPage');
