@@ -21,10 +21,9 @@ return new class extends Migration
             $table->string('name', 255)->unique();
             $table->string('image', 255)->nullable();
 
-            $table->string('fandom_category', 255)
-                ->collation('latin1_bin');
-            $table->foreign('fandom_category')
-                ->references('slug')
+            $table->unsignedBigInteger('fandom_category_id')->nullable();
+            $table->foreign('fandom_category_id')
+                ->references('id')
                 ->on('fandom_categories')
                 ->onDelete('cascade');
 
@@ -36,11 +35,9 @@ return new class extends Migration
         });
 
         Schema::table('fandoms', function (Blueprint $table) {
-            $table->string('related_media_giant', 255)
-                ->collation('latin1_bin')
-                ->nullable();
-            $table->foreign('related_media_giant')
-                ->references('slug')
+            $table->unsignedBigInteger('related_media_giant_fandom_id')->nullable();
+            $table->foreign('related_media_giant_fandom_id')
+                ->references('id')
                 ->on('fandoms')
                 ->onDelete('set null');
         });

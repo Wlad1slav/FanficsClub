@@ -15,6 +15,14 @@ return new class extends Migration
     {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 255);
+
+            $table->unsignedBigInteger('author_id');
+            $table->foreign('author_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
             $table->text('description')->nullable();
             $table->json('fanfictions')->nullable();
             $table->bigInteger('views')->default(0);

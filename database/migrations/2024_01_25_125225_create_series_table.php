@@ -22,11 +22,9 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->string('fandom', 255)
-                ->nullable()
-                ->collation('latin1_bin');
-            $table->foreign('fandom')
-                ->references('slug')
+            $table->unsignedBigInteger('fandom_id')->nullable();
+            $table->foreign('fandom_id')
+                ->references('id')
                 ->on('fandoms')
                 ->onDelete('cascade');
 

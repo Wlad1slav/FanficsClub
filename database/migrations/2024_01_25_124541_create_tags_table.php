@@ -16,21 +16,20 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255)->unique();
+            $table->string('notification', 255)->nullable();
 
-            $table->string('category', 255)->nullable();
-            $table->foreign('category')
-                ->references('name')
-                ->on('tag_categories')
-                ->onDelete('set null');
+//            $table->string('category', 255)->nullable();
+//            $table->foreign('category')
+//                ->references('name')
+//                ->on('tag_categories')
+//                ->onDelete('set null');
 
-            $table->bigInteger('rating')->default(0);
+            $table->unsignedBigInteger('rating')->default(0);
             $table->text('description')->nullable();
 
-            $table->string('belonging_to_fandom', 255)
-                ->collation('latin1_bin')
-                ->nullable();
-            $table->foreign('belonging_to_fandom')
-                ->references('slug')
+            $table->unsignedBigInteger('belonging_to_fandom_id')->nullable();
+            $table->foreign('belonging_to_fandom_id')
+                ->references('id')
                 ->on('fandoms')
                 ->onDelete('cascade');
 
