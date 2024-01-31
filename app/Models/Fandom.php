@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -25,6 +26,7 @@ class Fandom extends Model
 {
     use HasFactory;
     use BaseGenerationTrait;
+    use FanfictionAccessTrait;
 
     protected $table = 'fandoms';
     protected $guarded = [];
@@ -34,33 +36,33 @@ class Fandom extends Model
     private array $BASE_ROWS = [
         [
             'name' => 'Гаррі Поттер',
-            'fandom_category' => 'mediahihanty',
+            'fandom_category_id' => 1, // Медіагіганти
             'description' => null,
-            'related_media_giant' => null,
+            'related_media_giant_fandom_id' => null,
             'image' => 'images/fandoms/fandom-harry-potter.webp'
         ],[
             'name' => 'Зоряні Війни',
-            'fandom_category' => 'mediahihanty',
+            'fandom_category_id' => 1,
             'description' => null,
-            'related_media_giant' => null,
+            'related_media_giant_fandom_id' => null,
             'image' => 'images/fandoms/fandom-star-wars.webp'
         ],[
             'name' => 'Marvel',
-            'fandom_category' => 'mediahihanty',
+            'fandom_category_id' => 1,
             'description' => null,
-            'related_media_giant' => null,
+            'related_media_giant_fandom_id' => null,
             'image' => 'images/fandoms/fandom-marvel.webp'
         ],[
             'name' => 'Boku no Hero Academia',
-            'fandom_category' => 'anime-manha',
+            'fandom_category_id' => 4, // Аніме & Манга
             'description' => null,
-            'related_media_giant' => null,
+            'related_media_giant_fandom_id' => null,
             'image' => 'images/fandoms/fandom-boku-no-hero-academia.webp'
         ],[
             'name' => 'Всесвіт Д.Р.Р. ТОЛКІНА',
-            'fandom_category' => 'knyhy-literatura',
+            'fandom_category_id' => 2, // Книги & Література
             'description' => null,
-            'related_media_giant' => null,
+            'related_media_giant_fandom_id' => null,
             'image' => 'images/fandoms/fandom-lord-of-the-rings.webp'
         ],
     ];
@@ -74,9 +76,11 @@ class Fandom extends Model
             $this->generate();
     }
 
-//    public function getPopularFandoms(int $num = 5): array {
-//
-//    }
+    public function category(): BelongsTo
+    {   // Зв'язок з моделю FandomCategories
+        // для кожного екземпляра Fandom можна отримати категорію
+        return $this->belongsTo(FandomCategories::class, 'fandom_category_id');
+    }
 
     public function calculatePopularity(): void
     {   // Рахує, скільки фанфіків в кожному фандомі
@@ -93,16 +97,6 @@ class Fandom extends Model
         }
     }
 
-    public static function getFandomsOrderedByFfAmount(int $amount)
-    { // Повертає фандоми, сортируючи по кількості фанфіків в них
-        $fandoms = Fandom::orderBy('fictions_amount')->take(5)->get();
-        foreach ($fandoms as $key=>$fandom) {
-            $fandom['fandom_category_name'] = FandomCategories::where('slug', $fandom['fandom_category'])->first()->name;
-            $fandoms[$key] = $fandom;
-        }
-        return $fandoms;
-    }
-
     public static function getFandomsOrderedByCategories(?int $fandomsInOneCategory = null): array
     {   // Повертає масив заданой кількості фандомів, відсортированих по їх категоріям.
         // Ключем виступає назва категорії.
@@ -113,10 +107,7 @@ class Fandom extends Model
         foreach (FandomCategories::all() as $category)
             $result[$category->name] = [
                 'slug' => $category->slug,
-                'fandoms' => Fandom::where('fandom_category', $category->slug)
-                ->take($fandomsInOneCategory)
-                ->orderBy('fictions_amount')
-                ->get()
+                'fandoms' => $category->getOrderedFandoms(5, 'fictions_amount')
             ];
 
         return $result;
@@ -127,9 +118,12 @@ class Fandom extends Model
         // Ключем виступає літера, на яку повинаються фандоми.
         // Елементом виступає масив Laravel колекцій фандомів.
 
+        // Отримання категорії, з якої виводити показувати фандоми
+        $category = FandomCategories::where('slug', $categorySlug)->first();
+
         $result = [];
 
-        foreach (self::where('fandom_category', $categorySlug)->orderBy('name')->get() as $fandom) {
+        foreach ($category->getOrderedFandoms(-1, 'name') as $fandom) {
             // Отримання першої літери назви фандому
             // mb_substr потрібно, щоб нормально сприймало кириличеські символи
             $firstLetter = mb_substr($fandom->name, 0, 1);

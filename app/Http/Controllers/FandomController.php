@@ -2,14 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Fandom;
 use App\Models\FandomCategories;
-use App\Models\Fanfiction;
-use App\Models\Tag;
-
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class FandomController extends Controller
 {
@@ -53,7 +47,7 @@ class FandomController extends Controller
             'metaDescription' => '',
             // Усі категорії з 5-ю найпопулярнішими фандомами по ним
             'fandomsOrganisedByCategories' => Fandom::getFandomsOrderedByCategories(5),
-            'fandoms' => Fandom::getFandomsOrderedByFfAmount(5) // Отримання 5 найпопулярніших фандомів
+            'fandoms' => Fandom::orderBy('fictions_amount')->take(5)->get() // Отримання 5 найпопулярніших фандомів
         ];
 
         return view('fandom-categories', $data);

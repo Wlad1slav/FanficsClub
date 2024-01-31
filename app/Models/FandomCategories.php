@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Collection;
 
 require_once 'SlugGenerationTrait.php';
 
@@ -37,5 +38,17 @@ class FandomCategories extends Model
         if ($this->db->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні категорії
             $this->generate();
+    }
+
+    public function fandoms(): HasMany
+    {   // Отримати усі фандоми, що належать певной категорії
+        return $this->hasMany(Fandom::class, 'fandom_category_id');
+    }
+
+    public function getOrderedFandoms(int $amount = 5, string $orderedBy = 'name'): Collection
+    {   // Отримати усі фандоми, що належать певной категорії
+        return $this->hasMany(Fandom::class, 'fandom_category_id')
+            ->orderBy($orderedBy) // сортування за заданою колонкою
+            ->take($amount)->get(); // отримання тільки задану кількість перших рядків
     }
 }

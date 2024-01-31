@@ -26,7 +26,7 @@
 
                <div class="info">
                    <div>
-                       <p class="category">{{ $fandom->fandom_category_name }}</p>
+                       <p class="category">{{ $fandom->category->name }}</p>
                        <p class="name">{{ $fandom->name }}</p>
                    </div>
                </div>

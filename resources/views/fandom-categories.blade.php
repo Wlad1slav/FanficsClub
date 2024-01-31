@@ -22,10 +22,10 @@
 
             <div class="fandom-category-container">
                 <h2>{{ $categoryName }}</h2>
-                @foreach(json_decode($categoryContent['fandoms'], true) as $fandom)
+                @foreach($categoryContent['fandoms'] as $fandom)
                     <p>
                         <a class="fandom-link" href="{{ route('CertainFandomPage', ['slug' => $fandom['slug']]) }}">
-                            {{ $fandom['name'] }}</a>
+                            {{ $fandom->name }}</a>
                         ({{ $fandom['fictions_amount'] }})
                     </p>
                 @endforeach
