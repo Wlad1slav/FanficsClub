@@ -8,7 +8,7 @@
 
     <title>@yield('title')</title>
 
-    <meta name="description" content="@yield('meta-description')">
+    <meta name="description" content="{{ $metaDescription ?? '' }}">
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
