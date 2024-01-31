@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/fandom-list.css') }}">
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fandoms-categories.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fanfic-container.css') }}">
 
 </head>
 <body>

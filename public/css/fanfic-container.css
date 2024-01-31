@@ -1,0 +1,88 @@
+:root {
+    --ff-container-indent: var(--indent-small);
+    --ff-container-border-width: 2px;
+}
+
+.fanfic-container {
+    position: relative;
+    background-color: var(--clr-bg-second);
+    padding: var(--ff-container-indent) 0;
+}
+
+.fanfic-container a {
+    color: var(--clr-black);
+}
+
+.fanfic-container h3 {
+    margin-left: var(--ff-container-indent);
+}
+
+.fanfic-container h3 a {
+    font-size: calc(var(--heading3-size)*1.5);
+}
+
+.fanfic-container .about-ff {
+    margin: var(--ff-container-indent);
+}
+
+.fanfic-container .about-ff p span {
+    font-weight: var(--bond-font-weight);
+}
+
+.fanfic-container .about-ff p a {
+    margin-right: var(--indent-small);
+}
+
+.fanfic-container .about-ff p a span {
+    font-weight: unset;
+    font-size: calc(var(--font-size)/1.5);
+}
+
+.fanfic-container .statistic {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.fanfic-container .statistic p {
+    margin: var(--ff-container-indent);
+}
+
+.fanfic-container .short-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.fanfic-container .short-info p.translate-notify {
+    border: var(--ff-container-border-width) solid var(--clr-black);
+    box-sizing: border-box;
+    color: var(--clr-black);
+    padding: calc(var(--indent-small) - var(--ff-container-border-width));
+}
+
+.fanfic-container .short-info p {
+    margin-right: var(--ff-container-indent);
+    padding: var(--indent-small);
+    color: var(--clr-white);
+    text-align: center;
+}
+
+.fanfic-container .short-info .rating,
+.fanfic-container .short-info .anti-rating {
+    font-weight: var(--bond-font-weight);
+    padding: calc(var(--indent-small) - 2px);
+}
+
+.fanfic-container .short-info .rating {
+    border: var(--ff-container-border-width) dotted var(--clr-positive);
+    color: var(--clr-positive);
+    margin-left: var(--ff-container-indent);
+    /*font-size: 25px;*/
+}
+
+.fanfic-container .short-info .anti-rating {
+    border: var(--ff-container-border-width) dotted var(--clr-negative);
+    color: var(--clr-negative);
+    /*font-size: 15px;*/
+}
