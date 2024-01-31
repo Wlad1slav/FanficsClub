@@ -12,6 +12,8 @@
 
 -->
 
+<link rel="stylesheet" href="{{ asset('css/fandom-list.css') }}">
+
 <div id="popular-fandoms-list">
     @if($hasTitle ?? true) <h2>
         Найпопулярніші Фандоми</h2>

@@ -14,16 +14,3 @@
 .fandom-categories-list .fandom-category-container h2 {
     font-size: calc(var(--heading2-size)/2);
 }
-
-.fandom-link {
-    color: var(--clr-black);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--clr-cta-ultradark);
-    padding: 2px 0 1px 0;
-}
-
-.fandom-link:hover {
-    color: var(--clr-white);
-    background-color: var(--clr-base);
-    border-bottom: 1px dotted var(--clr-white);
-}

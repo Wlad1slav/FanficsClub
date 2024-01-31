@@ -1,3 +1,14 @@
+<!--
+
+    Віджет контейнер з інформацією про фанфік.
+    Використовується в переліку фанфіків.
+
+    Приймає Laravel колекцію $fanfic з фанфіком, який треба вивести.
+    Якщо $fanfic не заданий, то використовується параметр $ffId,
+    для знаходження фанфіка по ID.
+
+-->
+
 @php
 
     if (!isset($fanfic)) {
@@ -9,7 +20,7 @@
 
 @endphp
 
-
+<link rel="stylesheet" href="{{ asset('css/fanfic-container.css') }}">
 
 <div class="fanfic-container"
     @style(["border-left: 8px solid rgb({$fanfic->category->rgb_color})"])>   <!-- Лівий кордон, того кольору, що був заданий в

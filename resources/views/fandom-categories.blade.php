@@ -10,6 +10,8 @@
 
 @section('content')
 
+    <link rel="stylesheet" href="{{ asset('css/fandoms-categories.css') }}">
+
     <h1>Фандоми</h1>
 
     <!-- Строка з найпопулярнішими ФАНДОМАМИ -->

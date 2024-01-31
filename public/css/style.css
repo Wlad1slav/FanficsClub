@@ -44,6 +44,19 @@ p, a, li, b, i, span {
     font-size: var(--font-size);
 }
 
+.fandom-link {
+    color: var(--clr-black);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--clr-cta-ultradark);
+    padding: 2px 0 1px 0;
+}
+
+.fandom-link:hover {
+    color: var(--clr-white);
+    background-color: var(--clr-base);
+    border-bottom: 1px dotted var(--clr-white);
+}
+
 .no-select {
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
@@ -69,4 +82,8 @@ p, a, li, b, i, span {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+
+.section {
+    margin-bottom: var(--indent-large);
 }
