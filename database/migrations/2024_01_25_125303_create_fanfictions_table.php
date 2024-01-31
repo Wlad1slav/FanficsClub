@@ -25,50 +25,64 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->string('fandom', 255)
-                ->nullable()
-                ->collation('latin1_bin');
-            $table->foreign('fandom')
-                ->references('slug')
+            $table->unsignedBigInteger('fandom_id')->nullable();
+            $table->foreign('fandom_id')
+                ->references('id')
                 ->on('fandoms')
-                ->onDelete('cascade');
+                ->onDelete('set null');
+
+            $table->json('crossover')->nullable();
 
             $table->string('title', 255);
             $table->string('image', 255)->nullable();
             $table->text('description')->nullable();
-            $table->json('addtional_descriptions')->nullable();
+            $table->json('additional_descriptions')->nullable();
             $table->json('tags')->nullable();
-            $table->unsignedBigInteger('views')->default(0);
+            $table->json('characters')->nullable();
 
-            $table->string('category', 255)->nullable();
-            $table->foreign('category')
-                ->references('name')
+            $table->unsignedBigInteger('words_amount')->default(0);
+            $table->unsignedBigInteger('chapters_amount')->default(0);
+
+            $table->unsignedBigInteger('views')->default(0);
+            $table->unsignedBigInteger('rating')->default(0);
+            $table->bigInteger('anti_rating')->default(0);
+
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')
+                ->references('id')
                 ->on('categories')
                 ->onDelete('set null');
 
-            $table->string('age_rating', 255)->nullable();
-            $table->foreign('age_rating')
-                ->references('name')
+            $table->unsignedBigInteger('age_rating_id');
+            $table->foreign('age_rating_id')
+                ->references('id')
                 ->on('age_ratings')
-                ->onDelete('set null');
-
-            $table->string('series', 255)
-                ->nullable()
-                ->collation('latin1_bin');
-            $table->foreign('series')
-                ->references('slug')
-                ->on('series')
-                ->onDelete('set null');
+                ->onDelete('restrict');
 
             $table->boolean('is_draft')->default(1);
             $table->boolean('is_frozen')->default(0);
             $table->boolean('is_completed')->default(0);
-            $table->boolean('is_crossover')->default(0);
+            // $table->boolean('is_crossover')->default(0);
             $table->boolean('is_promotes')->default(0);
-            $table->boolean('is_sequel')->default(0);
+            // $table->boolean('is_sequel')->default(0);
+            $table->boolean('is_translate')->default(0);
+            $table->boolean('is_robot_translate')->default(0);
+            $table->boolean('is_postponed')->default(0);
 
-            $table->unsignedBigInteger('sequel')->nullable();
-            $table->foreign('sequel')
+            $table->unsignedBigInteger('series_id')->nullable();
+            $table->foreign('series_id')
+                ->references('id')
+                ->on('series')
+                ->onDelete('set null');
+
+            $table->unsignedBigInteger('sequel_id')->nullable();
+            $table->foreign('sequel_id')
+                ->references('id')
+                ->on('fanfictions')
+                ->onDelete('set null');
+
+            $table->unsignedBigInteger('prequel_id')->nullable();
+            $table->foreign('prequel_id')
                 ->references('id')
                 ->on('fanfictions')
                 ->onDelete('set null');
@@ -76,6 +90,8 @@ return new class extends Migration
             $table->json('users_with_access')->nullable();
 
             $table->timestamps();
+
+            $table->boolean('is_banned')->default(0);
 
             $table->softDeletes();
         });
