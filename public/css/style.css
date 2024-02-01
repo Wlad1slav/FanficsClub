@@ -39,7 +39,7 @@ h3 {
     font-size: var(--heading3-size);
 }
 
-p, a, li, b, i, span {
+p, a, li, b, i, span, input, select {
     margin: 0 0 var(--indent-text) 0;
     font-size: var(--font-size);
 }
