@@ -12,10 +12,11 @@ bool $hoverEffect - чи буде особливий ефект при наво�
 
 <div class="button
     {{ $styles ?? '' }}
-    @if($hoverEffect ?? false) hover-effect @endif
-    ">
+    @if($hoverEffect ?? false) hover-effect @endif"
+    @if(isset($action)) onclick="{{ $action }}" @endif
+    @if(isset($id)) id="{{ $id }}" @endif>
 
-    <a href="{{ $url ?? '#' }}">
+    <a @if(isset($url)) href="{{ $url }}" @endif>
         <p>{{ $title ?? 'Стандартна назва' }}</p>
         @if($hoverEffect ?? false)
             <span>&GT;</span>

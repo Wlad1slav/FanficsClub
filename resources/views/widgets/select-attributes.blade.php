@@ -35,7 +35,8 @@
 <!-- Текстове поле з вибраними атрибутами -->
 <label for="{{ $textarea_selected_id_name ?? 'selected' }}">{{ $heading }}</label>
 <textarea name="{{ $textarea_selected_id_name ?? 'selected' }}"
-          id="{{ $textarea_selected_id_name ?? 'selected' }}" rows="5"></textarea>
+          id="{{ $textarea_selected_id_name ?? 'selected' }}"
+          @if(isset($rows)) rows="{{ $rows }}" @endif></textarea>
 
 <p class="notify">{{ $notify ?? '' }}</p> <!-- Попередження під текстовим полем -->
 

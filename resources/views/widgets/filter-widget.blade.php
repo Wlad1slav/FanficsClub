@@ -6,14 +6,6 @@
 
         <input type="submit" value="Пошук">
 
-        @include('widgets.select-attributes', [
-            'attrs' => $fandoms,
-            'heading' => 'Фандоми',
-            'textarea_selected_id_name' => 'fandoms-selected',
-            'notify' => 'Якщо ви бажаєте шукати оригінальні роботи, то можете залишити поле пустим.',
-            'placeholder' => 'Виберіть фандом',
-        ])
-
         <!-- Вибір, по якої колонці будуть відсортировані фанфіки -->
         <label for="sort-by">
             Сортувати по
@@ -24,6 +16,18 @@
             <option value="anti_rating">Анті-Рейтингу</option>
             <option value="views">Переглядам</option>
         </select>
+
+        <!-- Віджет для виборів антрибутів
+         Вибірається фандоми, по яким буде відбуватися пошук -->
+        @include('widgets.select-attributes', [
+            'attrs' => $fandoms,
+            'heading' => 'Фандоми',
+            'textarea_selected_id_name' => 'fandoms-selected',
+            'notify' => 'Якщо ви бажаєте шукати оригінальні роботи, то можете залишити поле пустим.',
+            'placeholder' => 'Виберіть фандом',
+        ])
+
+        @include('widgets.characters-select') <!-- Віджет з вибором персонажів -->
 
         <div class="checkboxes-container black">
             <!-- Вибір, з якими СТАТУСАМИ будуть показуватися фанфіки -->
@@ -78,6 +82,7 @@
             'heading' => 'Теги',
             'textarea_selected_id_name' => 'tags-selected',
             'placeholder' => 'Виберіть тег',
+            'rows' => 5,
         ])
 
         <input type="submit" value="Пошук">

@@ -49,6 +49,14 @@
     width: 50%;
 }
 
-#filter form .select, select {
+#filter form .select, select,
+#characters-select-container input {
     padding: var(--indent-small);
+    margin-right: var(--indent-small);
 }
+
+textarea#characters {
+    margin-bottom: var(--indent-small);
+}
+
+

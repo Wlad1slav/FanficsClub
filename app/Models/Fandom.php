@@ -34,7 +34,7 @@ class Fandom extends Model
 
     private array $BASE_ROWS = [
         [
-            'name' => 'Гаррі Поттер',
+            'name' => 'Гаррі Поттер (Дж. Роулінг)',
             'fandom_category_id' => 1, // Медіагіганти
             'description' => null,
             'related_media_giant_fandom_id' => null,

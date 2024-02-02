@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 class Character extends Model
@@ -41,6 +42,11 @@ class Character extends Model
         if ($this->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні рядки
             $this->generate();
+    }
+
+    public function belonging_to_fandom(): BelongsTo
+    {   // Зв'язок з моделю Fandom
+        return $this->belongsTo(Fandom::class);
     }
 
 }

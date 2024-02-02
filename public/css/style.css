@@ -87,3 +87,7 @@ p, a, li, b, i, span, input, select {
 .section {
     margin-bottom: var(--indent-large);
 }
+
+.no-display {
+    display: none!important;
+}
