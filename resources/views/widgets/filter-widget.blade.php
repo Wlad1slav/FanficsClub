@@ -2,7 +2,7 @@
 
 <div id="filter">
 
-    <form action="#">
+    <form action="#" method="get">
 
         <input type="submit" value="Пошук">
 
@@ -29,23 +29,22 @@
 
         @include('widgets.characters-select') <!-- Віджет з вибором персонажів -->
 
-        <div class="checkboxes-container black">
-            <!-- Вибір, з якими СТАТУСАМИ будуть показуватися фанфіки -->
-
+        <!-- Вибір, з якими СТАТУСАМИ будуть показуватися фанфіки -->
+        <!--<div class="checkboxes-container black">
             <h2>Статус</h2>
             <label for="status-1">
-                <input type="checkbox" name="status" id="status-1" value="in_progress">
+                <input type="checkbox" name="status[]" id="status-1" value="in_progress">
                 <span>В процесі</span>
             </label>
             <label for="status-2">
-                <input type="checkbox" name="status" id="status-2" value="is_completed">
+                <input type="checkbox" name="status[]" id="status-2" value="is_completed">
                 <span>Завершено</span>
             </label>
             <label for="status-3">
-                <input type="checkbox" name="status" id="status-3" value="is_frozen">
+                <input type="checkbox" name="status[]" id="status-3" value="is_frozen">
                 <span>Заморожено</span>
             </label>
-        </div>
+        </div>-->
 
         <div class="checkboxes-container">
             <!-- Вибір, з якими ВІКОВИМИ РЕЙТИНГАМИ будуть показуватися фанфіки -->
@@ -54,7 +53,7 @@
             @foreach($ageRatings as $rating)
 
                 <label for="age-rating-{{ $rating->id }}">
-                    <input type="checkbox" name="age-rating" id="age-rating-{{ $rating->id }}" value="{{ $rating->id }}">
+                    <input type="checkbox" name="age-rating[]" id="age-rating-{{ $rating->id }}" value="{{ $rating->id }}">
                     <span style="background: rgb({{ $rating->rgb_color }})">{{ $rating->name }}</span>
                 </label>
 
@@ -69,7 +68,7 @@
             @foreach($categories as $category)
 
                 <label for="category-{{ $category->id }}">
-                    <input type="checkbox" name="category" id="category-{{ $category->id }}" value="{{ $category->id }}">
+                    <input type="checkbox" name="category[]" id="category-{{ $category->id }}" value="{{ $category->id }}">
                     <span style="background: rgb({{ $category->rgb_color }})">{{ $category->name }}</span>
                 </label>
 
@@ -79,7 +78,7 @@
 
         @include('widgets.select-attributes', [
             'attrs' => $tags,
-            'heading' => 'Теги',
+            'heading' => 'Теґи',
             'textarea_selected_id_name' => 'tags-selected',
             'placeholder' => 'Виберіть тег',
             'rows' => 5,
