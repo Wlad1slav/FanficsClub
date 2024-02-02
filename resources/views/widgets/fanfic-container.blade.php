@@ -122,7 +122,7 @@
 
         <!-- Перелік міток, що містить фанфік -->
         @if($fanfic->tags !== null)
-            <p><span>Мітки:</span>
+            <p><span>Теґи:</span>
                 @foreach($fanfic->getTagsAttribute() as $tag)
                     @if($tag->notification !== null)
                         <a class="fandom-link" href="#">{{ $tag->name }} <span>{{ $tag->notification }}</span></a>
