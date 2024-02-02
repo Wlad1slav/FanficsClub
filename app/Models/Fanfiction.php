@@ -29,11 +29,11 @@ class Fanfiction extends Model
         return $this->belongsTo(AgeRating::class);
     }
 
-    public function fandom(): BelongsTo
-    {   // Зв'язок з моделю Fandom
-        // для кожного екземпляра Fanfiction можна отримати фандом
-        return $this->belongsTo(Fandom::class);
-    }
+//    public function fandom(): BelongsTo
+//    {   // Зв'язок з моделю Fandom
+//        // для кожного екземпляра Fanfiction можна отримати фандом
+//        return $this->belongsTo(Fandom::class);
+//    }
 
     public function chapters(): HasMany
     {   // Отримати усі глави, що належать певному фанфіку
@@ -50,7 +50,7 @@ class Fanfiction extends Model
     public function getFandomsAttribute(): Collection
     {   // Повертає масив Laravel колекцій фандомів,
         // які є кросоверами фаніку
-        $fandomsIds = json_decode($this->attributes['crossover'], true) ?? [];
+        $fandomsIds = json_decode($this->attributes['fandoms_id'], true) ?? [];
         return Fandom::findMany($fandomsIds);
     }
 

@@ -75,19 +75,24 @@
 
         <!-- Фандом, до якого належить фанфік -->
         <p><span>Фандом:</span>
-            <a class="fandom-link"
-               href="{{ route('CertainFandomPage', ['slug' => $fanfic->fandom->slug]) }}">
-                {{ $fanfic->fandom->name }}
-            </a>
+{{--            <a class="fandom-link"--}}
+{{--               href="{{ route('CertainFandomPage', ['slug' => $fanfic->fandom->slug]) }}">--}}
+{{--                {{ $fanfic->fandom->name }}--}}
+{{--            </a>--}}
 
-            <!-- Якщо фанфік є кросовером, то генеруються посилання на усі пов'язані фандоми -->
-            @if($fanfic->crossover !== null)
-                @foreach($fanfic->getFandomsAttribute() as $crossover)
+            <!-- Якщо фанфік належить певним фандомам, то генеруються посилання на усі пов'язані фандоми -->
+            @if($fanfic->fandoms_id !== null)
+                @foreach($fanfic->getFandomsAttribute() as $fandom)
                     <a class="fandom-link"
-                       href="{{ route('CertainFandomPage', ['slug' => $crossover->slug]) }}">
-                        {{ $crossover->name }}
+                       href="{{ route('CertainFandomPage', ['slug' => $fandom->slug]) }}">
+                        {{ $fandom->name }}
                     </a>
                 @endforeach
+            @else
+                <!-- Якщо не належить жодному фандому, то встановлюється "Оригінальна робота" -->
+                <a class="fandom-link" href="#">
+                    Оригінальна робота
+                </a>
             @endif
         </p>
 
@@ -119,12 +124,11 @@
         @if($fanfic->tags !== null)
             <p><span>Мітки:</span>
                 @foreach($fanfic->getTagsAttribute() as $tag)
-                    <a class="fandom-link" href="#">
-                        {{ $tag->name }}
-                        @if($tag->notification !== null)
-                            <span>{{ $tag->notification }}</span>
-                        @endif
-                    </a>
+                    @if($tag->notification !== null)
+                        <a class="fandom-link" href="#">{{ $tag->name }} <span>{{ $tag->notification }}</span></a>
+                    @else
+                        <a class="fandom-link" href="#">{{ $tag->name }}</a>
+                    @endif
                 @endforeach
             </p>
         @endif

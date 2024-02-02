@@ -25,13 +25,13 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('fandom_id')->nullable();
-            $table->foreign('fandom_id')
-                ->references('id')
-                ->on('fandoms')
-                ->onDelete('set null');
+//            $table->unsignedBigInteger('fandom_id')->nullable();
+//            $table->foreign('fandom_id')
+//                ->references('id')
+//                ->on('fandoms')
+//                ->onDelete('set null');
 
-            $table->json('crossover')->nullable();
+            $table->json('fandoms_id')->nullable();
 
             $table->string('title', 255);
             $table->string('image', 255)->nullable();
