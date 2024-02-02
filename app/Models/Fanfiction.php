@@ -42,23 +42,28 @@ class Fanfiction extends Model
 
     public function getTagsAttribute(): Collection
     {   // Повертає масив Laravel колекцій тегів фанфіку
-        // Використовує масив з бд для пошуку усіх тегів
+        // ->tags
         $tagIds = json_decode($this->attributes['tags'], true) ?? [];
         return Tag::findMany($tagIds);
     }
 
     public function getFandomsAttribute(): Collection
-    {   // Повертає масив Laravel колекцій фандомів,
-        // які є кросоверами фаніку
+    {   // Повертає масив Laravel колекцій фандомів
+        // ->fandoms
         $fandomsIds = json_decode($this->attributes['fandoms_id'], true) ?? [];
         return Fandom::findMany($fandomsIds);
     }
 
-//    public function getCharactersAttribute()
-//    {   // Повертає масив Laravel колекцій персонажів фанфіку
-//        $charactersIds = json_decode($this->attributes['characters'], true) ?? [];
-//
-//        dump($charactersIds);
-//    }
+    // Відношення до Тегів
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'fanfiction_tag', 'fanfiction_id', 'tag_id');
+    }
+
+    // Відношення до Фандомів
+    public function fandoms()
+    {
+        return $this->belongsToMany(Fandom::class, 'fanfiction_fandom', 'fanfiction_id', 'fandom_id');
+    }
 
 }
