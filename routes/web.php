@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
+use App\Http\Controllers\FilterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -61,3 +62,10 @@ Route::get('/fandom/{slug}',
 Route::get('/collection/{id}',
     [CollectionController::class, 'certainCollection']
 )->name('CertainCollectionPage');
+
+// Сторінки пов'язані з фільтром фанфіків
+
+// Певна колекція
+Route::get('/filter',
+    [FilterController::class, 'index']
+)->name('FilterPage');
