@@ -2,6 +2,8 @@
 
     <link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
 
+    <p class="ff-amount">{{ $paginator->total() }} фанфіків</p>
+
     <div class="pagination">
 
         {{-- Попередня сторінка --}}
@@ -24,7 +26,8 @@
                     @if ($page == $paginator->currentPage())
                         <p class="active"><span>{{ $page }}</span></p>
                     @else
-                        <a href="{{ $url }}">{{ $page }}</a>
+                        <!-- $_SERVER['QUERY_STRING'] - запит того ж фільтру -->
+                        <a href="{{ "$url&{$_SERVER['QUERY_STRING']}" }}">{{ $page }}</a>
                     @endif
                 @endforeach
             @endif

@@ -59,4 +59,8 @@ textarea#characters {
     margin-bottom: var(--indent-small);
 }
 
+#filter {
+    margin-bottom: var(--indent-large);
+}
+
 

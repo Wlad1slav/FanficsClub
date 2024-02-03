@@ -27,3 +27,9 @@
     border: none;
     font-size: 45px;
 }
+
+.ff-amount {
+    text-align: center;
+    font-style: italic;
+    margin: 0;
+}
