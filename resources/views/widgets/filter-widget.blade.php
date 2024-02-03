@@ -1,4 +1,14 @@
 <link rel="stylesheet" href="{{ asset('css/filter.css') }}">
+<!--
+
+Параметри:
+    sort-by - По якому полю сортирувати фанфіки
+    fandoms-selected - Перелік фандомів, до яких повинні належати фанфіки
+    characters - Персонажі, які повинні бути присутні в фанфіках
+    age-rating - Вікові рейтинги до якого повинні належати фанфіки
+    category - Категорії до яких повинні належати фанфіки
+    tags-selected - Тегі, які повинні міститися в фанфіку
+-->
 
 <div id="filter">
 
@@ -11,10 +21,12 @@
             Сортувати по
         </label>
         <select name="sort-by" id="sort-by" >
-            <option value="words_amount" @selected($_GET['sort-by'] ?? '' == 'words_amount')>Словам</option>
-            <option value="rating" @selected($_GET['sort-by'] ?? '' == 'rating')>Рейтингу</option>
-            <option value="anti_rating" @selected($_GET['sort-by'] ?? '' == 'anti_rating')>Анті-Рейтингу</option>
-            <option value="views" @selected($_GET['sort-by'] ?? '' == 'views')>Переглядам</option>
+            <option value="updated_at" @selected(($_GET['sort-by'] ?? '') == 'updated_at')>Даті оновленя</option>
+            <option value="created_at" @selected(($_GET['sort-by'] ?? '') == 'created_at')>Даті створеня</option>
+            <option value="words_amount" @selected(($_GET['sort-by'] ?? '') == 'words_amount')>Словам</option>
+            <option value="rating" @selected(($_GET['sort-by'] ?? '') == 'rating')>Рейтингу</option>
+            <option value="anti_rating" @selected(($_GET['sort-by'] ?? '') == 'anti_rating')>Анті-Рейтингу</option>
+            <option value="views" @selected(($_GET['sort-by'] ?? '') == 'views')>Переглядам</option>
         </select>
 
         <!-- Віджет для виборів антрибутів

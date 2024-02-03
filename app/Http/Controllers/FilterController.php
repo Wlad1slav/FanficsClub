@@ -45,7 +45,7 @@ class FilterController extends Controller
                 ->whereJsonContains('characters', $paringsIds)
                 ->whereJsonContains('tags', $tagsIds)
                 ->whereJsonContains('fandoms_id', $fandomsIds)
-                ->orderBy($sortBy)
+                ->orderBy($sortBy, 'desc')
                 ->paginate(30);
         }
 
