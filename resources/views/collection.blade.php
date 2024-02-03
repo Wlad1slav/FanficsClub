@@ -19,7 +19,7 @@
 
     @include('widgets.description', ['text' => $collection->description])
 
-    @php $fanfics = $collection->getFandomsAttribute(1); @endphp
+    @php $fanfics = $collection->getFandomsAttribute(30); @endphp
 
     @foreach($fanfics as $fanfic)
         @include('widgets.fanfic-container', ['fanfic' => $fanfic])
