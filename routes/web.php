@@ -51,11 +51,6 @@ Route::get('/fandoms/{category_slug}',
     [FandomController::class, 'certainCategory']
 )->name('CertainCategoryPage');
 
-// Певний фандом
-Route::get('/fandom/{slug}',
-    [FandomController::class, 'certainFandom']
-)->name('CertainFandomPage');
-
 // Сторінки пов'язані з колекціями
 
 // Певна колекція

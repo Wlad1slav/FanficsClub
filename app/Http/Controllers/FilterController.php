@@ -15,17 +15,17 @@ class FilterController extends Controller
     public function index()
     {
 
-        if (isset($_GET['sort-by'])) {
+        if (isset($_GET['fandoms-selected'])) {
             $ageRating = $_GET['age-rating'] ?? [1, 2, 3, 4, 5];
             $category = $_GET['category'] ?? [1, 2, 3, 4];
-            $sortBy = $_GET['sort-by'];
+            $sortBy = $_GET['sort-by'] ?? 'updated_at';
 
             // Отримання тегів і фандомів
-            $tagsSelected = array_filter(preg_split('/,\s?/', $_GET['tags-selected']));
+            $tagsSelected = array_filter(preg_split('/,\s?/', $_GET['tags-selected'] ?? ''));
             $fandomsSelected = array_filter(preg_split('/,\s?/', $_GET['fandoms-selected']));
 
             // Отримання персонажів і пейренгів
-            $charactersSelected = array_filter(preg_split('/,\s?/', $_GET['characters']));
+            $charactersSelected = array_filter(preg_split('/,\s?/', $_GET['characters'] ?? ''));
             $paringsSelected = [];
             foreach ($charactersSelected as $character)
                 if (strpos($character, '/'))

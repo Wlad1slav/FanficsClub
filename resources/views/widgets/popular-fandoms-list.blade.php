@@ -22,7 +22,7 @@
 
         <!-- Цикл, що проходиться по заданому масиву фандомів -->
         @foreach($fandoms as $fandom)
-            <a href="{{ route('CertainFandomPage', ['slug' => $fandom->slug]) }}"
+            <a href="{{ route('FilterPage', ['fandoms-selected' => $fandom->name]) }}"
                class="fandom no-select clickable enlargement"
                style="background-image: url('{{ asset($fandom->image) }}')">
 

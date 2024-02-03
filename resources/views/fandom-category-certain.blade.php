@@ -21,7 +21,7 @@
             @include('widgets.button', [
                     'title' => $letter,
                     'url' => "#$letter",
-                    'styles' => ''
+                    'styles' => 'mrg-left-0'
                 ])
         @endforeach
     </div>
@@ -33,7 +33,7 @@
             <div id="{{ $letter }}" class="fandoms-container">
                 <h2>{{ $letter }}</h2>
                 @foreach($fandoms_ as $fandom)
-                    <p><a class="fandom-link" href="{{ route('CertainFandomPage', ['slug' => $fandom['slug']]) }}">
+                    <p><a class="fandom-link" href="{{ route('FilterPage', ['fandoms-selected' => $fandom->name]) }}">
                             {{ $fandom['name'] }}</a> ({{ $fandom['fictions_amount'] }})
                     </p>
                 @endforeach

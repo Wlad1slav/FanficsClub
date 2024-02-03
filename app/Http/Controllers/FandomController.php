@@ -7,22 +7,6 @@ use App\Models\FandomCategories;
 
 class FandomController extends Controller
 {
-    public function certainFandom(string $slug)
-    {   // CertainFandomPage
-        // /fandom/{slug}
-        // Сторінка з фанфіками, що належать певному фандому
-
-        $fandom = Fandom::where('slug', $slug)->first(); // Фандом, до якого належать фанфіки
-
-        $data = [
-            'title' => $fandom->name,
-            'metaDescription' => '',
-            // Отримання усіх фанфіків, що належать фандому
-            'fanfics' => $fandom->fanfictions
-        ];
-
-        return view('fandom-certain', $data);
-    }
 
     public function certainCategory(string $category_slug)
     {   // CertainCategoryPage

@@ -82,9 +82,11 @@
 
             <!-- Якщо фанфік належить певним фандомам, то генеруються посилання на усі пов'язані фандоми -->
             @if($fanfic->fandoms_id !== null)
+                @php $fandoms = ''; @endphp
                 @foreach($fanfic->getFandomsAttribute() as $fandom)
+                    @php $fandoms .= "$fandom->name, "; @endphp
                     <a class="fandom-link"
-                       href="{{ route('CertainFandomPage', ['slug' => $fandom->slug]) }}">
+                       href="{{ route('FilterPage', ['fandoms-selected' => $fandom->name]) }}">
                         {{ $fandom->name }}
                     </a>
                 @endforeach
@@ -102,7 +104,10 @@
                 @foreach(json_decode($fanfic->characters) as $character_id)
                     @if(is_int($character_id)) {{-- Якщо елемент просто id персонажа, то виводиться тільки він --}}
                         @php $character = \App\Models\Character::find($character_id) @endphp
-                        <a class="fandom-link" href="#">{{ $character->name }}</a>
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $character->name]) }}">
+                            {{ $character->name }}
+                        </a>
 
                     @else {{-- Якщо елемент - масив персонажів, то виводиться пейрінг --}}
                         @php $paring = []; @endphp
@@ -112,7 +117,11 @@
                                 $paring[] .= $character->name;
                             @endphp
                         @endforeach
-                        <a class="fandom-link" href="#">{{ implode('/', $paring) }}</a>
+                        @php $paring = implode('/', $paring) @endphp
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $paring]) }}">
+                            {{ $paring }}
+                        </a>
 
                     @endif
 
@@ -125,9 +134,13 @@
             <p><span>Теґи:</span>
                 @foreach($fanfic->getTagsAttribute() as $tag)
                     @if($tag->notification !== null)
-                        <a class="fandom-link" href="#">{{ $tag->name }} <span>{{ $tag->notification }}</span></a>
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                            {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
                     @else
-                        <a class="fandom-link" href="#">{{ $tag->name }}</a>
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                            {{ $tag->name }}</a>
                     @endif
                 @endforeach
             </p>
