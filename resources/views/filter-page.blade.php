@@ -27,9 +27,18 @@
     @include('widgets.filter-widget')
 
     @if($fanfics !== null) <!-- $fanfics отримується в контролері FilterController -->
-        @foreach($fanfics as $fanfic)
-            @include('widgets.fanfic-container', ['fanfic' => $fanfic])
-        @endforeach
+    {{ $fanfics->links('widgets.pagination') }}
+        <div id="fanfics">
+            @foreach($fanfics as $fanfic)
+                @include('widgets.fanfic-container', ['fanfic' => $fanfic])
+            @endforeach
+            <a href="#filter">Фільтрувати</a>
+        </div>
+    {{ $fanfics->links('widgets.pagination') }}
     @endif
+
+    <script>
+        window.location.hash = "#fanfics";
+    </script>
 
 @endsection

@@ -83,7 +83,7 @@
 </script>
 
 <label for="characters">Персонажі</label>
-<textarea id="characters" name="characters" rows="5"></textarea>
+<textarea id="characters" name="characters" rows="5">{{ $_GET['characters'] ?? '' }}</textarea>
 
 <div style="display: flex; align-items: flex-start;">
     <div id="characters-select-container">

@@ -23,6 +23,7 @@
     $textarea_selected_id_name - id i name текстового поля, в якому будуть зберігатися атрибути
     $notify - Попередження під textarea
     $placeholder - Що буде показано в строці пошуку у якості підказки
+    $default_content - Стандартні значення в textarea
 
 Генерує параметри:
     $listId - Для отримання оригінального id
@@ -36,7 +37,7 @@
 <label for="{{ $textarea_selected_id_name ?? 'selected' }}">{{ $heading }}</label>
 <textarea name="{{ $textarea_selected_id_name ?? 'selected' }}"
           id="{{ $textarea_selected_id_name ?? 'selected' }}"
-          @if(isset($rows)) rows="{{ $rows }}" @endif></textarea>
+          @if(isset($rows)) rows="{{ $rows }}" @endif>{{ $default_content ?? '' }}</textarea>
 
 <p class="notify">{{ $notify ?? '' }}</p> <!-- Попередження під текстовим полем -->
 
