@@ -8,6 +8,7 @@ use App\Models\Character;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class FilterController extends Controller
 {
@@ -47,6 +48,15 @@ class FilterController extends Controller
                 ->whereJsonContains('fandoms_id', $fandomsIds)
                 ->orderBy($sortBy, 'desc')
                 ->paginate(30);
+
+            DB::table('filter_requests')->insert([
+                'categories' => json_encode($category),
+                'age_ratings' => json_encode($ageRating),
+                'characters' => json_encode([$charactersIds, $paringsIds]),
+                'tags' => json_encode($tagsIds),
+                'fandoms_id' => json_encode($fandomsIds),
+                'sort_by' => $sortBy,
+            ]);
         }
 
         $data = [
