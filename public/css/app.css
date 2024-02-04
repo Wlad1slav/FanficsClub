@@ -12,6 +12,7 @@
 
     /* colors */
     --clr-base: rgb(165, 60, 60);
+    --clr-transparent-base: rgba(165, 60, 60, 0.7);
     --clr-dark-base: rgb(135, 30, 30);
     --clr-cta: rgb(200,200,200);
     --clr-cta-light: rgb(210,210,210);
@@ -30,6 +31,7 @@
     --indent-small: 8px;
     --indent-medium: 20px;
     --indent-large: 50px;
+    --indent-huge: 30%;
     --indent-section: var(--indent-large); /* відступ між секціями */
     --indent-text: var(--indent-small); /* відступ для тексту */
     --indent-heading: var(--indent-medium); /* відступ для заголовків */

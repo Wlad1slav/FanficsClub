@@ -14,6 +14,7 @@ body {
     margin: var(--indent-on-sides);
     padding: var(--indent-medium);
     background-color: var(--clr-bg);
+    min-height: 100vh;
 }
 
 h1, h2, h3 {

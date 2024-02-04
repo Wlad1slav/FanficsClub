@@ -1,0 +1,49 @@
+#auth, #auth label {
+    display: flex;
+    flex-direction: column;
+}
+
+#auth {
+    padding: 0 var(--indent-huge);
+}
+
+#auth label {
+    margin-bottom: var(--indent-small);
+}
+
+#auth input {
+    padding: var(--indent-small);
+}
+
+#auth input:not(input[type='submit']) {
+    border-radius: 5px;
+    border: 1px solid var(--clr-black);
+}
+
+#auth input.error:focus {
+    outline: 1px solid var(--clr-base);
+}
+
+#auth input.error:not(input[type='submit']) {
+    border: 1px solid var(--clr-base);
+}
+
+#auth input.error::placeholder {
+    color: var(--clr-transparent-base);
+}
+
+#auth p.error,
+#auth p.error-password {
+    color: var(--clr-base);
+    font-weight: var(--bond-font-weight);
+}
+
+#auth .additional {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--indent-small);
+}
+
+#auth .additional label {
+    display: block;
+}

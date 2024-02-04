@@ -8,9 +8,16 @@
             <img src="{{ asset('images/logo-header.webp') }}" alt="Лого сайту" class="logo no-select">
         </a>
         <div>
-            <a href="#">Page</a>
-            <a href="#">Page</a>
-            <a href="#">Page</a>
+            <a href="#">Технічна підтримка</a>
+            @guest
+                <a href="{{ route('RegistrationPage') }}">Реєстрація</a>
+                <a href="{{ route('LoginPage') }}">Увійти</a>
+            @endguest
+
+            @auth
+                <a href="#">Опублікувати фанфік</a>
+                <a href="{{ route('MyProfilePage') }}">Мій профіль</a>
+            @endauth
         </div>
     </div>
 
