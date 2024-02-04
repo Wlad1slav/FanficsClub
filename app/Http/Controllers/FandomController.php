@@ -16,6 +16,9 @@ class FandomController extends Controller
         $data = [
             'title' => FandomCategories::where('slug', $category_slug)->first()->name,
             'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+
+            // П'ять найпопулярніших фандомів
             'fandoms' => Fandom::getFandomsOrderedByAlphabet($category_slug)
         ];
 
@@ -29,9 +32,13 @@ class FandomController extends Controller
         $data = [
             'title' => 'Фандоми',
             'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+
             // Усі категорії з 5-ю найпопулярнішими фандомами по ним
             'fandomsOrganisedByCategories' => Fandom::getFandomsOrderedByCategories(5),
-            'fandoms' => Fandom::orderBy('fictions_amount')->take(5)->get() // Отримання 5 найпопулярніших фандомів
+
+            // П'ять найпопулярніших фандомів
+            'fandoms' => Fandom::orderBy('fictions_amount', 'desc')->take(5)->get() // Отримання 5 найпопулярніших фандомів
         ];
 
         return view('fandom-categories', $data);

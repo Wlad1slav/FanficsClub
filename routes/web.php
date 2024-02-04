@@ -3,30 +3,10 @@
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FilterController;
+use App\Models\Fandom;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
-global $navigation;
-$navigation = [
-    'Популярне' => [
-        'Фанфіки' => '#',
-        'Серії' => '#',
-        'Автори' => '#',
-    ],
-    'Фандоми' => [
-        'Усі фандоми' => '#'
-    ],
-    'Шукати' => [
-        'Фандом' => '#',
-        'Фанфік' => '#',
-        'Серію' => '#',
-        'Автора' => '#',
-    ],
-    'Немає фанфіка?' => [
-        'Запросити переклад' => '#',
-        'Запросити перенос' => '#',
-    ],
-];
 
 Route::get('/doc', function () {
     return view('welcome');
@@ -64,3 +44,4 @@ Route::get('/collection/{id}',
 Route::get('/filter',
     [FilterController::class, 'index']
 )->name('FilterPage');
+

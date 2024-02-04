@@ -16,7 +16,8 @@ class CollectionController extends Controller
         $data = [
             'title' => $collection->title,
             'metaDescription' => $collection->description,
-            'collection' => $collection
+            'navigation' => require_once 'navigation.php',
+            'collection' => $collection,
         ];
 
         return view('collection', $data);

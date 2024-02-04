@@ -1,9 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/header.css') }}">
 
-@php
-global $navigation;
-@endphp
-
 <header>
 
     <!-- Перша лінія -->

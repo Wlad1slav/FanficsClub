@@ -17,6 +17,9 @@ class FilterController extends Controller
     {
 
         if (isset($_GET['fandoms-selected'])) {
+            // Якщо користувач здійснуює пошук, то усі параметри які він задав через форму фільтру
+            // підтягуються сюди і на базі них відбувається фільтр фанфіків
+
             $ageRating = $_GET['age-rating'] ?? [1, 2, 3, 4, 5];
             $category = $_GET['category'] ?? [1, 2, 3, 4];
             $sortBy = $_GET['sort-by'] ?? 'updated_at';
@@ -62,11 +65,25 @@ class FilterController extends Controller
         $data = [
             'title' => 'Фандоми',
             'metaDescription' => null,
+            'navigation' => require_once 'navigation.php',
+
+            // Усі вікові рейтинги
             'ageRatings' => AgeRating::all(),
+
+            // Усі категорії
             'categories' => Category::all(),
-            'fandoms' => Fandom::orderBy('fictions_amount')->get(),
+
+            // Усі фандоми, відсортировані по популярності
+            'fandoms' => Fandom::orderBy('fictions_amount', 'desc')->get(),
+
+            // Усі теґі
             'tags' => Tag::all(),
+
+            // Усі користувачі, відсортировані по фандомам
             'characters' => Character::orderBy('belonging_to_fandom_id')->get(),
+
+            // Усі знайдені по фільтру фанфіки,
+            // якщо користувач здійснив пошук
             'fanfics' => $fanfics ?? null
         ];
 
