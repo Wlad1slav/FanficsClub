@@ -32,12 +32,6 @@
     color: var(--clr-transparent-base);
 }
 
-#auth p.error,
-#auth p.error-password {
-    color: var(--clr-base);
-    font-weight: var(--bond-font-weight);
-}
-
 #auth .additional {
     display: flex;
     justify-content: space-between;

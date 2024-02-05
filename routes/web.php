@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -73,8 +74,18 @@ Route::get('/logout',
 )->middleware('auth')->name('LogoutAction');
 
 // Сторінки пов'язані з профілем
-Route::get('/profile',
-    [AuthController::class, 'logout']
+
+// Сторінка з інформацією про профіль
+Route::get('/profile/info',
+    [UserProfileController::class, 'profileInfo']
 )->middleware('auth')->name('MyProfilePage');
+
+// Виконання зміни аватарки профілю
+Route::post('/profile/info/avatar',
+    [UserProfileController::class, 'avatarUpload']
+)->middleware('auth')->name('AvatarUploadAction');
+
+
+
 
 

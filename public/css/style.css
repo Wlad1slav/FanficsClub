@@ -17,6 +17,10 @@ body {
     min-height: 100vh;
 }
 
+.full-width.content {
+    margin: 0;
+}
+
 h1, h2, h3 {
     margin: 0 0 var(--indent-heading) 0;
 }
@@ -91,4 +95,25 @@ p, a, li, b, i, span, input, select {
 
 .no-display {
     display: none!important;
+}
+
+/* профілі користувачів */
+.avatar {
+    width: 64px;
+    height: 64px;
+    border: 1px dashed var(--clr-black);
+    object-fit: cover;
+    object-position: center;
+}
+
+.avatar.large {
+    width: 128px;
+    height: 128px;
+}
+
+/* стилі помилок */
+p.error,
+p.error-password {
+    color: var(--clr-base);
+    font-weight: var(--bond-font-weight);
 }
