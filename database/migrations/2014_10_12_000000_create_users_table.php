@@ -20,6 +20,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
+            $table->string('image', 255)->nullable();
+            $table->text('profile_description')->nullable();
+            $table->json('preferences_tags')->nullable();
+
             $table->timestamps();
         });
     }
