@@ -21,12 +21,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('set null');
 
-            $table->json('categories')->nullable();
-            $table->json('age_ratings')->nullable();
-            $table->json('characters')->nullable();
-            $table->json('tags')->nullable();
-            $table->json('fandoms_id')->nullable();
-            $table->string('sort_by', 255)->nullable();
+            $table->json('request');
 
             $table->timestamps();
         });

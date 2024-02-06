@@ -8,62 +8,45 @@ use App\Models\Character;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
 use App\Models\Tag;
+use App\Rules\AgeRatingExists;
+use App\Rules\CategoryExists;
+use App\Rules\FandomsExists;
+use App\Rules\TagsExists;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FilterController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
 
-        if (isset($_GET['fandoms-selected'])) {
-            // Якщо користувач здійснуює пошук, то усі параметри які він задав через форму фільтру
-            // підтягуються сюди і на базі них відбувається фільтр фанфіків
+        $request->validate([
+            'fandoms_selected' => [new FandomsExists()],
+            'age_rating' => [new AgeRatingExists()],
+            'category' => [new CategoryExists()],
+            'tags_selected' => [new TagsExists()],
+        ]);
 
-            $ageRating = $_GET['age-rating'] ?? [1, 2, 3, 4, 5];
-            $category = $_GET['category'] ?? [1, 2, 3, 4];
-            $sortBy = $_GET['sort-by'] ?? 'updated_at';
+        $characters = Character::convertCharactersStrToArray($request->characters ?? []);
 
-            // Отримання тегів і фандомів
-            $tagsSelected = array_filter(preg_split('/,\s?/', $_GET['tags-selected'] ?? ''));
-            $fandomsSelected = array_filter(preg_split('/,\s?/', $_GET['fandoms-selected']));
+        $fanfics = Fanfiction::whereIn('age_rating_id', $request->age_rating ?? AgeRating::all()->pluck('id'))
+            ->whereIn('category_id', $request->category ?? Category::all()->pluck('id'))
+            ->whereJsonContains('characters->characters', $characters['characters'] ?? [])
+            ->whereJsonContains('characters->parings', $characters['parings'] ?? [])
+            ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? []))
+            ->whereJsonContains('fandoms_id', Fandom::convertStrAttrToArray($request->fandoms_selected ?? []))
+            ->orderBy($request->sort_by ?? 'updated_at', 'desc')
+            ->paginate(30);
 
-            // Отримання персонажів і пейренгів
-            $charactersSelected = array_filter(preg_split('/,\s?/', $_GET['characters'] ?? ''));
-            $paringsSelected = [];
-            foreach ($charactersSelected as $character)
-                if (strpos($character, '/'))
-                    $paringsSelected[] = explode('/', $character);
-
-            $tagsIds = Tag::whereIn('name', $tagsSelected)->pluck('id')->toArray();
-            $fandomsIds = Fandom::whereIn('name', $fandomsSelected)->pluck('id')->toArray();
-            $charactersIds = Character::whereIn('name', $charactersSelected)->pluck('id')->toArray();
-
-            $paringsIds = [];
-            foreach ($paringsSelected as $paring)
-                $paringsIds[] = Character::whereIn('name', $paring)->pluck('id')->toArray();
-
-            $fanfics = Fanfiction::whereIn('age_rating_id', $ageRating)
-                ->whereIn('category_id', $category)
-                ->whereJsonContains('characters', $charactersIds)
-                ->whereJsonContains('characters', $paringsIds)
-                ->whereJsonContains('tags', $tagsIds)
-                ->whereJsonContains('fandoms_id', $fandomsIds)
-                ->orderBy($sortBy, 'desc')
-                ->paginate(30);
-
-            DB::table('filter_requests')->insert([
-                'categories' => json_encode($category),
-                'age_ratings' => json_encode($ageRating),
-                'characters' => json_encode([$charactersIds, $paringsIds]),
-                'tags' => json_encode($tagsIds),
-                'fandoms_id' => json_encode($fandomsIds),
-                'sort_by' => $sortBy,
-            ]);
-        }
+        DB::table('filter_requests')->insert([
+            'made_request' => Auth::user()->id ?? null,
+            'request' => json_encode($request->all()),
+        ]);
 
         $data = [
-            'title' => 'Фандоми',
+            'title' => 'Знайти фанфік',
             'metaDescription' => null,
             'navigation' => require_once 'navigation.php',
 
