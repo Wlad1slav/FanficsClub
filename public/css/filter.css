@@ -25,7 +25,6 @@
 }
 
 #filter form textarea {
-    resize: none;
     width: 100%;
     padding: var(--indent-tiny);
 }
@@ -42,11 +41,6 @@
     margin-bottom: var(--indent-small);
     margin-top: var(--indent-heading);
     font-weight: var(--bond-font-weight);
-}
-
-#filter form .notify {
-    font-size: calc(var(--font-size)/1.3);
-    width: 50%;
 }
 
 #filter form .select, select,

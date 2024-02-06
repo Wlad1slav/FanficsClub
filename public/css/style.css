@@ -49,6 +49,12 @@ p, a, li, b, i, span, input, select {
     font-size: var(--font-size);
 }
 
+textarea {
+    resize: none;
+    padding: var(--indent-small);
+    font-size: var(--font-size);
+}
+
 .fandom-link {
     color: var(--clr-black);
     text-decoration: none;
@@ -116,4 +122,8 @@ p.error,
 p.error-password {
     color: var(--clr-base);
     font-weight: var(--bond-font-weight);
+}
+
+.notify {
+    font-size: calc(var(--font-size)/1.3);
 }

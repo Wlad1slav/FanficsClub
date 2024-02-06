@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AgeRating;
+use App\Models\Category;
+use App\Models\Character;
+use App\Models\Fandom;
+use App\Models\Tag;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UserProfileController extends Controller
 {
 
     public function profileInfo()
-    {   // LoginPage
-        // Сторінка з формою авторизації користувача
+    {   // MyProfilePage
+        // Сторінка з інформацією про користувача і можливістю її змінити
 
         $data = [
             'navigation' => require_once 'navigation.php',
@@ -44,6 +47,33 @@ class UserProfileController extends Controller
         }
 
         return redirect()->back()->with('error', 'Помилка завантаження зображення.');
+    }
+
+    public function fanficCreate()
+    {   // FanficCreatePage
+        // Сторінка з формую для створення фанфіка
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+
+            // Усі вікові рейтинги
+            'ageRatings' => AgeRating::all(),
+
+            // Усі категорії
+            'categories' => Category::all(),
+
+            // Усі фандоми, відсортировані по популярності
+            'fandoms' => Fandom::orderBy('fictions_amount', 'desc')->get(),
+
+            // Усі теґі
+            'tags' => Tag::all(),
+
+            // Усі користувачі, відсортировані по фандомам
+            'characters' => Character::orderBy('belonging_to_fandom_id')->get(),
+        ];
+
+        return view('profile.create-fanfic', $data);
+
     }
 
 }

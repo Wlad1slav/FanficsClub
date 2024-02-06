@@ -82,11 +82,16 @@
     }
 </script>
 
-<label for="characters">Персонажі</label>
-<textarea id="characters" name="characters" rows="5">{{ $_GET['characters'] ?? '' }}</textarea>
+@if($has_label ?? true)
+    <label for="characters">Персонажі</label>
+@endif
+<textarea id="characters"
+          name="characters"
+          rows="5"
+          style="margin-bottom: var(--indent-small);">{{ $_GET['characters'] ?? '' }}</textarea>
 
-<div style="display: flex; align-items: flex-start;">
-    <div id="characters-select-container">
+<div style="display: flex; align-items: flex-start; width: 100%;">
+    <div id="characters-select-container" style="width: 100%;">
         <input onchange="selectCharacter()"
                id="character-select-0-input"
                list="character-select-0"

@@ -74,7 +74,7 @@
                     <span style="background: rgb({{ $rating->rgb_color }})">{{ $rating->name }}</span>
                 </label>
 
-                <p class="notify">{{ $rating->description }}</p>
+                <p class="notify" style="width: 50%;">{{ $rating->description }}</p>
             @endforeach
         </div>
 
@@ -94,7 +94,7 @@
                     <span style="background: rgb({{ $category->rgb_color }})">{{ $category->name }}</span>
                 </label>
 
-                <p class="notify">{{ $category->description }}</p>
+                <p class="notify" style="width: 50%;">{{ $category->description }}</p>
             @endforeach
         </div>
 
@@ -102,7 +102,7 @@
             'attrs' => $tags,
             'heading' => 'Теґи',
             'textarea_selected_id_name' => 'tags-selected',
-            'placeholder' => 'Виберіть тег',
+            'placeholder' => 'Виберіть теґ',
             'rows' => 5,
             'default_content' => $_GET['tags-selected'] ?? '',
         ])

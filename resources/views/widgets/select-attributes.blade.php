@@ -34,7 +34,7 @@
 @php $listId = rand(1000, 10000); @endphp
 
 <!-- Текстове поле з вибраними атрибутами -->
-<label for="{{ $textarea_selected_id_name ?? 'selected' }}">{{ $heading }}</label>
+<label for="{{ $textarea_selected_id_name ?? 'selected' }}">{{ $heading ?? '' }}</label>
 <textarea name="{{ $textarea_selected_id_name ?? 'selected' }}"
           id="{{ $textarea_selected_id_name ?? 'selected' }}"
           @if(isset($rows)) rows="{{ $rows }}" @endif>{{ $default_content ?? '' }}</textarea>

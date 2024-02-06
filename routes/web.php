@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
+use App\Http\Controllers\FanficitonController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
@@ -85,7 +86,14 @@ Route::post('/profile/info/avatar',
     [UserProfileController::class, 'avatarUpload']
 )->middleware('auth')->name('AvatarUploadAction');
 
+// Сторінка з формою створення фанфіка
+Route::get('/profile/fanfic/create',
+    [UserProfileController::class, 'fanficCreate']
+)->middleware('auth')->name('FanficCreatePage');
 
+// Сторінки пов'язані з фанфіками
 
-
-
+// Створення фанфіка
+Route::post('/profile/fanfic/create',
+    [FanficitonController::class, 'create']
+)->middleware('auth')->name('FanficCreateAction');

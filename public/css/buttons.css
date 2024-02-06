@@ -7,7 +7,7 @@
     background: var(--btn-standart-bg);
     color: var(--btn-standart-clr);
     padding: var(--btn-padding);
-    margin: var(--indent-small) var(--indent-tiny);
+    margin: var(--indent-small) 0;
     border-radius: var(--btn-border-radius);
     box-sizing: border-box;
     border: var(--btn-border);
@@ -19,8 +19,8 @@
 .button a:hover {
     background: var(--btn-standart-bg-hover);
     color: var(--btn-standart-clr-hover);
+    justify-content: center;
     display: flex;
-    justify-content: space-between;
 }
 
 .button p, .button span {
@@ -73,6 +73,7 @@
 
 .button.hover-effect a:hover {
     width: var(--btn-width-hover);
+    justify-content: space-between;
 }
 
 .button span {

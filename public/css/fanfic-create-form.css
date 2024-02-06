@@ -1,0 +1,58 @@
+.field {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dotted var(--clr-black-transparent);
+    padding: var(--indent-small) 0;
+}
+
+.field div {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch!important;
+}
+
+input:not(input[type='radio']):not(input[type='checkbox']):not(input[type='submit']) {
+    margin: 0;
+    padding: var(--indent-small);
+}
+
+.field div,
+input:not(input[type='radio']):not(input[type='checkbox']):not(input[type='submit']) {
+    width: 50%;
+}
+
+label.main {
+    font-size: calc(var(--heading2-size)/1.5);
+}
+
+/*label.main:after {*/
+/*    content: " ";*/
+/*}*/
+
+.required:after {
+    content: "*";
+    color: var(--clr-base);
+}
+
+.field textarea {
+    height: 70px;
+}
+
+.radio-color {
+    color: var(--clr-white);
+    padding: var(--indent-tiny) var(--indent-small);
+    border-radius: 5px;
+}
+
+input[type='submit'] {
+    margin-top: var(--indent-medium);
+    padding: var(--indent-small);
+    font-size: var(--heading3-size);
+}

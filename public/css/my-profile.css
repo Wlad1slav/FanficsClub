@@ -7,8 +7,14 @@ body {
 }
 
 h1 {
+    text-align: left;
     font-size: calc(var(--heading1-size)/1.5);
     text-decoration: underline var(--clr-base);
+}
+
+h2 {
+    text-align: left;
+    font-size: calc(var(--heading2-size)/1.5);
 }
 
 .content {

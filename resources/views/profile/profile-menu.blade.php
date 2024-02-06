@@ -1,10 +1,10 @@
 <nav>
     <div>
-        <a href="#">Профіль</a>
+        <a href="{{ route('MyProfilePage') }}">Профіль</a>
         <a href="#">Роботи</a>
-        <a href="#">Опублікувати</a>
+        <a href="{{ route('FanficCreatePage') }}">Опублікувати</a>
         <a href="#">Колекції</a>
         <a href="#">Підписки</a>
     </div>
-    <a href="#" style="text-align: center">Вийти</a>
+    <a href="{{ route('LogoutAction') }}" style="text-align: center; border-top: 2px solid var(--clr-grey)">Вийти</a>
 </nav>
