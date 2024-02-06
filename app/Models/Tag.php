@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\BaseGenerationTrait;
+use App\Traits\ConvertStringAttributesTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Tag extends Model
 {
     use HasFactory;
     use BaseGenerationTrait;
+    use ConvertStringAttributesTrait;
 
     protected $table = 'tags';
     protected $guarded = [];

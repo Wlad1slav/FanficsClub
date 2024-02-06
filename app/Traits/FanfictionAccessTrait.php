@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
+use App\Models\Fanfiction;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait FanfictionAccessTrait

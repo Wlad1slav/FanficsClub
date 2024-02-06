@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
 use Illuminate\Support\Str;
 
@@ -27,8 +27,25 @@ trait SlugGenerationTrait
         );
     }
 
-    private function getSlug(string $str): string {
+    private static function getSlug(string $str): string {
         return Str::slug(self::transliterationUkranianCharacters($str));
+    }
+
+    private static function createOriginalSlug(string $str, $model, string $column='slug'): string
+    {   // Створення оригінального slug
+
+        $slug = self::getSlug($str); // Генерація slug
+        $duplicates = $model::where($column, $slug)->get()->count(); // Отримання кількості рядків з таким же slug
+
+        if ($duplicates > 0) { // Якщо кількість slug більше нуля, то додається номер фанфіка з таким же slug
+            while (true) {
+                if ($model::where($column, "$slug-$duplicates")->get()->count() > 0)
+                    $duplicates++;
+                else return "$slug-$duplicates";
+            }
+        }
+
+        return $slug;
     }
 
 }

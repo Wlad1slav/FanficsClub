@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\BaseGenerationTrait;
+use App\Traits\ConvertStringAttributesTrait;
+use App\Traits\FanfictionAccessTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
 
 /*
 
@@ -27,6 +29,7 @@ class Fandom extends Model
     use HasFactory;
     use BaseGenerationTrait;
     use FanfictionAccessTrait;
+    use ConvertStringAttributesTrait;
 
     protected $table = 'fandoms';
     protected $guarded = [];
@@ -34,7 +37,7 @@ class Fandom extends Model
 
     private array $BASE_ROWS = [
         [
-            'name' => 'Гаррі Поттер (Дж. Роулінг)',
+            'name' => 'Гаррі Поттер ДЖ. РОУЛІНГ',
             'fandom_category_id' => 1, // Медіагіганти
             'description' => null,
             'related_media_giant_fandom_id' => null,
@@ -134,5 +137,6 @@ class Fandom extends Model
 
         return $result;
     }
+
 
 }
