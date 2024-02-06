@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AgeRating;
-use App\Models\Category;
 use App\Models\Character;
 use App\Models\Fandom;
+use App\Models\Fanfiction;
 use App\Models\Tag;
-use App\Models\User;
 use App\Rules\AgeRatingExists;
 use App\Rules\CategoryExists;
 use App\Rules\FandomsExists;
 use App\Rules\TagsExists;
+use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FanficitonController extends Controller
 {
+
+    use SlugGenerationTrait;
 
     public function create(Request $request)
     {   // FanficCreateAction
@@ -36,14 +37,6 @@ class FanficitonController extends Controller
             'ff_notes' => ['max:550'],
         ]);
 
-        // Якщо твір є перекладом, то валідується
-        // переданий псевдоним автора і посилання на оригінальну роботу
-        if ($request->type_of_work == '1')
-            $request->validate([
-                'ff_original_author' => ['required', 'string', 'min:1'],
-                'ff_original_link' => ['required', 'url']
-            ]);
-
         // Якщо твір є фанфіком по певному фандому, то валідується
         // передана строка з фандомами, до яких належить фанфік
         if ($request->originality_of_work == '0')
@@ -51,7 +44,34 @@ class FanficitonController extends Controller
                 'fandoms_selected' => ['required', 'string', new FandomsExists()],
             ]);
 
-        dump($request->all());
+
+        $fanfic = [
+            'slug' => self::createOriginalSlug($request->ff_name, Fanfiction::class),
+            'author_id' => Auth::user()->id,
+            'fandoms_id' => json_encode(Fandom::convertStrAttrToArray($request->fandoms_selected ?? null)),
+            'title' => $request->ff_name,
+            'description' => $request->ff_description,
+            'additional_descriptions' => $request->ff_notes,
+            'tags' => json_encode(Tag::convertStrAttrToArray($request->tags_selected)),
+            'characters' => json_encode(Character::convertCharactersStrToArray($request->characters)),
+            'category_id' => $request->category,
+            'age_rating_id' => $request->age_rating,
+        ];
+
+        // Якщо твір є перекладом, то валідується
+        // переданий псевдоним автора і посилання на оригінальну роботу
+        if ($request->type_of_work == '1') {
+            $request->validate([
+                'ff_original_author' => ['required', 'string', 'min:1'],
+                'ff_original_link' => ['required', 'url']
+            ]);
+
+            $fanfic['original_author'] = $request->ff_original_author;
+            $fanfic['original_url'] = $request->ff_original_link;
+            $fanfic['is_translate'] = true;
+        }
+
+        Fanfiction::create($fanfic);
     }
 
 }

@@ -101,31 +101,33 @@
         <!-- Перелік персонажів і пейрингів персонажів -->
         @if($fanfic->characters !== null)
             <p><span>Персонажі:</span>
-                @foreach(json_decode($fanfic->characters) as $character_id)
-                    @if(is_int($character_id)) {{-- Якщо елемент просто id персонажа, то виводиться тільки він --}}
-                        @php $character = \App\Models\Character::find($character_id) @endphp
-                        <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $character->name]) }}">
-                            {{ $character->name }}
-                        </a>
 
-                    @else {{-- Якщо елемент - масив персонажів, то виводиться пейрінг --}}
-                        @php $paring = []; @endphp
-                        @foreach($character_id as $id)
-                            @php
-                                $character = \App\Models\Character::find($id);
-                                $paring[] .= $character->name;
-                            @endphp
-                        @endforeach
-                        @php $paring = implode('/', $paring) @endphp
-                        <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $paring]) }}">
-                            {{ $paring }}
-                        </a>
+                @php
+                    $charactersAll = json_decode($fanfic->characters, true);
+                @endphp
 
-                    @endif
-
+                <!-- Пейренги -->
+                @foreach($charactersAll['parings'] as $paring)
+                    @php
+                        foreach ($paring as $key => $character)
+                            $paring[$key] = \App\Models\Character::find($character)->name;
+                        $paring = implode('/', $paring)
+                    @endphp
+                    <a class="fandom-link"
+                       href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $paring]) }}">
+                        {{ $paring }}
+                    </a>
                 @endforeach
+
+                <!-- Персонажі -->
+                @foreach($charactersAll['characters'] as $character_id)
+                    @php $character = \App\Models\Character::find($character_id) @endphp
+                    <a class="fandom-link"
+                       href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $character->name]) }}">
+                        {{ $character->name }}
+                    </a>
+                @endforeach
+
             </p>
         @endif
 
