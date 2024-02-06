@@ -25,18 +25,12 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-//            $table->unsignedBigInteger('fandom_id')->nullable();
-//            $table->foreign('fandom_id')
-//                ->references('id')
-//                ->on('fandoms')
-//                ->onDelete('set null');
-
             $table->json('fandoms_id')->nullable();
 
             $table->string('title', 255);
             $table->string('image', 255)->nullable();
             $table->text('description')->nullable();
-            $table->json('additional_descriptions')->nullable();
+            $table->text('additional_descriptions')->nullable();
             $table->json('tags')->nullable();
             $table->json('characters')->nullable();
 
@@ -65,8 +59,6 @@ return new class extends Migration
             // $table->boolean('is_crossover')->default(0);
             $table->boolean('is_promotes')->default(0);
             // $table->boolean('is_sequel')->default(0);
-            $table->boolean('is_translate')->default(0);
-            $table->boolean('is_robot_translate')->default(0);
             $table->boolean('is_postponed')->default(0);
 
             $table->unsignedBigInteger('series_id')->nullable();
@@ -86,6 +78,11 @@ return new class extends Migration
                 ->references('id')
                 ->on('fanfictions')
                 ->onDelete('set null');
+
+            $table->boolean('is_translate')->default(0);
+            $table->boolean('is_robot_translate')->default(0);
+            $table->string('original_author')->nullable();
+            $table->string('original_url')->nullable();
 
             $table->json('users_with_access')->nullable();
 
