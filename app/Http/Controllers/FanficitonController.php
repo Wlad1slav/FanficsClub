@@ -41,7 +41,7 @@ class FanficitonController extends Controller
         // передана строка з фандомами, до яких належить фанфік
         if ($request->originality_of_work == '0')
             $request->validate([
-                'fandoms_selected' => ['required', 'string', new FandomsExists()],
+                'fandoms_selected' => ['required', new FandomsExists()],
             ]);
 
 
