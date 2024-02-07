@@ -99,12 +99,11 @@
         </p>
 
         <!-- Перелік персонажів і пейрингів персонажів -->
-        @if($fanfic->characters !== null)
+        @php
+            $charactersAll = json_decode($fanfic->characters, true);
+        @endphp
+        @if(count($charactersAll['characters']) > 0 || count($charactersAll['parings']) > 0)
             <p><span>Персонажі:</span>
-
-                @php
-                    $charactersAll = json_decode($fanfic->characters, true);
-                @endphp
 
                 <!-- Пейренги -->
                 @foreach($charactersAll['parings'] as $paring)
@@ -115,8 +114,7 @@
                     @endphp
                     <a class="fandom-link"
                        href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $paring]) }}">
-                        {{ $paring }}
-                    </a>
+                        {{ $paring }}</a>
                 @endforeach
 
                 <!-- Персонажі -->
@@ -131,10 +129,10 @@
             </p>
         @endif
 
-        <!-- Перелік міток, що містить фанфік -->
-        @if($fanfic->tags !== null)
+        <!-- Перелік теґів, що містить фанфік -->
+        @if($fanfic->tags->count() > 0)
             <p><span>Теґи:</span>
-                @foreach($fanfic->getTagsAttribute() as $tag)
+                @foreach($fanfic->tags as $tag)
                     @if($tag->notification !== null)
                         <a class="fandom-link"
                            href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
