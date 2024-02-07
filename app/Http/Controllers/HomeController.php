@@ -23,7 +23,9 @@ class HomeController extends Controller
         $t = new Tag();
         $cc = new Character();
 
-        $topFandoms = Cache::remember("top_fandoms", 60*60*24, function () {
+        Fandom::calculateAllPopularity();
+
+        $topFandoms = Cache::remember("top_fandoms", 60*60*12, function () {
             return Fandom::orderBy('fictions_amount', 'desc')->take(5)->get();
         });
 

@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class UserProfileController extends Controller
 {
@@ -57,19 +58,29 @@ class UserProfileController extends Controller
             'navigation' => require_once 'navigation.php',
 
             // Усі вікові рейтинги
-            'ageRatings' => AgeRating::all(),
+            'ageRatings' => Cache::remember("age_ratings_all", 60*60*168, function () {
+                return AgeRating::all();
+            }),
 
             // Усі категорії
-            'categories' => Category::all(),
+            'categories' => Cache::remember("categories_all", 60*60*168, function () {
+                return Category::all();
+            }),
 
             // Усі фандоми, відсортировані по популярності
-            'fandoms' => Fandom::orderBy('fictions_amount', 'desc')->get(),
+            'fandoms' => Cache::remember("fandoms_all", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->get();
+            }),
 
             // Усі теґі
-            'tags' => Tag::all(),
+            'tags' => Cache::remember("tags_all", 60*60*24, function () {
+                return Tag::all();
+            }),
 
             // Усі користувачі, відсортировані по фандомам
-            'characters' => Character::orderBy('belonging_to_fandom_id')->get(),
+            'characters' => Cache::remember("characters_all", 60*60*24, function () {
+                return Character::orderBy('belonging_to_fandom_id')->get();
+            }),
         ];
 
         return view('profile.create-fanfic', $data);

@@ -8,6 +8,7 @@ use App\Traits\FanfictionAccessTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Cache;
 
 /*
 
@@ -120,7 +121,9 @@ class Fandom extends Model
         // Елементом виступає масив Laravel колекцій фандомів.
 
         // Отримання категорії, з якої виводити показувати фандоми
-        $category = FandomCategories::where('slug', $categorySlug)->first();
+        $category = Cache::remember("fandom_category_$categorySlug", 60*60*168, function () use ($categorySlug) {
+            return FandomCategories::where('slug', $categorySlug)->first();
+        });
 
         $result = [];
 

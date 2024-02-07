@@ -14,6 +14,7 @@ use App\Rules\FandomsExists;
 use App\Rules\TagsExists;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class FilterController extends Controller
@@ -29,10 +30,26 @@ class FilterController extends Controller
             'tags_selected' => [new TagsExists()],
         ]);
 
+        // Отримання Laravel колекції з id категорій і вікових рейтингів
+        // Колекції підтягуються з кешу, що зберігається тиждень
+        $standardCategories = Cache::remember("categories_all_id", 60*60*168, function () {
+            $categories = Cache::remember("categories_all", 60*60*188, function () {
+                return Category::all();
+            });
+            return $categories->pluck('id');
+        });
+
+        $standardAgeRatings = Cache::remember("age_ratings_all_id", 60*60*168, function () {
+            $ageRatings = Cache::remember("age_ratings_all", 60*60*168, function () {
+                return AgeRating::all();
+            });
+            return $ageRatings->pluck('id');
+        });
+
         $characters = Character::convertCharactersStrToArray($request->characters ?? null);
 
-        $fanfics = Fanfiction::whereIn('age_rating_id', $request->age_rating ?? AgeRating::all()->pluck('id'))
-            ->whereIn('category_id', $request->category ?? Category::all()->pluck('id'))
+        $fanfics = Fanfiction::whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
+            ->whereIn('category_id', $request->category ?? $standardCategories)
             ->whereJsonContains('characters->characters', $characters['characters'] ?? [])
             ->whereJsonContains('characters->parings', $characters['parings'] ?? [])
             ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
@@ -51,19 +68,29 @@ class FilterController extends Controller
             'navigation' => require_once 'navigation.php',
 
             // Усі вікові рейтинги
-            'ageRatings' => AgeRating::all(),
+            'ageRatings' => Cache::remember("age_ratings_all", 60*60*168, function () {
+                return AgeRating::all();
+            }),
 
             // Усі категорії
-            'categories' => Category::all(),
+            'categories' => Cache::remember("categories_all", 60*60*168, function () {
+                return Category::all();
+            }),
 
             // Усі фандоми, відсортировані по популярності
-            'fandoms' => Fandom::orderBy('fictions_amount', 'desc')->get(),
+            'fandoms' => Cache::remember("fandoms_all", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->get();
+            }),
 
             // Усі теґі
-            'tags' => Tag::all(),
+            'tags' => Cache::remember("tags_all", 60*60*24, function () {
+                return Tag::all();
+            }),
 
             // Усі користувачі, відсортировані по фандомам
-            'characters' => Character::orderBy('belonging_to_fandom_id')->get(),
+            'characters' => Cache::remember("characters_all", 60*60*24, function () {
+                return Character::orderBy('belonging_to_fandom_id')->get();
+            }),
 
             // Усі знайдені по фільтру фанфіки,
             // якщо користувач здійснив пошук
