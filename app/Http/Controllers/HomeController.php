@@ -2,29 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AgeRating;
 use App\Models\Category;
+use App\Models\Character;
+use App\Models\Fandom;
+use App\Models\FandomCategories;
+use App\Models\Fanfiction;
 use App\Models\Tag;
-use App\Models\TagCategory;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     public function index() {
-        // /home
 
-        /*$category = TagCategory::create([
-            'name' => '18+',
-        ]);
+        $fc = new FandomCategories();
+        $fandoms = new Fandom();
+        $a = new AgeRating();
+        $c = new Category();
+        $t = new Tag();
+        $cc = new Character();
 
-        $tag = Tag::create([
-            'name' => 'dark',
-            'category' => '18+',
-            'description' => 'dark fics',
-        ]);
+        $topFandoms = Cache::remember("top_fandoms", 60*60*24, function () {
+            return Fandom::orderBy('fictions_amount', 'desc')->take(5)->get();
+        });
 
-        dd($tag);*/
+        $lastUpdatedFanfics = Cache::remember("last_updated_ff", 60*10, function () {
+            return Fanfiction::orderBy('updated_at', 'desc')->take(5)->get();
+        });
 
-        return view('index');
+        $lastCreatedFanfics = Cache::remember("last_created_ff", 60*10, function () {
+            return Fanfiction::orderBy('created_at', 'desc')->take(5)->get();
+        });
+
+        $data = [
+            'title' => 'Головна',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+
+            // Отримання 5 найпопулярніших фандомів
+            'fandoms' => $topFandoms,
+
+            // Отримання 5 фанфіків, що були оновлені останніми
+            'last_updated_fanfics' => $lastUpdatedFanfics,
+
+            // Отримання 5 фанфіків, що були створенні останніми
+            'last_created_fanfics' => $lastCreatedFanfics,
+        ];
+
+        return view('index', $data);
     }
 }
