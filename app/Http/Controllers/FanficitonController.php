@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Character;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
@@ -13,6 +14,7 @@ use App\Rules\TagsExists;
 use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class FanficitonController extends Controller
 {
@@ -72,6 +74,23 @@ class FanficitonController extends Controller
         }
 
         Fanfiction::create($fanfic);
+    }
+
+    public function view(string $slug)
+    {   // FanficPage
+        // Сторінка з переглядом певного фанфіка
+        $fanfic = Cache::remember("fanfic_$slug", 60*5, function () use ($slug) {
+            return Fanfiction::where('slug', $slug)->first();
+        });
+
+        $data = [
+            'title' => $fanfic->name,
+            'metaDescription' => $fanfic->description,
+            'navigation' => require_once 'navigation.php',
+            'fanfic' => $fanfic
+        ];
+
+        return view('fanfic.view', $data);
     }
 
 }

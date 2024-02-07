@@ -34,7 +34,7 @@
 
                 @include('widgets.button', [
                     'title' => 'Перейти',
-                    'url' => "#",
+                    'url' => route('FanficPage', $fanfic->slug),
                 ])
             </div>
 

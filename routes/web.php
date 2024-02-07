@@ -91,9 +91,19 @@ Route::get('/profile/fanfic/create',
     [UserProfileController::class, 'fanficCreate']
 )->middleware('auth')->name('FanficCreatePage');
 
+// Сторінка з переліком усіх фанфіків
+Route::get('/profile/fanfics',
+    [UserProfileController::class, 'fanficsList']
+)->middleware('auth')->name('FanficListPage');
+
 // Сторінки пов'язані з фанфіками
 
 // Створення фанфіка
 Route::post('/profile/fanfic/create',
     [FanficitonController::class, 'create']
 )->middleware('auth')->name('FanficCreateAction');
+
+// Перегляд фанфіка
+Route::get('/fanfic/{slug}',
+    [FanficitonController::class, 'view']
+)->name('FanficPage');
