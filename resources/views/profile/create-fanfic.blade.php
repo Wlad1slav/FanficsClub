@@ -267,10 +267,10 @@
 
         </div>
 
-        <!-- Примітки -->
+        <!-- Нотатки -->
         <div class="field">
 
-            <label for="ff_notes" class="main">Примітки</label>
+            <label for="ff_notes" class="main">Нотатки</label>
 
             <div>
                 <textarea name="ff_notes" id="ff_notes" style="height: 150px;" maxlength="550"></textarea>
