@@ -1,7 +1,7 @@
 :root {
     /* font styles */
     --font-family: Arial;
-    --font-size: 16px;
+    --font-size: 14px;
     --bond-font-weight: 600;
     --clr-text: var(--clr-black);
     --clr-heading: var(--clr-text);
