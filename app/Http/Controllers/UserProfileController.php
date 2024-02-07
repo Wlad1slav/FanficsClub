@@ -6,6 +6,7 @@ use App\Models\AgeRating;
 use App\Models\Category;
 use App\Models\Character;
 use App\Models\Fandom;
+use App\Models\Fanfiction;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -85,6 +86,18 @@ class UserProfileController extends Controller
 
         return view('profile.create-fanfic', $data);
 
+    }
+
+    public function fanficsList()
+    {   // FanficListPage
+        // Сторінка з усіма фанфіками, що належать користувачу
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+            'fanfics' => Fanfiction::where('author_id', Auth::user()->id)->get()
+        ];
+
+        return view('profile.fanfics-list', $data);
     }
 
 }

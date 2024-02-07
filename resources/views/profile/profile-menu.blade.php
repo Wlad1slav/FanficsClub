@@ -1,7 +1,7 @@
 <nav>
     <div>
         <a href="{{ route('MyProfilePage') }}">Профіль</a>
-        <a href="#">Роботи</a>
+        <a href="{{ route('FanficListPage') }}">Роботи</a>
         <a href="{{ route('FanficCreatePage') }}">Опублікувати</a>
         <a href="#">Колекції</a>
         <a href="#">Підписки</a>

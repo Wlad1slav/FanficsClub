@@ -62,3 +62,43 @@ h2 {
     align-items: baseline;
     margin-top: var(--indent-small);
 }
+
+.fanfic-profile-container:not(.button a) {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 4px solid var(--clr-cta);
+    margin-bottom: var(--indent-small);
+    padding: var(--indent-tiny) 0;
+}
+
+.fanfic-profile-container a:not(.button a),
+.fanfic-profile-container p:not(.button a) {
+    margin: 0;
+    width: 20%;
+    text-align: center;
+}
+
+.fanfic-profile-container a:not(.button a) {
+    font-size: var(--heading3-size);
+    color: var(--clr-black);
+    text-decoration: underline dotted 1px;
+}
+
+.fanfic-profile-container a:not(.button a):hover {
+    color: var(--clr-base);
+}
+
+.grow:before {
+    content: '↑ ';
+    color: var(--clr-positive);
+}
+
+.fall:after {
+    content: ' ↓';
+    color: var(--clr-negative);
+}
+
+.fanfic-profile-container .button a:hover {
+    justify-content: unset;
+}
