@@ -83,18 +83,18 @@ class Fandom extends Model
         return $this->belongsTo(FandomCategories::class, 'fandom_category_id');
     }
 
-    public function calculatePopularity(): void
-    {   // Рахує, скільки фанфіків в кожному фандомі
-        $fanfictions = Fanfiction::all()->groupBy('fandom'); // Збираємо усі фанфіки і групуємо за фандомами
+    public function calculatePopularity(): int
+    {   // Рахує, скільки фанфіків в певному фандомі
 
-        foreach ($this->all() as $fandom) {
-            // Перевіряємо, чи існує фандом у групованому масиві
-            if (isset($fanfictions[$fandom->slug]))
-                $fandom->fictions_amount = $fanfictions[$fandom->slug]->count(); // Рахуємо, скільки фф в фандомі
-            else
-                $fandom->fictions_amount = 0; // Якщо записи фанфіків відсутні, встановлюємо 0
+        return Fanfiction::whereJsonContains('fandoms_id', $this->id)->count();
+    }
 
-            $fandom->save(); // Зберігаємо рядок фандому з новою кількістю
+    public static function calculateAllPopularity(): void
+    {   // Рахує, скільки фанфіків в усіх фандомах і зберігає значення
+
+        foreach (self::all() as $fandom) {
+            $fandom->fictions_amount = $fandom->calculatePopularity();
+            $fandom->save();
         }
     }
 
