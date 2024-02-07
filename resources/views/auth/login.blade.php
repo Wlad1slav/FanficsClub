@@ -20,7 +20,7 @@
                 name="email"
                 id="email"
                 placeholder="ivan.melnik@gmail.com"
-                class="{{ $errors->has('email') ? 'error' : '' }}"
+                class="{{ $errors->has('error') ? 'error' : '' }}"
                 value="{{ old('email') }}"
                 required>
 
@@ -35,11 +35,15 @@
                    name="password"
                    id="password"
                    placeholder="********"
-                   class="{{ $errors->has('password') ? 'error' : '' }}"
+                   class="{{ $errors->has('error') ? 'error' : '' }}"
                    value="{{ old('password') }}"
                    required>
 
             @error('password')
+                <p class="error-password">{{ $message }}</p>
+            @enderror
+
+            @error('error')
                 <p class="error-password">{{ $message }}</p>
             @enderror
 

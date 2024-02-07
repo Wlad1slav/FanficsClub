@@ -72,7 +72,7 @@ class AuthController extends Controller
             // то він повертається на сторінку авторизації
             return back()
                 ->withInput()
-                ->withErrors([]);
+                ->withErrors(['error' => 'Пароль чи пошта введені неверно.']);
         }
 
         $request->session()->regenerate(); // Оновлення сесії користувача
