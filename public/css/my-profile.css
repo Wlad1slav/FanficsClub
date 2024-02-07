@@ -89,16 +89,6 @@ h2 {
     color: var(--clr-base);
 }
 
-.grow:before {
-    content: '↑ ';
-    color: var(--clr-positive);
-}
-
-.fall:after {
-    content: ' ↓';
-    color: var(--clr-negative);
-}
-
 .fanfic-profile-container .button a:hover {
     justify-content: unset;
 }

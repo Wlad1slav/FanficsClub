@@ -127,3 +127,13 @@ p.error-password {
 .notify {
     font-size: calc(var(--font-size)/1.3);
 }
+
+.grow:before {
+    content: '↑ ';
+    color: var(--clr-positive);
+}
+
+.fall:after {
+    content: ' ↓';
+    color: var(--clr-negative);
+}
