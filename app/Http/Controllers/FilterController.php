@@ -29,14 +29,14 @@ class FilterController extends Controller
             'tags_selected' => [new TagsExists()],
         ]);
 
-        $characters = Character::convertCharactersStrToArray($request->characters ?? []);
+        $characters = Character::convertCharactersStrToArray($request->characters ?? null);
 
         $fanfics = Fanfiction::whereIn('age_rating_id', $request->age_rating ?? AgeRating::all()->pluck('id'))
             ->whereIn('category_id', $request->category ?? Category::all()->pluck('id'))
             ->whereJsonContains('characters->characters', $characters['characters'] ?? [])
             ->whereJsonContains('characters->parings', $characters['parings'] ?? [])
-            ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? []))
-            ->whereJsonContains('fandoms_id', Fandom::convertStrAttrToArray($request->fandoms_selected ?? []))
+            ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
+            ->whereJsonContains('fandoms_id', Fandom::convertStrAttrToArray($request->fandoms_selected ?? null))
             ->orderBy($request->sort_by ?? 'updated_at', 'desc')
             ->paginate(30);
 
