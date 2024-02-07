@@ -22,7 +22,6 @@ header a.logo {
 header div, header nav {
     display: flex;
     flex-wrap: wrap;
-    align-content: center;
 }
 
 header h1 {
@@ -46,6 +45,8 @@ header p:hover:not(nav a:hover):not(.logo) {
 /* greeting */
 header #greeting-line {
     justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start!important;
     padding: var(--indent-small);
 }
 
@@ -57,6 +58,14 @@ header #greeting-line p:not(.logo) {
 header #greeting-line a:hover:not(.logo),
 header #greeting-line p:hover:not(.logo) {
     color: var(--clr-base);
+}
+
+header #greeting-line a:not(.logo) {
+    /*border-right: 4px solid var(--clr-transparent-base);*/
+    /*border-left: 4px solid var(--clr-transparent-base);*/
+    margin-right: var(--indent-small);
+    margin-left: var(--indent-small);
+    font-size: calc(var(--font-size) - 2px);
 }
 
 /* navigation */
@@ -71,6 +80,7 @@ header nav ul li {
 }
 
 header nav {
+    align-content: center;
     background: var(--nav-background);
     color: var(--clr-white);
     height: 30px;
