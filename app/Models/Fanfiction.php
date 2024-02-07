@@ -29,6 +29,11 @@ class Fanfiction extends Model
         return $this->belongsTo(AgeRating::class);
     }
 
+    public function author(): BelongsTo
+    {   // Зв'язок з моделю User
+        return $this->belongsTo(User::class);
+    }
+
 //    public function fandom(): BelongsTo
 //    {   // Зв'язок з моделю Fandom
 //        // для кожного екземпляра Fanfiction можна отримати фандом
