@@ -86,6 +86,8 @@ return new class extends Migration
 
             $table->json('users_with_access')->nullable();
 
+            $table->json('chapters_sequence')->nullable();
+
             $table->timestamps();
 
             $table->boolean('is_banned')->default(0);
