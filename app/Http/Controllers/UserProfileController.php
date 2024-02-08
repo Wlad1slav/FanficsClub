@@ -84,7 +84,7 @@ class UserProfileController extends Controller
             }),
         ];
 
-        return view('fanfic.create', $data);
+        return view('profile.fanfic-create', $data);
 
     }
 
@@ -97,7 +97,7 @@ class UserProfileController extends Controller
             'fanfics' => Fanfiction::where('author_id', Auth::user()->id)->get()
         ];
 
-        return view('profile.userown-fanfics', $data);
+        return view('profile.fanfic-list', $data);
     }
 
 }

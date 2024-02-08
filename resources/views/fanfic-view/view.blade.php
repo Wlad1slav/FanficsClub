@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="{{ asset('css/fanfic/view.css') }}">
 
     <div id="fanfic">
+        @if($fanfic->author == \Illuminate\Support\Facades\Auth::user())
+            <div class="author-actions">
+
+                <a href="#">Редагувати</a>
+                <a href="{{ route('ChapterCreatePage', ['ff_slug' => $fanfic->slug]) }}">Нова глава</a>
+
+            </div>
+        @endif
+
         <div class="ff-info">
 
             <div class="short-info">                                        <!-- Коротка інформація про фанфік -->
@@ -157,34 +166,48 @@
             </div>
         </div>
 
-        <div class="action">
-            <div class="select-chapter">
-                <select name="chapter" id="chapter-select">
-                    <option>Розділ 1: Тут може бути дуже багато текста</option>
-                </select>
+        @if($chapters !== null)
 
-                <input type="submit" value="Вибрати">
+            <div class="action">
+                <form action="{{ route('ChapterSelectAction', ['ff_slug' => $fanfic->slug ]) }}"
+                      method="post"
+                      class="select-chapter">
+                    @csrf
+                    <select name="chapter" id="chapter-select">
+                        @foreach($chapters as $c)
+                            <option value="{{ $c->slug }}" @selected($c==$chapter)>{{ $c->title }}</option>
+                        @endforeach
+                    </select>
+
+                    <input type="submit" value="Вибрати">
+                </form>
+
+                <div>
+                    <a href="#" class="support positive">↑</a>
+                    <a href="#" class="support negative">↓</a>
+
+                    @include('widgets.button', [
+                        'title' => 'Підписатися',
+                        'url' => '#',
+                    ])
+
+                    @include('widgets.button', [
+                        'title' => 'Зберегти в колекцію',
+                        'url' => '#',
+                    ])
+
+                    @include('widgets.button', [
+                        'title' => 'Завантажити',
+                        'url' => '#',
+                    ])
+                </div>
+
             </div>
 
-            <div>
-                <a href="#" class="support positive">↑</a>
-                <a href="#" class="support negative">↓</a>
-            </div>
-
-            <div>
-                @include('widgets.button', [
-                    'title' => 'Підписатися',
-                    'url' => '#',
-                ])
-
-                @include('widgets.button', [
-                    'title' => 'Зберегти в колекцію',
-                    'url' => '#',
-                ])
-            </div>
-
-        </div>
+        @endif
 
     </div>
+
+    @include('fanfic-view.chapter', ['chapter' => $chapter ?? $chapters->first()])
 
 @endsection
