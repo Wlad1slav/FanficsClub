@@ -1,0 +1,19 @@
+input, textarea {
+    margin-bottom: var(--indent-small)!important;
+}
+
+textarea {
+    height: 500px;
+    font-size: 18px;
+}
+
+label:not(label[for="is_draft"]) {
+    font-weight: var(--bond-font-weight);
+}
+
+#notes, #notify {
+    width: 50%;
+    height: 150px;
+}
+
+
