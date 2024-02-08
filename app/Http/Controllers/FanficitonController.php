@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Chapter;
 use App\Models\Character;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
@@ -76,21 +77,48 @@ class FanficitonController extends Controller
         Fanfiction::create($fanfic);
     }
 
-    public function view(string $slug)
+    public function view(string $ff_slug, ?string $chapter_slug = null)
     {   // FanficPage
         // Сторінка з переглядом певного фанфіка
-        $fanfic = Cache::remember("fanfic_$slug", 60*5, function () use ($slug) {
-            return Fanfiction::where('slug', $slug)->first();
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            // Передбачається, що фанфік в кешу зберігається 1 годину,
+            // але якщо користувач його оновить, то кеш автоматом очиститься
+            return Fanfiction::where('slug', $ff_slug)->first();
         });
 
+        $chapters = Cache::remember("chapters_ff_{$fanfic->id}", 60*60, function () use ($fanfic) {
+            // При створенні нового розділу чи оновленні існуючого кеш повинен оновлюватися
+
+            if ($fanfic->chapters_sequence !== null) {
+                // Розділи сортируються згідно з заданим порядком в бд
+                $sequence = json_decode($fanfic->chapters_sequence, true);
+                $sequenceStr = implode(',', $sequence);
+                return Chapter::whereIn('id', $sequence)
+                    ->orderByRaw("FIELD(id, {$sequenceStr})")
+                    ->get();
+            } else {
+                return null;
+            }
+        });
+
+        if ($chapter_slug !== null) {
+            // Якщо в посиланні заданий slug глави
+            $chapter = Cache::remember("chapter_{$chapter_slug}", 60*60, function () use ($chapter_slug) {
+                // При оновленні розділу, кеш повинен видалятися
+                return Chapter::where('slug', $chapter_slug)->first();
+            });
+        }
+
         $data = [
-            'title' => $fanfic->name,
+            'title' => $fanfic->title,
             'metaDescription' => $fanfic->description,
             'navigation' => require_once 'navigation.php',
-            'fanfic' => $fanfic
+            'fanfic' => $fanfic,
+            'chapters' => $chapters,
+            'chapter' => $chapter ?? null
         ];
 
-        return view('fanfic.view', $data);
+        return view('fanfic-view.view', $data);
     }
 
 }
