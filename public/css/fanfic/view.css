@@ -12,6 +12,7 @@ h1, h2 {
 
 h1 {
     font-size: var(--ff-title-font-size);
+    margin-bottom: var(--indent-small);
 }
 
 h2 {
@@ -88,6 +89,7 @@ h3 {
 
 .desc p {
     padding: 0 var(--indent-small);
+    font-size: 17px;
 }
 
 /* нижне поле з дієями, пов'язанами з фіком */
@@ -118,11 +120,12 @@ h3 {
 .support {
     text-align: center;
     color: var(--clr-black);
-    margin: 0;
-    padding: 10px 20px 15px 20px;
+    padding: 1px 15px 5px 15px;
     text-decoration: none;
     font-size: 30px;
     border: 1px solid var(--clr-black);
+    margin-bottom: 0;
+    margin-right: var(--indent-small);
 }
 
 .support.positive:hover {
