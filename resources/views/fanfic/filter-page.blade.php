@@ -26,7 +26,7 @@
 
     @include('widgets.filter-widget')
 
-    @if($fanfics !== null) <!-- $fanfics отримується в контролері FilterController -->
+    @if($fanfics !== null and $fanfics->count() > 0) <!-- $fanfics отримується в контролері FilterController -->
     {{ $fanfics->links('widgets.pagination') }}
         <div id="fanfics">
             @foreach($fanfics as $fanfic)

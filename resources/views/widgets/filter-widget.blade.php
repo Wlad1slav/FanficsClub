@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/filter.css') }}">
+<link rel="stylesheet" href="{{ asset('css/fanfic/filter.css') }}">
 <!--
 
 Параметри:

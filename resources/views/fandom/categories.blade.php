@@ -10,7 +10,7 @@
 
 @section('content')
 
-    <link rel="stylesheet" href="{{ asset('css/fandoms-categories.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fandom/categories.css') }}">
 
     <h1>Фандоми</h1>
 

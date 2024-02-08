@@ -1,0 +1,157 @@
+:root {
+    --ff-title-font-size: 40px; /* Назва фанфіку */
+    --ff-author-font-size: 20px; /* Автор фанфіку */
+    --ff-info-heading: 13px; /* Заголовки в інформації про фанфік */
+    --ff-short-info: 25px; /* Розмір тексту в контейнерах з короткою інфою */
+    --ff-info-heading-weight: 600; /* Товщина заголовку в інформації про фанфік */
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h1 {
+    font-size: var(--ff-title-font-size);
+}
+
+h2 {
+    font-size: var(--ff-author-font-size);
+}
+
+h3 {
+    font-size: var(--ff-info-heading);
+    font-weight: var(--ff-info-heading-weight);
+    /*margin: 0;*/
+    margin-bottom: var(--indent-tiny);
+}
+
+.ff-info {
+    padding: var(--indent-small) var(--indent-medium);
+    box-shadow: 0 0 7px rgba(160,160,160);
+    margin: 0 var(--indent-large);
+    margin-bottom: var(--indent-large);
+}
+
+.ff-info div {
+    margin-bottom: var(--indent-medium);
+}
+
+.ff-info a span {
+    font-size: calc(var(--font-size)/1.5);
+}
+
+.short-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.short-info div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.short-info p {
+    padding: var(--indent-small);
+    font-size: var(--ff-short-info);
+}
+
+.short-info .info p {
+    color: var(--clr-white);
+    border: 1px dotted var(--clr-black);
+    text-shadow:
+        -1px -1px 0 var(--clr-black),
+        1px -1px 0 var(--clr-black),
+        -1px  1px 0 var(--clr-black),
+        1px  1px 0 var(--clr-black); /* Обводка чорним кольором */
+}
+
+.statistic {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.statistic p {
+    margin: 0 var(--indent-small);
+}
+
+.desc {
+    margin-bottom: var(--indent-medium);
+}
+
+.desc h3 {
+    font-size: var(--heading3-size);
+    border-bottom: 2px solid var(--clr-black);
+    margin-bottom: var(--indent-small);
+    font-weight: normal;
+}
+
+.desc p {
+    padding: 0 var(--indent-small);
+}
+
+/* нижне поле з дієями, пов'язанами з фіком */
+.action {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /*flex-direction: column;*/
+}
+
+.action div {
+    display: flex;
+    align-items: center;
+}
+
+.action .select-chapter,
+.action .support-ff {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--indent-medium);
+}
+
+.action .support-ff  {
+    justify-content: end;
+}
+
+.support {
+    text-align: center;
+    color: var(--clr-black);
+    margin: 0;
+    padding: 10px 20px 15px 20px;
+    text-decoration: none;
+    font-size: 30px;
+    border: 1px solid var(--clr-black);
+}
+
+.support.positive:hover {
+    background-color: var(--clr-positive);
+    color: white;
+}
+
+.support.negative:hover {
+    background-color: var(--clr-negative);
+    color: white;
+}
+
+.select-chapter select,
+.select-chapter input {
+    padding: var(--indent-small);
+}
+
+.button {
+    margin-left: var(--indent-small);
+}
+
+/* контейнер, що бачать тільки користувачі,
+які є авторами і редакторами */
+.author-actions {
+    margin-bottom: var(--indent-small);
+    margin-right: var(--indent-large);
+    text-align: right;
+}
+
+.author-actions a:hover {
+    color: var(--clr-base);
+}

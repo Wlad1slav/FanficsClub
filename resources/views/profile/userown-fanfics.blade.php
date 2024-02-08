@@ -1,4 +1,4 @@
-@extends('profile.my-profile')
+@extends('profile.layout')
 
 
 @section('content')
@@ -24,7 +24,8 @@
                 </p>
 
                 <p>
-                    <span class="grow">{{ $fanfic->rating }}</span> | <span class="fall">{{ $fanfic->anti_rating }}</span>
+                    <span class="grow">{{ $fanfic->rating }}</span> | <span
+                        class="fall">{{ $fanfic->anti_rating }}</span>
                 </p>
 
 

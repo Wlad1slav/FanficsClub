@@ -1,4 +1,4 @@
-@extends('profile.my-profile')
+@extends('profile.layout')
 
 <!--
 
@@ -24,7 +24,7 @@
         {{ $error }}
     @endforeach
 
-    <link rel="stylesheet" href="{{ asset('css/fanfic-create-form.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fanfic/create.css') }}">
 
     <h1>Створити фанфік</h1>
 
@@ -63,11 +63,11 @@
                 </label>
 
                 @error('type_of_work')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
 
                 @error('anonymity')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
 
 
@@ -101,7 +101,7 @@
                 </label>
 
                 @error('originality_of_work')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -116,7 +116,7 @@
                 <input type="text" name="ff_name" id="ff_name" required>
 
                 @error('ff_name')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -131,7 +131,7 @@
                 <input type="text" name="ff_original_author" id="ff_original_author">
 
                 @error('ff_original_author')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -147,14 +147,14 @@
                        placeholder="https://archiveofourown.org/works/0000000">
 
                 @error('ff_original_link')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
 
         </div>
 
-         <!-- Віджет для вибору антрибутів
-         Вибірається фандоми, до яких буде відноситися фанфік -->
+        <!-- Віджет для вибору антрибутів
+        Вибірається фандоми, до яких буде відноситися фанфік -->
         <div class="field" id="if-fanfic">
             <label class="main required">Фандоми</label>
             <div>
@@ -165,7 +165,7 @@
                 ])
 
                 @error('fandoms_selected')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -178,7 +178,7 @@
                 @include('widgets.characters-select', ['has_label' => false]) <!-- Віджет з вибором персонажів -->
 
                 @error('characters')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -202,7 +202,7 @@
                 @endforeach
 
                 @error('age_rating')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -228,7 +228,7 @@
                 @endforeach
 
                 @error('category')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -246,7 +246,7 @@
                 ])
 
                 @error('tags_selected')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -261,7 +261,7 @@
                 <p class="notify">550 символів</p>
 
                 @error('ff_description')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -277,7 +277,7 @@
                 <p class="notify">550 символів</p>
 
                 @error('ff_notes')
-                    <p class="error">{{ $message }}</p>
+                <p class="error">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -290,14 +290,14 @@
 
             // Перевірка, авторства фанфіку. Якщо тип фанфіка - переклад,
             // то з'являються додаткові поля (Автор оригінала і Посилання на оригінал)
-            document.getElementById('type_of_work-translate').addEventListener('change', function() {
+            document.getElementById('type_of_work-translate').addEventListener('change', function () {
                 document.getElementById('with-translate-1').classList.remove('no-display');
                 document.getElementById('with-translate-2').classList.remove('no-display');
             });
 
             // Якщо користувач повертає авторство фанфіка на "Я автор",
             // то поля для вводу автора оригінала і посилання на оригінал знову становляться невидимими
-            document.getElementById('type_of_work-original-work').addEventListener('change', function() {
+            document.getElementById('type_of_work-original-work').addEventListener('change', function () {
                 document.getElementById('with-translate-1').classList.add('no-display');
                 document.getElementById('with-translate-2').classList.add('no-display');
             });
@@ -305,18 +305,17 @@
             /////////////////////////////////////////////////////////
             // Перевірка, оригінальності роботи. Якщо тип роботи - фанфік,
             // то з'являється додаткове поле для вибору фандомів, які відносяться до фанфіка
-            document.getElementById('originality_of_work-fanfic').addEventListener('change', function() {
+            document.getElementById('originality_of_work-fanfic').addEventListener('change', function () {
                 document.getElementById('if-fanfic').classList.remove('no-display');
             });
 
             // Якщо користувач встановлює оригінальність фанфіка на оригінальний твір,
             // то поля для вводу автора оригінала і посилання на оригінал знову становляться невидимими
-            document.getElementById('originality_of_work-original').addEventListener('change', function() {
+            document.getElementById('originality_of_work-original').addEventListener('change', function () {
                 document.getElementById('if-fanfic').classList.add('no-display');
             });
         </script>
 
     </form>
-
 
 @endsection

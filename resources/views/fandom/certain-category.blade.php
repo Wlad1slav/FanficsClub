@@ -21,7 +21,7 @@
             @include('widgets.button', [
                     'title' => $letter,
                     'url' => "#$letter",
-                    'styles' => 'mrg-left-0'
+                    'styles' => 'mrg-left-0 mrg-right'
                 ])
         @endforeach
     </div>

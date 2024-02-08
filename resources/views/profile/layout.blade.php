@@ -19,7 +19,7 @@
 @include('layouts.header')
 
 <div id="page">
-    @include('profile.profile-menu')
+    @include('profile.menu')
     <div class="content full-width">
         @yield('content')
     </div>

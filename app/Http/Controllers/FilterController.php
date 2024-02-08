@@ -97,7 +97,7 @@ class FilterController extends Controller
             'fanfics' => $fanfics ?? null
         ];
 
-        return view('filter-page', $data);
+        return view('fanfic.filter-page', $data);
     }
 
 }

@@ -20,7 +20,7 @@
 
 @endphp
 
-<link rel="stylesheet" href="{{ asset('css/fanfic-container.css') }}">
+<link rel="stylesheet" href="{{ asset('css/fanfic/container.css') }}">
 
 <div class="fanfic-container"
     @style(["border-left: 8px solid rgb({$fanfic->category->rgb_color})"])>   <!-- Лівий кордон, того кольору, що був заданий в

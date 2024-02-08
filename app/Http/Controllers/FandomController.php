@@ -30,10 +30,10 @@ class FandomController extends Controller
             'fandoms' => $fandoms
         ];
 
-        return view('fandom-category-certain', $data);
+        return view('fandom.certain-category', $data);
     }
 
-    public function fandomsCategories()
+    public function fandomCategories()
     {   // FandomsCategoriesPage
         // /fandoms
 
@@ -51,6 +51,6 @@ class FandomController extends Controller
             })
         ];
 
-        return view('fandom-categories', $data);
+        return view('fandom.categories', $data);
     }
 }

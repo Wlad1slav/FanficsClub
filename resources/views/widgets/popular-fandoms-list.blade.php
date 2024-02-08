@@ -12,7 +12,7 @@
 
 -->
 
-<link rel="stylesheet" href="{{ asset('css/fandom-list.css') }}">
+<link rel="stylesheet" href="{{ asset('css/fandom/popular-list.css') }}">
 
 <div id="popular-fandoms-list">
     @if($hasTitle ?? true) <h2>

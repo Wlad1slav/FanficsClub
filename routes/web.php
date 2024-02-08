@@ -24,7 +24,7 @@ Route::get('/',
 
 // Усі категорії фандомів
 Route::get('/fandoms',
-    [FandomController::class, 'fandomsCategories']
+    [FandomController::class, 'fandomCategories']
 )->name('FandomsCategoriesPage');
 Route::redirect('/fandom', '/fandoms');
 

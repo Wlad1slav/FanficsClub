@@ -24,7 +24,7 @@ class UserProfileController extends Controller
             'navigation' => require_once 'navigation.php',
         ];
 
-        return view('profile.profile-info', $data);
+        return view('profile.info', $data);
     }
 
     public function avatarUpload(Request $request)
@@ -84,7 +84,7 @@ class UserProfileController extends Controller
             }),
         ];
 
-        return view('profile.create-fanfic', $data);
+        return view('fanfic.create', $data);
 
     }
 
@@ -97,7 +97,7 @@ class UserProfileController extends Controller
             'fanfics' => Fanfiction::where('author_id', Auth::user()->id)->get()
         ];
 
-        return view('profile.fanfics-list', $data);
+        return view('profile.userown-fanfics', $data);
     }
 
 }
