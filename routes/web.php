@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FanficitonController;
@@ -104,6 +105,24 @@ Route::post('/profile/fanfic/create',
 )->middleware('auth')->name('FanficCreateAction');
 
 // Перегляд фанфіка
-Route::get('/fanfic/{slug}',
+Route::get('/fanfic/{ff_slug}/{chapter_slug?}',
     [FanficitonController::class, 'view']
 )->name('FanficPage');
+
+// Сторінки пов'язані з розділами
+
+// Форма для створення нового розділа
+Route::get('/profile/chapter/create/{ff_slug}',
+    [ChapterController::class, 'createForm']
+)->middleware('auth')->name('ChapterCreatePage');
+
+// Створення нового розділа
+Route::post('/profile/chapter/create/{ff_slug}',
+    [ChapterController::class, 'create']
+)->middleware('auth')->name('ChapterCreateAction');
+
+// Перехід на певний розділ
+Route::post('/fanfic/{ff_slug}/',
+    [ChapterController::class, 'select']
+)->name('ChapterSelectAction');
+
