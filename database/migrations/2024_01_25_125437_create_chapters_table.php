@@ -27,8 +27,9 @@ return new class extends Migration
                 ->collation('latin1_bin')
                 ->unique();
             $table->longText('content');
-            $table->json('addtional_descriptions');
+            $table->json('additional_descriptions')->nullable();
             $table->unsignedBigInteger('views')->default(0);
+            $table->boolean('is_draft')->default(1);
 
             $table->timestamps();
 
