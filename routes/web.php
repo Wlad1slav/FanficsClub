@@ -126,10 +126,15 @@ Route::get('/fanfic-edit/{ff_slug}/chapter/{chapter_slug}/',
     [ChapterController::class, 'editForm']
 )->middleware('auth')->name('ChapterEditPage');
 
-// Редагування певного розділа
+// Редагування певного розділу
 Route::post('/fanfic-edit/{ff_slug}/chapter/{chapter_slug}/',
     [ChapterController::class, 'edit']
 )->middleware('auth')->name('ChapterEditAction');
+
+// Видалення розділу
+Route::get('/fanfic-edit/{ff_slug}/chapter/delete/{chapter_slug}/',
+    [ChapterController::class, 'delete']
+)->middleware('auth')->name('ChapterDeleteAction');
 
 // Перехід на певний розділ
 Route::post('/fanfic/{ff_slug}/',

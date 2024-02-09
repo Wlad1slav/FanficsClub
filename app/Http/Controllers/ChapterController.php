@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Fanfiction;
+use App\Rules\ChaptersBelongToFanfic;
 use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -82,7 +83,7 @@ class ChapterController extends Controller
 
     }
 
-    public function editForm(Request $request, string $ff_slug, string $chapter_slug)
+    public function editForm(string $ff_slug, string $chapter_slug)
     {   // ChapterEditPage
         // Форма редагування розділу для певного фанфіка
 
@@ -91,9 +92,15 @@ class ChapterController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('fanficAccess', $fanfic ?? null);
 
         $chapter = Chapter::firstCached($chapter_slug);
+
+        // Перевірка, чи користувач має доступ до фанфіка, якому належить розділ
+        $this->authorize('fanficAccess', $chapter->fanfiction ?? null);
+
+        // Перевірка, чи належить розділ до фанфіка
+        $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
 
         $data = [
             'navigation' => require_once 'navigation.php',
@@ -114,7 +121,7 @@ class ChapterController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('fanficAccess', $fanfic ?? null);
 
         $request->validate([
             'chapter_title' => ['required', 'string'],
@@ -122,6 +129,12 @@ class ChapterController extends Controller
         ]);
 
         $chapter = Chapter::firstCached($chapter_slug);
+
+        // Перевірка, чи користувач має доступ до фанфіка, якому належить розділ
+        $this->authorize('fanficAccess', $chapter->fanfiction ?? null);
+
+        // Перевірка, чи належить розділ до фанфіка
+        $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
 
         if ($chapter->title !== $request->chapter_title)
             $slug = self::createOriginalSlug(
@@ -147,6 +160,32 @@ class ChapterController extends Controller
 
         return back();
 
+    }
+
+    public function delete(string $ff_slug, string $chapter_slug)
+    {   // ChapterDeleteAction
+        // Видалення розділу
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        // Перевірка, чи користувач має доступ до фанфіка
+        $this->authorize('fanficAccess', $fanfic);
+
+        $chapter = Chapter::firstCached($chapter_slug);
+        $chapter->delete();
+
+        // Перевірка, чи користувач має доступ до фанфіка, якому належить розділ
+        $this->authorize('fanficAccess', $chapter->fanfiction ?? null);
+
+        // Перевірка, чи належить розділ до фанфіка
+        $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
+
+        $chapter->clearCache();
+        $fanfic->clearCache();
+
+        return back();
     }
 
     public function chaptersList(string $ff_slug)
@@ -193,6 +232,10 @@ class ChapterController extends Controller
         // Перевірка, чи користувач має доступ до фанфіка
         $this->authorize('fanficAccess', $fanfic);
 
+        $request->validate([
+            'chapter_num' => ['required', 'array', new ChaptersBelongToFanfic($request->chapter_num, $fanfic)],
+        ]);
+
         $sequence = [];
         foreach ($request->chapter_num ?? [] as $chapterId => $num) {
             $temp = $num;
@@ -210,7 +253,6 @@ class ChapterController extends Controller
         $fanfic->clearCache();
 
         return back();
-
     }
 
 }
