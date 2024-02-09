@@ -27,3 +27,7 @@ input[type='number'] {
     text-align: center;
     margin-right: var(--indent-small);
 }
+
+.draft {
+    opacity: 0.5;
+}
