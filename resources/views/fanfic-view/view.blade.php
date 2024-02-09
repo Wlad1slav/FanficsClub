@@ -208,6 +208,8 @@
 
     </div>
 
-    @include('fanfic-view.chapter', ['chapter' => $chapter ?? $chapters->first()])
+    @if($chapters->first() !== null)
+        @include('fanfic-view.chapter', ['chapter' => $chapter ?? $chapters->first()])
+    @endif
 
 @endsection

@@ -1,6 +1,6 @@
 @php
 
-    $additionalDesc = json_decode($chapter->additional_descriptions, true)
+    $additionalDesc = json_decode($chapter->additional_descriptions ?? '', true);
 
 @endphp
 
