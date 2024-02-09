@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class Fanfiction extends Model
 {
@@ -69,6 +70,13 @@ class Fanfiction extends Model
     public function fandoms()
     {
         return $this->belongsToMany(Fandom::class, 'fanfiction_fandom', 'fanfiction_id', 'fandom_id');
+    }
+
+    // Очищає кеш певного фанфіка
+    public function clearCache()
+    {
+        Cache::pull("fanfic_{$this->slug}"); // Видалення фанфіка з кешу
+        Cache::pull("chapters_ff_{$this->id}"); // Видалення усіх розділів фанфіка з кешу
     }
 
 }

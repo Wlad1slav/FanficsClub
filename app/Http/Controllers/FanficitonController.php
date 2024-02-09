@@ -86,27 +86,11 @@ class FanficitonController extends Controller
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
-        $chapters = Cache::remember("chapters_ff_{$fanfic->id}", 60*60, function () use ($fanfic) {
-            // При створенні нового розділу чи оновленні існуючого кеш повинен оновлюватися
-
-            if ($fanfic->chapters_sequence !== null) {
-                // Розділи сортируються згідно з заданим порядком в бд
-                $sequence = json_decode($fanfic->chapters_sequence, true);
-                $sequenceStr = implode(',', $sequence);
-                return Chapter::whereIn('id', $sequence)
-                    ->orderByRaw("FIELD(id, {$sequenceStr})")
-                    ->get();
-            } else {
-                return null;
-            }
-        });
+        $chapters = Chapter::getCached($fanfic);
 
         if ($chapter_slug !== null) {
             // Якщо в посиланні заданий slug глави
-            $chapter = Cache::remember("chapter_{$chapter_slug}", 60*60, function () use ($chapter_slug) {
-                // При оновленні розділу, кеш повинен видалятися
-                return Chapter::where('slug', $chapter_slug)->first();
-            });
+            $chapter = Chapter::firstCached($chapter_slug);
         }
 
         $data = [
