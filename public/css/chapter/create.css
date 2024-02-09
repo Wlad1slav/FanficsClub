@@ -1,10 +1,10 @@
 input, textarea {
     margin-bottom: var(--indent-small)!important;
+    font-size: 18px;
 }
 
 textarea {
     height: 500px;
-    font-size: 18px;
 }
 
 label:not(label[for="is_draft"]) {

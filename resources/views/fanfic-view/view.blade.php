@@ -13,7 +13,7 @@
         @if($fanfic->author == \Illuminate\Support\Facades\Auth::user())
             <div class="author-actions">
 
-                <a href="#">Редагувати</a>
+                <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">Редагувати</a>
                 <a href="{{ route('ChapterCreatePage', ['ff_slug' => $fanfic->slug]) }}">Нова глава</a>
 
             </div>

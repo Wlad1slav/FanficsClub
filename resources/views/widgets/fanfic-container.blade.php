@@ -26,7 +26,8 @@
     @style(["border-left: 8px solid rgb({$fanfic->category->rgb_color})"])>   <!-- Лівий кордон, того кольору, що був заданий в
                                                                                 базі даних для категорії, якої належить фік -->
 
-    <h3 class="title"><a href="#">{{ $fanfic->title }}</a></h3>     <!-- Назва фанфіка -->
+    <!-- Назва фанфіка -->
+    <h3 class="title"><a href="{{ route('FanficPage', ['ff_slug' => $fanfic->slug]) }}">{{ $fanfic->title }}</a></h3>
 
     <div class="short-info">                                        <!-- Коротка інформація про фанфік -->
 

@@ -1,0 +1,29 @@
+form div {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+form div a.title {
+    width: 100%;
+    color: var(--clr-cta-ultradark);
+}
+
+form div a.delete {
+    color: var(--clr-negative);
+    text-decoration: none;
+    font-weight: var(--bond-font-weight);
+    margin-left: var(--indent-small);
+}
+
+input[type='submit'] {
+    padding: var(--indent-small);
+}
+
+input[type='number'] {
+    width: 50px;
+    padding: var(--indent-small) 0 var(--indent-small) var(--indent-small);
+    text-align: center;
+    margin-right: var(--indent-small);
+}

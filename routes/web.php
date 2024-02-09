@@ -87,16 +87,6 @@ Route::post('/profile/info/avatar',
     [UserProfileController::class, 'avatarUpload']
 )->middleware('auth')->name('AvatarUploadAction');
 
-// Сторінка з формою створення фанфіка
-Route::get('/profile/fanfic/create',
-    [UserProfileController::class, 'fanficCreate']
-)->middleware('auth')->name('FanficCreatePage');
-
-// Сторінка з переліком усіх фанфіків
-Route::get('/profile/fanfics',
-    [UserProfileController::class, 'fanficsList']
-)->middleware('auth')->name('FanficListPage');
-
 // Сторінки пов'язані з фанфіками
 
 // Створення фанфіка
@@ -109,20 +99,50 @@ Route::get('/fanfic/{ff_slug}/{chapter_slug?}',
     [FanficitonController::class, 'view']
 )->name('FanficPage');
 
+// Сторінка з формою створення фанфіка
+Route::get('/profile/fanfic/create',
+    [UserProfileController::class, 'fanficCreate']
+)->middleware('auth')->name('FanficCreatePage');
+
+// Сторінка з переліком усіх фанфіків
+Route::get('/profile/fanfics',
+    [UserProfileController::class, 'fanficsList']
+)->middleware('auth')->name('FanficListPage');
+
 // Сторінки пов'язані з розділами
 
 // Форма для створення нового розділа
-Route::get('/profile/chapter/create/{ff_slug}',
+Route::get('/fanfic-edit/{ff_slug}/chapter/create/',
     [ChapterController::class, 'createForm']
 )->middleware('auth')->name('ChapterCreatePage');
 
 // Створення нового розділа
-Route::post('/profile/chapter/create/{ff_slug}',
+Route::post('/fanfic-edit/{ff_slug}/chapter/create/',
     [ChapterController::class, 'create']
 )->middleware('auth')->name('ChapterCreateAction');
+
+// Форма для редагування розділа
+Route::get('/fanfic-edit/{ff_slug}/chapter/{chapter_slug}/',
+    [ChapterController::class, 'editForm']
+)->middleware('auth')->name('ChapterEditPage');
+
+// Редагування певного розділа
+Route::post('/fanfic-edit/{ff_slug}/chapter/{chapter_slug}/',
+    [ChapterController::class, 'edit']
+)->middleware('auth')->name('ChapterEditAction');
 
 // Перехід на певний розділ
 Route::post('/fanfic/{ff_slug}/',
     [ChapterController::class, 'select']
 )->name('ChapterSelectAction');
+
+// Сторінка з усіма розділами фанфіка
+Route::get('/fanfic-edit/{ff_slug}/chapters',
+    [ChapterController::class, 'chaptersList']
+)->name('ChapterListPage');
+
+// Зміна послідовності розділів фанфіка
+Route::post('/fanfic-edit/{ff_slug}/chapters',
+    [ChapterController::class, 'changeSequence']
+)->name('ChapterSequenceChange');
 
