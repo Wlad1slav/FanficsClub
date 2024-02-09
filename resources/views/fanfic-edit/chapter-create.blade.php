@@ -43,7 +43,7 @@
         <textarea name="notes" id="notes"></textarea>
 
         <label for="is_draft">
-            <input type="checkbox" name="is_draft" id="is_draft" checked>
+            <input type="checkbox" name="is_draft" id="is_draft" value="1" checked>
             Чертнетка
         </label>
 
