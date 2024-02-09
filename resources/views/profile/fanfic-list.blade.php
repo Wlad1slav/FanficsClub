@@ -15,7 +15,7 @@
         @foreach($fanfics as $fanfic)
 
             <div class="fanfic-profile-container">
-                <a href="#">{{ $fanfic->title }}</a>
+                <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">{{ $fanfic->title }}</a>
 
                 <p>
                     @foreach($fanfic->fandoms as $fandom)
@@ -27,7 +27,6 @@
                     <span class="grow">{{ $fanfic->rating }}</span> | <span
                         class="fall">{{ $fanfic->anti_rating }}</span>
                 </p>
-
 
                 <p>
                     {{ $fanfic->views }}
