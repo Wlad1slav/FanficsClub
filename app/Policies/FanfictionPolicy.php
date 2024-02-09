@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Chapter;
 use App\Models\Fanfiction;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -95,5 +96,10 @@ class FanfictionPolicy
     public function fanficAccess(User $user, Fanfiction $fanfiction)
     {
         return $user->id === $fanfiction->author_id;
+    }
+
+    public function chapterBelongToFanfic(User $user, Fanfiction $fanfiction, ?Chapter $chapter)
+    {
+        return $fanfiction == $chapter->fanfiction;
     }
 }
