@@ -288,6 +288,8 @@
 
         <input type="submit" value="Зберегти">
 
+        <script src="{{ asset('js/fanfic-create.js') }}"></script>
+
     </form>
 
     @include('widgets.button', [
