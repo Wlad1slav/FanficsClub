@@ -56,7 +56,7 @@ return new class extends Migration
             $table->boolean('is_draft')->default(1);
             $table->boolean('is_frozen')->default(0);
             $table->boolean('is_completed')->default(0);
-            // $table->boolean('is_crossover')->default(0);
+            $table->boolean('is_anonymous')->default(0);
             $table->boolean('is_promotes')->default(0);
             // $table->boolean('is_sequel')->default(0);
             $table->boolean('is_postponed')->default(0);

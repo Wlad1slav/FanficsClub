@@ -58,7 +58,7 @@
 
                 <label for="anonymity">
                     <!-- Чи хоче користувач викласти свій фанфік анонімно -->
-                    <input type="checkbox" name="anonymity[]" id="anonymity">
+                    <input type="checkbox" name="anonymity" value="1" id="anonymity">
                     Викласти твір анонімно
                 </label>
 

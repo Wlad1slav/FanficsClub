@@ -98,7 +98,7 @@
                                     $paring[$key] = \App\Models\Character::find($character)->name;
                                 $paring = implode('/', $paring)
                             @endphp
-                            <a class="fandom-link"
+                            <a class="fandom-link" style="margin-right: var(--indent-tiny);"
                                href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $paring]) }}">
                                 {{ $paring }}</a>
                         @endforeach
@@ -110,7 +110,7 @@
                         <h3>Персонажі</h3>
                         @foreach($charactersAll['characters'] as $character_id)
                             @php $character = \App\Models\Character::find($character_id) @endphp
-                            <a class="fandom-link"
+                            <a class="fandom-link" style="margin-right: var(--indent-tiny);"
                                href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $character->name]) }}">
                                 {{ $character->name }}
                             </a>
@@ -149,7 +149,7 @@
 
         <div class="description">
             <h1>{{ $fanfic->title }}</h1>
-            <h2>{{ $fanfic->author->name }}</h2>
+            <h2>{{ $fanfic->is_anonymous ? 'Аноним' : $fanfic->author->name }}</h2>
 
             <div class="desc">
                 @if(strlen($fanfic->description) > 0)
