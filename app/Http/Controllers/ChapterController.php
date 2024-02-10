@@ -73,8 +73,8 @@ class ChapterController extends Controller
             $fanfic->chapters_sequence = json_encode($sequence);
         }
 
-        $fanfic->save();
         $fanfic->clearCache(); // Видалення фанфіку з кешу
+        $fanfic->save();
 
         return redirect(route('FanficPage', [
                 'ff_slug' => $fanfic->slug,
@@ -142,6 +142,9 @@ class ChapterController extends Controller
                 new Chapter());
         else $slug = $chapter->slug;
 
+        $fanfic->clearCache(); // Видалення фанфіку з кешу
+        $chapter->clearCache(); // Видалення розділу з кешу
+
         $chapter->update([
             'title' => $request->chapter_title ?? "Розділ " . ($fanfic->chapters->count() + 1),
             'slug' => $slug,
@@ -154,9 +157,6 @@ class ChapterController extends Controller
             // Якщо value is_draft рівен одному, то розділ зберігається, як чорнетка
             'is_draft' => ($request->is_draft ?? 0) == 1
         ]);
-
-        $fanfic->clearCache(); // Видалення фанфіку з кешу
-        $chapter->clearCache(); // Видалення розділу з кешу
 
         return back();
 
@@ -174,7 +174,6 @@ class ChapterController extends Controller
         $this->authorize('fanficAccess', $fanfic);
 
         $chapter = Chapter::firstCached($chapter_slug);
-        $chapter->delete();
 
         // Перевірка, чи користувач має доступ до фанфіка, якому належить розділ
         $this->authorize('fanficAccess', $chapter->fanfiction ?? null);
@@ -183,7 +182,17 @@ class ChapterController extends Controller
         $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
 
         $chapter->clearCache();
+
+        // Встановлює новий slug, що складається з id розділу і час, який пройшов з епохи Unix (в секундах).
+        // Зроблено для того, щоб збавитися від помилки з дублюванням slug існуючух розділів і видаленних розділів.
+        // Помилка виникає через м'яке видалення рядків.
+        // Кеш видаляється перед зміною slug, бо в індифікатору кешу фігурує slug
         $fanfic->clearCache();
+        $chapter->clearCache();
+        $chapter->update(['slug' => "{$chapter->id}_".time()]);
+
+        // Видаляє розділ
+        $chapter->delete();
 
         return back();
     }
@@ -248,9 +257,9 @@ class ChapterController extends Controller
 
         ksort($sequence);
 
+        $fanfic->clearCache();
         $fanfic->chapters_sequence = json_encode(array_values($sequence));
         $fanfic->save();
-        $fanfic->clearCache();
 
         return back();
     }
