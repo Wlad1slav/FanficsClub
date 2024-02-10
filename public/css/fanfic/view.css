@@ -33,6 +33,10 @@ h3 {
     margin-bottom: var(--indent-large);
 }
 
+.ff-info .fandom-link {
+    margin-right: var(--indent-small);
+}
+
 .ff-info div {
     margin-bottom: var(--indent-medium);
 }
