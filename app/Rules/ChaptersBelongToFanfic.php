@@ -7,6 +7,7 @@ use App\Models\Fandom;
 use App\Models\Fanfiction;
 use App\Models\Tag;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Cache;
 
 class ChaptersBelongToFanfic implements Rule
 {
@@ -33,10 +34,12 @@ class ChaptersBelongToFanfic implements Rule
     public function passes($attribute, $value)
     {   // Перевіряє, чи усі розділи належать певному фанфіку
 
-        $trueChapters = Chapter::where('fanfiction_id', $this->fanfic->id)->pluck('id')->toArray();
+        $trueChapters = Cache::remember("chapters_ff_{$this->fanfic->id}_all_ids_array", 60*60, function () {
+            // При створенні нового розділу чи оновленні існуючого кеш повинен оновлюватися
 
-        dump($trueChapters);
-        dump($this->sequence);
+            return Chapter::where('fanfiction_id', $this->fanfic->id)->pluck('id')->toArray();
+        });
+
         return $trueChapters == $this->sequence;
     }
 

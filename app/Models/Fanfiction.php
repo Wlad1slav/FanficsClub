@@ -76,7 +76,10 @@ class Fanfiction extends Model
     public function clearCache()
     {
         Cache::pull("fanfic_{$this->slug}"); // Видалення фанфіка з кешу
-        Cache::pull("chapters_ff_{$this->id}"); // Видалення усіх розділів фанфіка з кешу
+
+        // Видалення усіх розділів фанфіка з кешу
+        Cache::pull("chapters_ff_{$this->id}");
+        Cache::pull("chapters_ff_{$this->id}_all_ids_array");
     }
 
 }
