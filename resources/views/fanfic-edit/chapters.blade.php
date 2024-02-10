@@ -5,6 +5,8 @@
 
     <link rel="stylesheet" href="{{ asset('css/chapter/list-edit.css') }}">
 
+    <script src="{{ asset('js/confirm-action.js') }}"></script>
+
     <h1>Розділи твору</h1>
 
     @include('widgets.button', [
@@ -30,7 +32,9 @@
                     <a class="title"
                        href="{{ route('ChapterEditPage', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}">{{ $chapter->title }}</a>
                     <a href="{{ route('FanficPage', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}">Перейти</a>
-                    <a href="{{ route('ChapterDeleteAction', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}" class="delete">X</a>
+                    <a onclick="confirmAction('{{ route('ChapterDeleteAction', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}', 'Ви впевнені, що хочите видалити розділ {{ $chapter->title }}?')" href="#" class="delete">X</a>
+
+{{--                    <a href="{{ route('ChapterDeleteAction', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}">delete</a>--}}
                 </div>
             @endforeach
 
