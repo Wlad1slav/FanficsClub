@@ -77,7 +77,7 @@
                 @foreach($fanfic->getFandomsAttribute() as $fandom)
                     @php $fandoms .= "$fandom->name, "; @endphp
                     <a class="fandom-link"
-                       href="{{ route('FilterPage', ['fandoms-selected' => $fandom->name]) }}">
+                       href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}">
                         {{ $fandom->name }}
                     </a>
                 @endforeach
@@ -98,8 +98,8 @@
                                     $paring[$key] = \App\Models\Character::find($character)->name;
                                 $paring = implode('/', $paring)
                             @endphp
-                            <a class="fandom-link" style="margin-right: var(--indent-tiny);"
-                               href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $paring]) }}">
+                            <a class="fandom-link"
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring]) }}">
                                 {{ $paring }}</a>
                         @endforeach
                     </div>
@@ -110,8 +110,8 @@
                         <h3>Персонажі</h3>
                         @foreach($charactersAll['characters'] as $character_id)
                             @php $character = \App\Models\Character::find($character_id) @endphp
-                            <a class="fandom-link" style="margin-right: var(--indent-tiny);"
-                               href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'characters' => $character->name]) }}">
+                            <a class="fandom-link"
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
                                 {{ $character->name }}
                             </a>
                         @endforeach
@@ -124,11 +124,11 @@
                     @foreach($fanfic->tags as $tag)
                         @if($tag->notification !== null)
                             <a class="fandom-link"
-                               href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
                                 {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
                         @else
                             <a class="fandom-link"
-                               href="{{ route('FilterPage', ['fandoms-selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
                                 {{ $tag->name }}</a>
                         @endif
                     @endforeach
