@@ -89,20 +89,30 @@ Route::post('/profile/info/avatar',
 
 // Сторінки пов'язані з фанфіками
 
+// Сторінка з формою створення фанфіка
+Route::get('/profile/fanfic/create',
+    [UserProfileController::class, 'fanficCreate']
+)->middleware('auth')->name('FanficCreatePage');
+
 // Створення фанфіка
 Route::post('/profile/fanfic/create',
     [FanficitonController::class, 'create']
 )->middleware('auth')->name('FanficCreateAction');
 
+// Форма редагування фанфіка
+Route::get('/profile/fanfic/{ff_slug}/edit',
+    [FanficitonController::class, 'editPage']
+)->middleware('auth')->name('FanficEditPage');
+
+// Редагування фанфіка
+Route::post('/profile/fanfic/{ff_slug}/edit',
+    [FanficitonController::class, 'edit']
+)->middleware('auth')->name('FanficEditAction');
+
 // Перегляд фанфіка
 Route::get('/fanfic/{ff_slug}/{chapter_slug?}',
     [FanficitonController::class, 'view']
 )->name('FanficPage');
-
-// Сторінка з формою створення фанфіка
-Route::get('/profile/fanfic/create',
-    [UserProfileController::class, 'fanficCreate']
-)->middleware('auth')->name('FanficCreatePage');
 
 // Сторінка з переліком усіх фанфіків
 Route::get('/profile/fanfics',
