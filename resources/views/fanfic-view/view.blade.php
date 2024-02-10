@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        @if($chapters !== null)
+        @if($chapters !== null and count($chapters) > 0)
 
             <div class="action">
                 <form action="{{ route('ChapterSelectAction', ['ff_slug' => $fanfic->slug ]) }}"
@@ -208,7 +208,7 @@
 
     </div>
 
-    @if($chapters !== null)
+    @if($chapters !== null and count($chapters) > 0)
         @include('fanfic-view.chapter', ['chapter' => $chapter ?? $chapters->first()])
     @endif
 
