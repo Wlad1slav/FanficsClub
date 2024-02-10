@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AgeRating;
 use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Character;
@@ -31,7 +32,7 @@ class FanficitonController extends Controller
             'type_of_work' => 'required',
 //            'anonymity' => 'required',
             'originality_of_work' => 'required',
-            'ff_name' => ['required', 'string', 'min:1'],
+            'ff_name' => ['required', 'string'],
 //            'characters' => ['string'],
             'age_rating' => ['required', new AgeRatingExists()],
             'category' => ['required', new CategoryExists()],
@@ -59,13 +60,14 @@ class FanficitonController extends Controller
             'characters' => json_encode(Character::convertCharactersStrToArray($request->characters)),
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
+            'is_anonymous' => ($request->anonymity ?? 0) == 1
         ];
 
         // Якщо твір є перекладом, то валідується
         // переданий псевдоним автора і посилання на оригінальну роботу
         if ($request->type_of_work == '1') {
             $request->validate([
-                'ff_original_author' => ['required', 'string', 'min:1'],
+                'ff_original_author' => ['required', 'string'],
                 'ff_original_link' => ['required', 'url']
             ]);
 
@@ -74,7 +76,9 @@ class FanficitonController extends Controller
             $fanfic['is_translate'] = true;
         }
 
-        Fanfiction::create($fanfic);
+        $fanfic = Fanfiction::create($fanfic);
+
+        return redirect()->route('FanficPage', ['ff_slug'=>$fanfic->slug]);
     }
 
     public function view(string $ff_slug, ?string $chapter_slug = null)
@@ -103,6 +107,151 @@ class FanficitonController extends Controller
         ];
 
         return view('fanfic-view.view', $data);
+    }
+
+    public function editPage(string $ff_slug)
+    {
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        // Перевірка, чи користувач має доступ до фанфіка
+        $this->authorize('fanficAccess', $fanfic ?? null);
+
+        $selectedCharacters = '';
+
+        $charactersAll = json_decode($fanfic->characters, true);
+
+        if (count($charactersAll['characters']) > 0 || count($charactersAll['parings']) > 0) {
+
+            foreach ($charactersAll['parings'] as $paring) {
+                // Отримання усіх пейренгів
+                $paringNames = []; // Створення нового масиву для імен персонажів
+                foreach ($paring as $key => $character) {
+                    $c = Character::find($character);
+                    if ($c)  // Перевірка на існування персонажа
+                        $paringNames[$key] = $c->name;
+                }
+                if (!empty($paringNames)) { // Перевірка, що масив не пустий перед об'єднанням
+                    $paringStr = implode('/', $paringNames); // Об'єднання імен персонажів у рядок
+                    $selectedCharacters .= "$paringStr, "; // Додавання рядка до результату
+                }
+            }
+
+            foreach ($charactersAll['characters'] as $character_id) {
+                $character = Character::find($character_id);
+                if ($character)
+                    $selectedCharacters .= "$character->name, ";
+            }
+
+        }
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+
+            // Редагуємий фанфік
+            'fanfic' => $fanfic,
+
+            // Усі вікові рейтинги
+            'ageRatings' => Cache::remember("age_ratings_all", 60*60*168, function () {
+                return AgeRating::all();
+            }),
+
+            // Усі категорії
+            'categories' => Cache::remember("categories_all", 60*60*168, function () {
+                return Category::all();
+            }),
+
+            // Усі фандоми, відсортировані по популярності
+            'fandoms' => Cache::remember("fandoms_all", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->get();
+            }),
+
+            // Назви усіх фандомів, до яких вже належить фанфік
+            'fandoms_selected' => $fanfic->fandoms->pluck('name')->toArray(),
+
+            // Усі теґі
+            'tags' => Cache::remember("tags_all", 60*60*24, function () {
+                return Tag::all();
+            }),
+
+            // Назви усіх тегів, які вже є у фанфіку
+            'tags_selected' => $fanfic->tags->pluck('name')->toArray(),
+
+            // Усі користувачі, відсортировані по фандомам
+            'characters' => Cache::remember("characters_all", 60*60*24, function () {
+                return Character::orderBy('belonging_to_fandom_id')->get();
+            }),
+
+            // Строка з усіма персонажами, що є в фанфіку
+            'characters_selected' => $selectedCharacters
+        ];
+
+        return view('fanfic-edit.ff-edit', $data);
+
+    }
+
+    public function edit(Request $request, string $ff_slug) {
+        // FanficEditAction
+        // Редагування фанфіка через форму
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        // Перевірка, чи користувач має доступ до фанфіка
+        $this->authorize('fanficAccess', $fanfic ?? null);
+
+        $request->validate([
+            'type_of_work' => 'required',
+            'ff_name' => ['required', 'string'],
+            'age_rating' => ['required', new AgeRatingExists()],
+            'category' => ['required', new CategoryExists()],
+            'tags_selected' => [new TagsExists()],
+            'ff_description' => ['max:550'],
+            'ff_notes' => ['max:550'],
+
+            'fandoms_selected' => ['required', new FandomsExists()],
+        ]);
+
+        if ($fanfic->title !== $request->ff_name)
+            $slug = self::createOriginalSlug(
+                $request->ff_name,
+                new Fanfiction());
+        else $slug = $fanfic->slug;
+
+
+        $newFanficInfo = [
+            'slug' => $slug,
+            'fandoms_id' => json_encode(Fandom::convertStrAttrToArray($request->fandoms_selected ?? null)),
+            'title' => $request->ff_name,
+            'description' => $request->ff_description,
+            'additional_descriptions' => $request->ff_notes,
+            'tags' => json_encode(Tag::convertStrAttrToArray($request->tags_selected)),
+            'characters' => json_encode(Character::convertCharactersStrToArray($request->characters)),
+            'category_id' => $request->category,
+            'age_rating_id' => $request->age_rating,
+            'is_anonymous' => ($request->anonymity ?? 0) == 1
+        ];
+
+        // Якщо твір є перекладом, то валідується
+        // переданий псевдоним автора і посилання на оригінальну роботу
+        if ($request->type_of_work == '1') {
+            $request->validate([
+                'ff_original_author' => ['required', 'string'],
+                'ff_original_link' => ['required', 'url']
+            ]);
+
+            $newFanficInfo['original_author'] = $request->ff_original_author;
+            $newFanficInfo['original_url'] = $request->ff_original_link;
+            $newFanficInfo['is_translate'] = true;
+        }
+
+        $fanfic->clearCache();
+        $fanfic->update($newFanficInfo);
+
+        return redirect()->route('FanficEditPage', ['ff_slug'=>$fanfic->slug]);
     }
 
 }

@@ -1,6 +1,6 @@
 <nav>
     <div>
-        <a href="#">Редагувати твір</a>
+        <a href="{{ route('FanficEditPage', ['ff_slug' => $fanfic->slug]) }}">Редагувати твір</a>
         <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">Розділи</a>
         <a href="{{ route('ChapterCreatePage', ['ff_slug' => $fanfic->slug]) }}">Створити розділ</a>
     </div>

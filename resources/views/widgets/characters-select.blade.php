@@ -2,7 +2,7 @@
     let charactersInput = 0;
 
     function selectCharacter() {
-        /* Функція, що вілпрацьовує, коли користувач вибірає персонажа
+        /* Функція, що відпрацьовує, коли користувач вибірає персонажа
         При виборі персонажа, з'являється нове поле для вибору йому пари
         Довжина пейрінга може бути безкінечною */
         console.log('selectCharacter')
@@ -88,7 +88,7 @@
 <textarea id="characters"
           name="characters"
           rows="5"
-          style="margin-bottom: var(--indent-small);">{{ $_GET['characters'] ?? '' }}</textarea>
+          style="margin-bottom: var(--indent-small);">{{ $_GET['characters'] ?? '' }}{{ $default_values ?? '' }}</textarea>
 
 <div style="display: flex; align-items: flex-start; width: 100%;">
     <div id="characters-select-container" style="width: 100%;">
