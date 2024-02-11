@@ -3,6 +3,8 @@
 
 @section('content')
 
+    <script src="{{ asset('js/confirm-action.js') }}"></script>
+
     <h1>Користувачі, які мають доступ</h1>
 
     <div style="display: flex; align-items: baseline;">
@@ -27,27 +29,32 @@
             </form>
         </div>
 
-        <table style="margin-left: var(--indent-medium);">
-            <caption>
-                Користувачі, що мають доступ до фанфіка {{ $fanfic->name }}
-            </caption>
+        @if(!empty($users_with_access))
+            <table style="margin-left: var(--indent-medium);">
+                <caption>
+                    Користувачі, що мають доступ до фанфіка {{ $fanfic->name }}
+                </caption>
 
-            <thead>
-                <tr>
-                    <th>Користувач</th>
-                    <th>Статус</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach($users_with_access as $user)
+                <thead>
                     <tr>
-                        <th>{{ $user->name }}</th>
-                        <td>{{ $fanfic_access[$user->id] == 'coauthor' ? 'Співавтор' : 'Редактор' }}</td>
+                        <th>Користувач</th>
+                        <th>Статус</th>
+                        <th></th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody>
+                    @foreach($users_with_access as $user)
+                        <tr>
+                            <th>{{ $user->name }}</th>
+                            <td>{{ $fanfic_access[$user->id] == 'coauthor' ? 'Співавтор' : 'Редактор' }}</td>
+                            <td><a onclick="confirmAction('{{ route('PutUserAccessAction', ['ff_slug' => $fanfic->slug, 'userId' => $user->id]) }}', 'Ви впевнені, що хочите забрати права доступу у користувача {{ $user->name }}?')" href="#">прибрати</a></td>
+{{--                            <a href="{{ route('PutUserAccessAction', ['ff_slug' => $fanfic->slug, 'userId' => $user->id]) }}">видалити</a>--}}
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
 
     </div>
 

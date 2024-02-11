@@ -129,6 +129,11 @@ Route::post('/fanfic-edit/access/{ff_slug}/add-{right}',
     [FanficitonController::class, 'giveAccessToFanfic']
 )->name('GiveAccessAction');
 
+// Прибрати доступ у певного користувача
+Route::get('/fanfic-edit/access/{ff_slug}/put-{userId}',
+    [FanficitonController::class, 'putUserAccess']
+)->name('PutUserAccessAction');
+
 // Сторінки пов'язані з розділами
 
 // Форма для створення нового розділа

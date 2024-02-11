@@ -321,4 +321,25 @@ class FanficitonController extends Controller
 
     }
 
+    public function putUserAccess(string $ff_slug, int $userId)
+    {   // PutUserAccessAction
+        // Прибрати доступ у певного користувача
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        // Перевірка, чи користувач має доступ до фанфіка
+        $this->authorize('fanficAccess', $fanfic);
+
+        // Прибириання користувача з масиву користувачів з доступом
+        $users = $fanfic->users_with_access;
+        unset($users[$userId]);
+        $fanfic->update(['users_with_access' => $users]);
+
+        $fanfic->clearCache();
+
+        return back();
+    }
+
 }
