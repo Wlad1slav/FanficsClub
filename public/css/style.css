@@ -55,6 +55,32 @@ textarea {
     font-size: var(--font-size);
 }
 
+table {
+    border-collapse: collapse!important;
+    table-layout: fixed;
+    border: 2px solid var(--clr-dark-base);
+}
+
+caption {
+    font-size: calc(var(--font-size)/1.5);
+    caption-side: bottom;
+}
+
+thead,
+tfoot {
+    background-color: var(--clr-base);
+    color: var(--clr-white);
+}
+
+td:last-of-type {
+    text-align: center;
+}
+
+td, th {
+    padding: var(--indent-small);
+    word-wrap: break-word;
+}
+
 .fandom-link {
     color: var(--clr-black);
     text-decoration: none;

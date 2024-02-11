@@ -75,7 +75,11 @@ class Fanfiction extends Model
     // Очищає кеш певного фанфіка
     public function clearCache()
     {
-        Cache::pull("fanfic_{$this->slug}"); // Видалення фанфіка з кешу
+        // Видалення фанфіка з кешу
+        Cache::pull("fanfic_{$this->slug}");
+
+        // Видалення усіх користувачів, що мають доступ до фанфіку з кешу
+        Cache::pull("users_with_access_{$this->slug}");
 
         // Видалення усіх розділів фанфіка з кешу
         Cache::pull("chapters_ff_{$this->id}");

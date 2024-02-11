@@ -119,6 +119,16 @@ Route::get('/profile/fanfics',
     [UserProfileController::class, 'fanficsList']
 )->middleware('auth')->name('FanficListPage');
 
+// Сторінка з таблицею користувачів, які мають доступ до фанфіка
+Route::get('/fanfic-edit/access/{ff_slug}/',
+    [FanficitonController::class, 'usersAccess']
+)->middleware('auth')->name('UsersAccessPage');
+
+// Додати соавтора чи редактора в фанфік
+Route::post('/fanfic-edit/access/{ff_slug}/add-{right}',
+    [FanficitonController::class, 'giveAccessToFanfic']
+)->name('GiveAccessAction');
+
 // Сторінки пов'язані з розділами
 
 // Форма для створення нового розділа

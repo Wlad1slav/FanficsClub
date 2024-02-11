@@ -9,10 +9,12 @@ use App\Models\Character;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
 use App\Models\Tag;
+use App\Models\User;
 use App\Rules\AgeRatingExists;
 use App\Rules\CategoryExists;
 use App\Rules\FandomsExists;
 use App\Rules\TagsExists;
+use App\Rules\UserNotOwnedFanfic;
 use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -205,7 +207,7 @@ class FanficitonController extends Controller
 
         $request->validate([
             'type_of_work' => 'required',
-            'ff_name' => ['required', 'string'],
+            'ff_name' => ['required', 'string', 'max:255'],
             'age_rating' => ['required', new AgeRatingExists()],
             'category' => ['required', new CategoryExists()],
             'tags_selected' => [new TagsExists()],
@@ -252,6 +254,70 @@ class FanficitonController extends Controller
         $fanfic->update($newFanficInfo);
 
         return redirect()->route('FanficEditPage', ['ff_slug'=>$fanfic->slug]);
+    }
+
+    public function usersAccess(string $ff_slug)
+    {   // UsersAccessPage
+        // Сторінка з усіма користувачами, які мають доступ до фанфіка
+        // і формами для давання користувачам доступу
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        $usersWithAccess = Cache::remember("users_with_access_$ff_slug", 60*60*7, function () use ($fanfic) {
+            // Витягуються id усіх користувачів, записані в колонці users_with_access таблиці фанфіків.
+            // Айді користувачів виступають у ролі ключів до рівня їх прав в колонці users_with_access.
+            // Використовуються в якості масиву для пошуку усіх в таблиці users.
+            $ids = array_keys(json_decode($fanfic->users_with_access, true));
+            return User::whereIn('id', $ids)->get();
+        });
+
+        // Перевірка, чи користувач має доступ до фанфіка
+        $this->authorize('fanficAccess', $fanfic ?? null);
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+
+            // Редагуємий фанфік
+            'fanfic' => $fanfic,
+
+            // Користувачі, що мають доступ до фанфіку
+            'users_with_access' => $usersWithAccess,
+
+            // Масив з рівням прав кожного користувача, що має доступ до фанфіка
+            'fanfic_access' => json_decode($fanfic->users_with_access, true)
+        ];
+
+        return view('fanfic-edit.users-access', $data);
+    }
+
+    public function giveAccessToFanfic(Request $request, string $ff_slug, string $right)
+    {   // GiveAccessAction
+        // Додати соавтора чи редактора в фанфік
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        // Перевірка, чи користувач має доступ до фанфіка
+        $this->authorize('fanficAccess', $fanfic ?? null);
+
+        $request->validate([
+            'email' => ['required', 'email', 'exists:App\Models\User,email', new UserNotOwnedFanfic($fanfic)],
+        ]);
+
+        $user = User::where('email', $request->email ?? null)->first();
+
+        $fanfic->clearCache();
+
+        // $rights - рівень прав користувача
+        // coauthor
+        // editor
+        $fanfic->update(["users_with_access->$user->id" => $right ]);
+
+        return back();
+
     }
 
 }

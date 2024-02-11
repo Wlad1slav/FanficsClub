@@ -17,6 +17,10 @@ h2 {
     font-size: calc(var(--heading2-size)/1.5);
 }
 
+h3 {
+    margin-bottom: var(--indent-small);
+}
+
 .content {
     min-height: 85vh;
     width: 85%;
