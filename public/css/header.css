@@ -48,6 +48,7 @@ header #greeting-line {
     align-items: flex-start;
     align-content: flex-start!important;
     padding: var(--indent-small);
+    letter-spacing: 1px;
 }
 
 header #greeting-line a:not(.logo),
