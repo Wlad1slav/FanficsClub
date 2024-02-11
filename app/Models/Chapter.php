@@ -16,6 +16,10 @@ class Chapter extends Model
     protected $table = 'chapters';
     protected $guarded = [];
 
+    protected $casts = [
+        'additional_descriptions' => 'array',
+    ];
+
     public function fanfiction(): BelongsTo
     {   // Зв'язок з моделю Fanfiction
         return $this->belongsTo(Fanfiction::class);
@@ -28,7 +32,7 @@ class Chapter extends Model
 
             if ($fanfic->chapters_sequence !== null) {
                 // Розділи сортируються згідно з заданим порядком в бд
-                $sequence = json_decode($fanfic->chapters_sequence, true);
+                $sequence = $fanfic->chapters_sequence;
                 $sequenceStr = implode(',', $sequence);
                 return Chapter::where('fanfiction_id', $fanfic->id)
                     ->whereIn('id', $sequence)

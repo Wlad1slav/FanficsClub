@@ -54,12 +54,12 @@ class FanficitonController extends Controller
         $fanfic = [
             'slug' => self::createOriginalSlug($request->ff_name, Fanfiction::class),
             'author_id' => Auth::user()->id,
-            'fandoms_id' => json_encode(Fandom::convertStrAttrToArray($request->fandoms_selected ?? null)),
+            'fandoms_id' => Fandom::convertStrAttrToArray($request->fandoms_selected ?? null),
             'title' => $request->ff_name,
             'description' => $request->ff_description,
             'additional_descriptions' => $request->ff_notes,
-            'tags' => json_encode(Tag::convertStrAttrToArray($request->tags_selected)),
-            'characters' => json_encode(Character::convertCharactersStrToArray($request->characters)),
+            'tags' => Tag::convertStrAttrToArray($request->tags_selected),
+            'characters' => Character::convertCharactersStrToArray($request->characters),
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
             'is_anonymous' => ($request->anonymity ?? 0) == 1
@@ -103,9 +103,20 @@ class FanficitonController extends Controller
             'title' => $fanfic->title,
             'metaDescription' => $fanfic->description,
             'navigation' => require_once 'navigation.php',
+
+            // Фанфік, якому присвячена сторінка
             'fanfic' => $fanfic,
+
+            // Масив імен усіх розділів фанфіку
             'chapters' => $chapters,
-            'chapter' => $chapter ?? null
+
+            // Конкретний розділ, на якому знаходиться користувач.
+            // По стандарту - перший розділ.
+            'chapter' => $chapter ?? null,
+
+            // Усі користувачі, що мають доступ до фанфіку
+            'usersWithAccess' => $fanfic->usersWithAccess()
+
         ];
 
         return view('fanfic-view.view', $data);
@@ -123,11 +134,9 @@ class FanficitonController extends Controller
 
         $selectedCharacters = '';
 
-        $charactersAll = json_decode($fanfic->characters, true);
+        if (count($fanfic->characters['characters']) > 0 || count($fanfic->characters['parings']) > 0) {
 
-        if (count($charactersAll['characters']) > 0 || count($charactersAll['parings']) > 0) {
-
-            foreach ($charactersAll['parings'] as $paring) {
+            foreach ($fanfic->characters['parings'] as $paring) {
                 // Отримання усіх пейренгів
                 $paringNames = []; // Створення нового масиву для імен персонажів
                 foreach ($paring as $key => $character) {
@@ -141,7 +150,7 @@ class FanficitonController extends Controller
                 }
             }
 
-            foreach ($charactersAll['characters'] as $character_id) {
+            foreach ($fanfic->characters['characters'] as $character_id) {
                 $character = Character::find($character_id);
                 if ($character)
                     $selectedCharacters .= "$character->name, ";
@@ -226,12 +235,12 @@ class FanficitonController extends Controller
 
         $newFanficInfo = [
             'slug' => $slug,
-            'fandoms_id' => json_encode(Fandom::convertStrAttrToArray($request->fandoms_selected ?? null)),
+            'fandoms_id' => Fandom::convertStrAttrToArray($request->fandoms_selected ?? null),
             'title' => $request->ff_name,
             'description' => $request->ff_description,
             'additional_descriptions' => $request->ff_notes,
-            'tags' => json_encode(Tag::convertStrAttrToArray($request->tags_selected)),
-            'characters' => json_encode(Character::convertCharactersStrToArray($request->characters)),
+            'tags' => Tag::convertStrAttrToArray($request->tags_selected),
+            'characters' => Character::convertCharactersStrToArray($request->characters),
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
             'is_anonymous' => ($request->anonymity ?? 0) == 1
@@ -265,14 +274,6 @@ class FanficitonController extends Controller
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
-        $usersWithAccess = Cache::remember("users_with_access_$ff_slug", 60*60*7, function () use ($fanfic) {
-            // Витягуються id усіх користувачів, записані в колонці users_with_access таблиці фанфіків.
-            // Айді користувачів виступають у ролі ключів до рівня їх прав в колонці users_with_access.
-            // Використовуються в якості масиву для пошуку усіх в таблиці users.
-            $ids = array_keys(json_decode($fanfic->users_with_access, true));
-            return User::whereIn('id', $ids)->get();
-        });
-
         // Перевірка, чи користувач має доступ до фанфіка
         $this->authorize('fanficAccess', $fanfic ?? null);
 
@@ -283,10 +284,10 @@ class FanficitonController extends Controller
             'fanfic' => $fanfic,
 
             // Користувачі, що мають доступ до фанфіку
-            'users_with_access' => $usersWithAccess,
+            'users_with_access' => $fanfic->usersWithAccess(),
 
             // Масив з рівням прав кожного користувача, що має доступ до фанфіка
-            'fanfic_access' => json_decode($fanfic->users_with_access, true)
+            'fanfic_access' => $fanfic->users_with_access
         ];
 
         return view('fanfic-edit.users-access', $data);

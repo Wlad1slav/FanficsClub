@@ -86,13 +86,10 @@
 
             <div>
                 <!-- Перелік персонажів і пейрингів персонажів -->
-                @php
-                    $charactersAll = json_decode($fanfic->characters, true);
-                @endphp
-                @if(count($charactersAll['parings']) > 0) <!-- Стосунки -->
+                @if(count($fanfic->characters['parings']) > 0) <!-- Стосунки -->
                     <div>
                         <h3>Стосунки</h3>
-                        @foreach($charactersAll['parings'] as $paring)
+                        @foreach($fanfic->characters['parings'] as $paring)
                             @php
                                 foreach ($paring as $key => $character)
                                     $paring[$key] = \App\Models\Character::find($character)->name;
@@ -105,10 +102,10 @@
                     </div>
                 @endif
 
-                @if(count($charactersAll['characters']) > 0) <!-- Персонажі -->
+                @if(count($fanfic->characters['characters']) > 0) <!-- Персонажі -->
                     <div>
                         <h3>Персонажі</h3>
-                        @foreach($charactersAll['characters'] as $character_id)
+                        @foreach($fanfic->characters['characters'] as $character_id)
                             @php $character = \App\Models\Character::find($character_id) @endphp
                             <a class="fandom-link"
                                href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
@@ -149,7 +146,14 @@
 
         <div class="description">
             <h1>{{ $fanfic->title }}</h1>
+
+
             <h2>{{ $fanfic->is_anonymous ? 'Аноним' : $fanfic->author->name }}</h2>
+            @if($fanfic->users_with_access !== null and count($fanfic->users_with_access) > 0)
+                @foreach($usersWithAccess as $user)
+                    <p class="another-author">{{ $user->name }}</p>
+                @endforeach
+            @endif
 
             <div class="desc">
                 @if(strlen($fanfic->description) > 0)

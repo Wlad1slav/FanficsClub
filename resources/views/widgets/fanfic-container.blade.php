@@ -100,14 +100,11 @@
         </p>
 
         <!-- Перелік персонажів і пейрингів персонажів -->
-        @php
-            $charactersAll = json_decode($fanfic->characters, true);
-        @endphp
-        @if(count($charactersAll['characters']) > 0 || count($charactersAll['parings']) > 0)
+        @if(count($fanfic->characters['characters']) > 0 || count($fanfic->characters['parings']) > 0)
             <p><span>Персонажі:</span>
 
                 <!-- Пейренги -->
-                @foreach($charactersAll['parings'] as $paring)
+                @foreach($fanfic->characters['parings'] as $paring)
                     @php
                         foreach ($paring as $key => $character)
                             $paring[$key] = \App\Models\Character::find($character)->name;
@@ -119,7 +116,7 @@
                 @endforeach
 
                 <!-- Персонажі -->
-                @foreach($charactersAll['characters'] as $character_id)
+                @foreach($fanfic->characters['characters'] as $character_id)
                     @php $character = \App\Models\Character::find($character_id) @endphp
                     <a class="fandom-link"
                        href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">

@@ -1,18 +1,12 @@
-@php
-
-    $additionalDesc = json_decode($chapter->additional_descriptions ?? '', true);
-
-@endphp
-
 <link rel="stylesheet" href="{{ asset('css/chapter/view.css') }}">
 
 <div id="chapter">
 
     <h2>{{ $chapter->title }}</h2>
 
-    @if($additionalDesc['notify'])
+    @if($chapter->additional_descriptions['notify'])
         <div class="chapter-notify">
-            <p>{{ $additionalDesc['notify'] }}</p>
+            <p>{{ $chapter->additional_descriptions['notify'] }}</p>
         </div>
     @endif
 
@@ -21,9 +15,9 @@
         <p>{{ $chapter->content }}</p>
     </div>
 
-        @if($additionalDesc['notes'])
+        @if($chapter->additional_descriptions['notes'])
             <div class="chapter-notes">
-                <p>{{ $additionalDesc['notes'] }}</p>
+                <p>{{ $chapter->additional_descriptions['notes'] }}</p>
             </div>
         @endif
 

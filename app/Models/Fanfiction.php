@@ -18,6 +18,14 @@ class Fanfiction extends Model
     protected $table = 'fanfictions';
     protected $guarded = [];
 
+    protected $casts = [
+        'users_with_access' => 'array',
+        'chapters_sequence' => 'array',
+        'fandoms_id' => 'array',
+        'tags' => 'array',
+        'characters' => 'array',
+    ];
+
     public function category(): BelongsTo
     {   // Зв'язок з моделю Category
         // для кожного екземпляра Fanfiction можна отримати категорію
@@ -70,6 +78,17 @@ class Fanfiction extends Model
     public function fandoms()
     {
         return $this->belongsToMany(Fandom::class, 'fanfiction_fandom', 'fanfiction_id', 'fandom_id');
+    }
+
+    public function usersWithAccess()
+    {   // Усі користувачі, що мають доступ до фанфіку
+        return Cache::remember("users_with_access_$this->slug", 60*60*7, function () {
+            // Витягуються id усіх користувачів, записані в колонці users_with_access таблиці фанфіків.
+            // Айді користувачів виступають у ролі ключів до рівня їх прав в колонці users_with_access.
+            // Використовуються в якості масиву для пошуку усіх в таблиці users.
+            $ids = array_keys($this->users_with_access ?? []);
+            return User::whereIn('id', $ids)->get();
+        });
     }
 
     // Очищає кеш певного фанфіка

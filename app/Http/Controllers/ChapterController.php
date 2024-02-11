@@ -55,10 +55,10 @@ class ChapterController extends Controller
             'title' => $request->chapter_title,
             'slug' => self::createOriginalSlug($request->chapter_title, new Chapter()),
             'content' => $request->chapter_content,
-            'additional_descriptions' => json_encode([
+            'additional_descriptions' => [
                 'notify' => $request->notify ?? null,
                 'notes' => $request->notes ?? null,
-            ]),
+            ],
 
             // Якщо value is_draft рівен одному, то розділ зберігається, як чорнетка
             'is_draft' => ($request->is_draft ?? 0) == 1
@@ -66,11 +66,11 @@ class ChapterController extends Controller
 
         // Додавання нового розділу в масив з послідовносттю розділів в фанфіку
         if ($fanfic->chapters_sequence === null)
-            $fanfic->chapters_sequence = json_encode([$chapter->id]);
+            $fanfic->chapters_sequence = [$chapter->id];
         else {
-            $sequence = json_decode($fanfic->chapters_sequence, true);
+            $sequence = $fanfic->chapters_sequence;
             $sequence[] = $chapter->id;
-            $fanfic->chapters_sequence = json_encode($sequence);
+            $fanfic->chapters_sequence = $sequence;
         }
 
         $fanfic->clearCache(); // Видалення фанфіку з кешу
@@ -149,10 +149,10 @@ class ChapterController extends Controller
             'title' => $request->chapter_title ?? "Розділ " . ($fanfic->chapters->count() + 1),
             'slug' => $slug,
             'content' => $request->chapter_content,
-            'additional_descriptions' => json_encode([
+            'additional_descriptions' => [
                 'notify' => $request->notify ?? null,
                 'notes' => $request->notes ?? null,
-            ]),
+            ],
 
             // Якщо value is_draft рівен одному, то розділ зберігається, як чорнетка
             'is_draft' => ($request->is_draft ?? 0) == 1
@@ -258,7 +258,7 @@ class ChapterController extends Controller
         ksort($sequence);
 
         $fanfic->clearCache();
-        $fanfic->chapters_sequence = json_encode(array_values($sequence));
+        $fanfic->chapters_sequence = array_values($sequence);
         $fanfic->save();
 
         return back();
