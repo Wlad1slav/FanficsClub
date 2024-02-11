@@ -100,6 +100,6 @@ class FanfictionPolicy
 
     public function chapterBelongToFanfic(User $user, Fanfiction $fanfiction, ?Chapter $chapter)
     {
-        return $fanfiction == $chapter->fanfiction;
+        return $fanfiction->id == $chapter->fanfiction->id;
     }
 }
