@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <header>
 
@@ -15,6 +16,7 @@
             @endguest
 
             @auth
+                <a href="#">Підписки</a>
                 <a href="#">Опублікувати фанфік</a>
                 <a href="{{ route('MyProfilePage') }}">Мій профіль</a>
             @endauth
