@@ -130,7 +130,7 @@ class FanficitonController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic ?? null);
+        $this->authorize('isAuthor', $fanfic ?? null);
 
         $selectedCharacters = '';
 
@@ -212,7 +212,7 @@ class FanficitonController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic ?? null);
+        $this->authorize('isAuthor', $fanfic ?? null);
 
         $request->validate([
             'type_of_work' => 'required',
@@ -275,7 +275,7 @@ class FanficitonController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic ?? null);
+        $this->authorize('isAuthor', $fanfic ?? null);
 
         $data = [
             'navigation' => require_once 'navigation.php',
@@ -302,7 +302,7 @@ class FanficitonController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic ?? null);
+        $this->authorize('isAuthor', $fanfic ?? null);
 
         $request->validate([
             'email' => ['required', 'email', 'exists:App\Models\User,email', new UserNotOwnedFanfic($fanfic)],
@@ -330,7 +330,7 @@ class FanficitonController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('isAuthor', $fanfic);
 
         // Прибириання користувача з масиву користувачів з доступом
         $users = $fanfic->users_with_access;

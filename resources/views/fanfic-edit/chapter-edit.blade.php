@@ -32,21 +32,15 @@
         </label>
         <textarea name="chapter_content" id="chapter_content" required>{{ $chapter->content }}</textarea>
 
-        @php
-
-        $notes = json_decode($chapter->additional_descriptions, true);
-
-        @endphp
-
         <label for="notify">
             Попередження перед розділом
         </label>
-        <textarea name="notify" id="notify">{{ $notes['notify'] }}</textarea>
+        <textarea name="notify" id="notify">{{ $chapter->additional_descriptions['notify'] }}</textarea>
 
         <label for="notes">
             Нотатки після розділу
         </label>
-        <textarea name="notes" id="notes">{{ $notes['notes'] }}</textarea>
+        <textarea name="notes" id="notes">{{ $chapter->additional_descriptions['notes'] }}</textarea>
 
         <label for="is_draft">
             <input type="checkbox" name="is_draft" value="1" id="is_draft" @checked($chapter->is_draft)>

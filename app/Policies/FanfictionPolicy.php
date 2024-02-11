@@ -94,8 +94,20 @@ class FanfictionPolicy
     }
 
     public function fanficAccess(User $user, Fanfiction $fanfiction)
-    {
-        return $user->id === $fanfiction->author_id;
+    {   // Перевіряє, чи є у користувача доступ до фанфіка
+        return (array_key_exists($user->id, $fanfiction->users_with_access)
+            or $user->id === $fanfiction->author_id);
+    }
+
+    public function isAuthor(User $user, Fanfiction $fanfiction)
+    {   // Перевіряє, чи є користувач автором чи співавтором
+
+        $authors = array_keys(array_filter($fanfiction->users_with_access, function($value) {
+            return $value === 'coauthor';
+        }));
+
+        return ($user->id === $fanfiction->author_id
+            or in_array($user->id, $authors));
     }
 
     public function chapterBelongToFanfic(User $user, Fanfiction $fanfiction, ?Chapter $chapter)

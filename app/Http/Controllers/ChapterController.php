@@ -23,7 +23,7 @@ class ChapterController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('isAuthor', $fanfic);
 
         $data = [
             'navigation' => require_once 'navigation.php',
@@ -43,7 +43,7 @@ class ChapterController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('isAuthor', $fanfic);
 
         $request->validate([
             'chapter_title' => ['required', 'string'],
@@ -171,12 +171,12 @@ class ChapterController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('isAuthor', $fanfic);
 
         $chapter = Chapter::firstCached($chapter_slug);
 
         // Перевірка, чи користувач має доступ до фанфіка, якому належить розділ
-        $this->authorize('fanficAccess', $chapter->fanfiction ?? null);
+        $this->authorize('isAuthor', $chapter->fanfiction ?? null);
 
         // Перевірка, чи належить розділ до фанфіка
         $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
@@ -239,7 +239,7 @@ class ChapterController extends Controller
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
-        $this->authorize('fanficAccess', $fanfic);
+        $this->authorize('isAuthor', $fanfic);
 
         $request->validate([
             'chapter_num' => ['required', 'array', new ChaptersBelongToFanfic($request->chapter_num, $fanfic)],
