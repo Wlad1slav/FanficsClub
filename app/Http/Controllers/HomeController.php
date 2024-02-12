@@ -30,11 +30,11 @@ class HomeController extends Controller
         });
 
         $lastUpdatedFanfics = Cache::remember("last_updated_ff", 60*10, function () {
-            return Fanfiction::orderBy('updated_at', 'desc')->take(5)->get();
+            return Fanfiction::where('is_draft', false)->orderBy('updated_at', 'desc')->take(5)->get();
         });
 
         $lastCreatedFanfics = Cache::remember("last_created_ff", 60*10, function () {
-            return Fanfiction::orderBy('created_at', 'desc')->take(5)->get();
+            return Fanfiction::where('is_draft', false)->orderBy('created_at', 'desc')->take(5)->get();
         });
 
         $data = [

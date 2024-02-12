@@ -48,7 +48,8 @@ class FilterController extends Controller
 
         $characters = Character::convertCharactersStrToArray($request->characters ?? null);
 
-        $fanfics = Fanfiction::whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
+        $fanfics = Fanfiction::where('is_draft', false)
+            ->whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
             ->whereIn('category_id', $request->category ?? $standardCategories)
             ->whereJsonContains('characters->characters', $characters['characters'] ?? [])
             ->whereJsonContains('characters->parings', $characters['parings'] ?? [])

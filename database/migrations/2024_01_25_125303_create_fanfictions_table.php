@@ -53,7 +53,7 @@ return new class extends Migration
                 ->on('age_ratings')
                 ->onDelete('restrict');
 
-            $table->boolean('is_draft')->default(1);
+            $table->boolean('is_draft')->default(0);
             $table->boolean('is_frozen')->default(0);
             $table->boolean('is_completed')->default(0);
             $table->boolean('is_anonymous')->default(0);

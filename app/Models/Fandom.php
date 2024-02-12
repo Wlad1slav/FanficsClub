@@ -87,7 +87,7 @@ class Fandom extends Model
     public function calculatePopularity(): int
     {   // Рахує, скільки фанфіків в певному фандомі
 
-        return Fanfiction::whereJsonContains('fandoms_id', $this->id)->count();
+        return Fanfiction::where('is_draft', false)->whereJsonContains('fandoms_id', $this->id)->count();
     }
 
     public static function calculateAllPopularity(): void

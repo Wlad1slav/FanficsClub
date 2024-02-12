@@ -16,6 +16,11 @@
     <form method="post">
         @csrf
 
+        <label for="is_draft">
+            <input type="checkbox" name="is_draft" value="1" id="is_draft" @checked($fanfic->is_draft)>
+            Скритий твір
+        </label>
+
         <!-- Назва фанфіка -->
         <div class="field">
 

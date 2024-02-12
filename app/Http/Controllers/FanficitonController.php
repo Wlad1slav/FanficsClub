@@ -62,7 +62,7 @@ class FanficitonController extends Controller
             'characters' => Character::convertCharactersStrToArray($request->characters),
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
-            'is_anonymous' => ($request->anonymity ?? 0) == 1
+            'is_anonymous' => ($request->anonymity ?? 0) == 1,
         ];
 
         // Якщо твір є перекладом, то валідується
@@ -98,6 +98,9 @@ class FanficitonController extends Controller
             // Якщо в посиланні заданий slug глави
             $chapter = Chapter::firstCached($chapter_slug);
         }
+
+        if ($fanfic->is_draft or $chapter->is_draft)
+            $this->authorize('fanficAccess', $fanfic ?? null);
 
         $data = [
             'title' => $fanfic->title,
@@ -243,7 +246,8 @@ class FanficitonController extends Controller
             'characters' => Character::convertCharactersStrToArray($request->characters),
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
-            'is_anonymous' => ($request->anonymity ?? 0) == 1
+            'is_anonymous' => ($request->anonymity ?? 0) == 1,
+            'is_draft' => ($request->is_draft ?? 0) == 1,
         ];
 
         // Якщо твір є перекладом, то валідується
