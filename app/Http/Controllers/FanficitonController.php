@@ -54,12 +54,15 @@ class FanficitonController extends Controller
         $fanfic = [
             'slug' => self::createOriginalSlug($request->ff_name, Fanfiction::class),
             'author_id' => Auth::user()->id,
-            'fandoms_id' => Fandom::convertStrAttrToArray($request->fandoms_selected ?? null),
+            'fandoms_id' => ($request->originality_of_work ?? 1) === 0 ? // Якщо оригінальність вибрана, як "Оригінальний твір"
+                Fandom::convertStrAttrToArray($request->fandoms_selected ?? null) : null, // то встановлюється null
             'title' => $request->ff_name,
             'description' => $request->ff_description,
             'additional_descriptions' => $request->ff_notes,
             'tags' => Tag::convertStrAttrToArray($request->tags_selected),
-            'characters' => Character::convertCharactersStrToArray($request->characters),
+            'characters' => ($request->originality_of_work ?? 1) === 0 ? // Якщо оригінальність вибрана, як "Оригінальний твір"
+                Character::convertCharactersStrToArray($request->characters) :
+                Character::convertOriginalCharactersToArray($request->characters_original), // то повертається просто масив строк імен оригінальних персонажів
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
             'is_anonymous' => ($request->anonymity ?? 0) == 1,
@@ -92,15 +95,18 @@ class FanficitonController extends Controller
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
+        if ($fanfic->is_draft)
+            $this->authorize('fanficAccess', $fanfic ?? null);
+
         $chapters = Chapter::getCached($fanfic);
 
         if ($chapter_slug !== null) {
             // Якщо в посиланні заданий slug глави
             $chapter = Chapter::firstCached($chapter_slug);
-        }
 
-        if ($fanfic->is_draft or $chapter->is_draft)
-            $this->authorize('fanficAccess', $fanfic ?? null);
+            if ($chapter->is_draft)
+                $this->authorize('fanficAccess', $fanfic ?? null);
+        }
 
         $data = [
             'title' => $fanfic->title,
@@ -137,29 +143,30 @@ class FanficitonController extends Controller
 
         $selectedCharacters = '';
 
-        if (count($fanfic->characters['characters']) > 0 || count($fanfic->characters['parings']) > 0) {
+        if ($fanfic->fandoms_id !== null)
+            if (count($fanfic->characters['characters']) > 0 || count($fanfic->characters['parings']) > 0) {
 
-            foreach ($fanfic->characters['parings'] as $paring) {
-                // Отримання усіх пейренгів
-                $paringNames = []; // Створення нового масиву для імен персонажів
-                foreach ($paring as $key => $character) {
-                    $c = Character::find($character);
-                    if ($c)  // Перевірка на існування персонажа
-                        $paringNames[$key] = $c->name;
+                foreach ($fanfic->characters['parings'] as $paring) {
+                    // Отримання усіх пейренгів
+                    $paringNames = []; // Створення нового масиву для імен персонажів
+                    foreach ($paring as $key => $character) {
+                        $c = Character::find($character);
+                        if ($c)  // Перевірка на існування персонажа
+                            $paringNames[$key] = $c->name;
+                    }
+                    if (!empty($paringNames)) { // Перевірка, що масив не пустий перед об'єднанням
+                        $paringStr = implode('/', $paringNames); // Об'єднання імен персонажів у рядок
+                        $selectedCharacters .= "$paringStr, "; // Додавання рядка до результату
+                    }
                 }
-                if (!empty($paringNames)) { // Перевірка, що масив не пустий перед об'єднанням
-                    $paringStr = implode('/', $paringNames); // Об'єднання імен персонажів у рядок
-                    $selectedCharacters .= "$paringStr, "; // Додавання рядка до результату
+
+                foreach ($fanfic->characters['characters'] as $character_id) {
+                    $character = Character::find($character_id);
+                    if ($character)
+                        $selectedCharacters .= "$character->name, ";
                 }
-            }
 
-            foreach ($fanfic->characters['characters'] as $character_id) {
-                $character = Character::find($character_id);
-                if ($character)
-                    $selectedCharacters .= "$character->name, ";
             }
-
-        }
 
         $data = [
             'navigation' => require_once 'navigation.php',
@@ -226,7 +233,7 @@ class FanficitonController extends Controller
             'ff_description' => ['max:550'],
             'ff_notes' => ['max:550'],
 
-            'fandoms_selected' => ['required', new FandomsExists()],
+            'fandoms_selected' => [new FandomsExists()],
         ]);
 
         if ($fanfic->title !== $request->ff_name)
@@ -238,12 +245,15 @@ class FanficitonController extends Controller
 
         $newFanficInfo = [
             'slug' => $slug,
-            'fandoms_id' => Fandom::convertStrAttrToArray($request->fandoms_selected ?? null),
+            'fandoms_id' => ($fanfic->fandoms_id ?? null) !== null ? // Якщо оригінальність вибрана, як "Оригінальний твір"
+                Fandom::convertStrAttrToArray($request->fandoms_selected ?? null) : null, // то встановлюється null
             'title' => $request->ff_name,
             'description' => $request->ff_description,
             'additional_descriptions' => $request->ff_notes,
             'tags' => Tag::convertStrAttrToArray($request->tags_selected),
-            'characters' => Character::convertCharactersStrToArray($request->characters),
+            'characters' => ($fanfic->fandoms_id ?? null) !== null ? // Якщо оригінальність вибрана, як "Оригінальний твір"
+                Character::convertCharactersStrToArray($request->characters) :
+                Character::convertOriginalCharactersToArray($request->characters_original), // то повертається просто масив строк імен оригінальних персонажів
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
             'is_anonymous' => ($request->anonymity ?? 0) == 1,
