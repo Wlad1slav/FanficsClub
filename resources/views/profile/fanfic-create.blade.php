@@ -177,11 +177,17 @@
             <div>
                 @include('widgets.characters-select', ['has_label' => false]) <!-- Віджет з вибором персонажів -->
 
+                <textarea name="characters_original" id="characters-original" class="no-display" placeholder="Іван Мельник, Тарас Данилюк/Наталя Кринська..."></textarea>
+{{--                    <p class="notify">Введіть імена оригінальних персонажів через кому</p>--}}
+
+
                 @error('characters')
                 <p class="error">{{ $message }}</p>
                 @enderror
             </div>
         </div>
+
+
 
         <!-- Вибір вікового рейтингу, до якої відноситься фанфік -->
         <div class="field">

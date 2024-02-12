@@ -48,15 +48,24 @@ class FilterController extends Controller
 
         $characters = Character::convertCharactersStrToArray($request->characters ?? null);
 
-        $fanfics = Fanfiction::where('is_draft', false)
-            ->whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
-            ->whereIn('category_id', $request->category ?? $standardCategories)
-            ->whereJsonContains('characters->characters', $characters['characters'] ?? [])
-            ->whereJsonContains('characters->parings', $characters['parings'] ?? [])
-            ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
-            ->whereJsonContains('fandoms_id', Fandom::convertStrAttrToArray($request->fandoms_selected ?? null))
-            ->orderBy($request->sort_by ?? 'updated_at', 'desc')
-            ->paginate(30);
+        if ($request->type_of_works == 'fanfic')
+            $fanfics = Fanfiction::where('is_draft', false)
+                ->whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
+                ->whereIn('category_id', $request->category ?? $standardCategories)
+                ->whereJsonContains('characters->characters', $characters['characters'] ?? [])
+                ->whereJsonContains('characters->parings', $characters['parings'] ?? [])
+                ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
+                ->whereJsonContains('fandoms_id', Fandom::convertStrAttrToArray($request->fandoms_selected ?? null))
+                ->orderBy($request->sort_by ?? 'updated_at', 'desc')
+                ->paginate(30);
+        else // Оригінальні твори
+            $fanfics = Fanfiction::where('is_draft', false)
+                ->where('fandoms_id', null)
+                ->whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
+                ->whereIn('category_id', $request->category ?? $standardCategories)
+                ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
+                ->orderBy($request->sort_by ?? 'updated_at', 'desc')
+                ->paginate(30);
 
         DB::table('filter_requests')->insert([
             'made_request' => Auth::user()->id ?? null,

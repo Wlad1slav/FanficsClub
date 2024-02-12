@@ -159,28 +159,34 @@
 
         <!-- Віджет для вибору антрибутів
         Вибірається фандоми, до яких буде відноситися фанфік -->
-        <div class="field" id="if-fanfic">
-            <label class="main required">Фандоми</label>
-            <div>
-                @include('widgets.select-attributes', [
-                    'attrs' => $fandoms,
-                    'textarea_selected_id_name' => 'fandoms_selected',
-                    'placeholder' => 'Виберіть фандом',
-                    'default_content' => implode(',', $fandoms_selected) . ', '
-                ])
+        @if($fanfic->fandoms_id !== null)
+            <div class="field" id="if-fanfic">
+                <label class="main required">Фандоми</label>
+                <div>
+                    @include('widgets.select-attributes', [
+                        'attrs' => $fandoms,
+                        'textarea_selected_id_name' => 'fandoms_selected',
+                        'placeholder' => 'Виберіть фандом',
+                        'default_content' => implode(',', $fandoms_selected) . ', '
+                    ])
 
-                @error('fandoms_selected')
-                <p class="error">{{ $message }}</p>
-                @enderror
+                    @error('fandoms_selected')
+                    <p class="error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-        </div>
+        @endif
 
         <!-- Віджет для вибору персонажів
          Вибіраються персонажі і пейренги, які будуть присутні у фанфіку -->
         <div class="field">
             <label class="main">Персонажі</label>
             <div>
-                @include('widgets.characters-select', ['has_label' => false, 'default_values' => $characters_selected]) <!-- Віджет з вибором персонажів -->
+                @if($fanfic->fandoms_id !== null)
+                    @include('widgets.characters-select', ['has_label' => false, 'default_values' => $characters_selected]) <!-- Віджет з вибором персонажів -->
+                @else
+                    <textarea name="characters_original" placeholder="Іван Мельник, Тарас Данилюк/Наталя Кринська...">{{ implode(', ', $fanfic->characters) }}</textarea>
+                @endif
 
                 @error('characters')
                 <p class="error">{{ $message }}</p>

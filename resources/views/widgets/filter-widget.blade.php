@@ -29,18 +29,39 @@
             <option value="views" @selected(($_GET['sort_by'] ?? '') == 'views')>Переглядам</option>
         </select>
 
+        <!-- Твори, що є оригінальними чи фанфіками -->
+        <label>
+            Тип творів
+        </label>
+        <label for="type_ff" style="margin-bottom: 0; font-weight: 400;">
+            <input type="radio"
+                   name="type_of_works"
+                   id="type_ff"
+                   value="fanfic" @checked(($_GET['type_of_works'] ?? 'fanfic') == 'fanfic')>
+            Фанфік
+        </label>
+
+        <label for="type_original" style="font-weight: 400;">
+            <input type="radio"
+                   name="type_of_works"
+                   id="type_original"
+                   value="original" @checked(($_GET['type_of_works'] ?? null) == 'original')>
+            Оригінальний твір
+        </label>
+
         <!-- Віджет для виборів антрибутів
          Вибірається фандоми, по яким буде відбуватися пошук -->
-        @include('widgets.select-attributes', [
-            'attrs' => $fandoms,
-            'heading' => 'Фандоми',
-            'textarea_selected_id_name' => 'fandoms_selected',
-            'notify' => 'Якщо ви бажаєте шукати оригінальні роботи, то можете залишити поле пустим.',
-            'placeholder' => 'Виберіть фандом',
-            'default_content' => $_GET['fandoms_selected'] ?? '',
-        ])
+        <div id="ff-fields" class="{{ $_GET['type_of_works'] == 'original' ? 'no-display' : '' }}">
+            @include('widgets.select-attributes', [
+                'attrs' => $fandoms,
+                'heading' => 'Фандоми',
+                'textarea_selected_id_name' => 'fandoms_selected',
+                'placeholder' => 'Виберіть фандом',
+                'default_content' => "{$_GET['fandoms_selected']}, " ?? '',
+            ])
 
-        @include('widgets.characters-select') <!-- Віджет з вибором персонажів -->
+            @include('widgets.characters-select') <!-- Віджет з вибором персонажів -->
+        </div>
 
         <!-- Вибір, з якими СТАТУСАМИ будуть показуватися фанфіки -->
         <!--<div class="checkboxes-container black">
@@ -112,3 +133,13 @@
     </form>
 
 </div>
+
+<script>
+    document.getElementById('type_ff').addEventListener('change', function () {
+        document.getElementById('ff-fields').classList.remove('no-display');
+    });
+
+    document.getElementById('type_original').addEventListener('change', function () {
+        document.getElementById('ff-fields').classList.add('no-display');
+    });
+</script>

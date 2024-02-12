@@ -17,10 +17,20 @@ document.getElementById('type_of_work-original-work').addEventListener('change',
 // то з'являється додаткове поле для вибору фандомів, які відносяться до фанфіка
 document.getElementById('originality_of_work-fanfic').addEventListener('change', function () {
     document.getElementById('if-fanfic').classList.remove('no-display');
+
+    /* оригінальні персонажі */
+    document.getElementById('characters-original').classList.add('no-display');
+    document.getElementById('characters').classList.remove('no-display');
+    document.getElementById('characters-select').classList.remove('no-display');
 });
 
 // Якщо користувач встановлює оригінальність фанфіка на оригінальний твір,
 // то поля для вводу автора оригінала і посилання на оригінал знову становляться невидимими
 document.getElementById('originality_of_work-original').addEventListener('change', function () {
     document.getElementById('if-fanfic').classList.add('no-display');
+
+    /* оригінальні персонажі */
+    document.getElementById('characters-original').classList.remove('no-display');
+    document.getElementById('characters').classList.add('no-display');
+    document.getElementById('characters-select').classList.add('no-display');
 });

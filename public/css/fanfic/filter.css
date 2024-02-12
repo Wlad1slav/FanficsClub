@@ -36,7 +36,8 @@
 }
 
 #filter form h2,
-#filter form label:not(input[type="checkbox"] + label):not(label span) {
+#filter form label:not(input[type="checkbox"] + label):not(label span),
+#filter form label:not(input[type="radio"] + label):not(label span) {
     font-size: calc(var(--heading2-size)/2);
     margin-bottom: var(--indent-small);
     margin-top: var(--indent-heading);
@@ -55,6 +56,16 @@ textarea#characters {
 
 #filter {
     margin-bottom: var(--indent-large);
+}
+
+#ff-fields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#ff-fields .select {
+    width: 15%;
 }
 
 

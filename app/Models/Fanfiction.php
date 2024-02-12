@@ -96,6 +96,7 @@ class Fanfiction extends Model
     {
         // Видалення фанфіка з кешу
         Cache::pull("fanfic_{$this->slug}");
+        Cache::pull("last_updated_ff");
 
         // Видалення усіх користувачів, що мають доступ до фанфіку з кешу
         Cache::pull("users_with_access_{$this->slug}");

@@ -74,57 +74,71 @@
 
     <div class="about-ff">
 
-        <!-- Фандом, до якого належить фанфік -->
-        <p><span>Фандом:</span>
-{{--            <a class="fandom-link"--}}
-{{--               href="{{ route('CertainFandomPage', ['slug' => $fanfic->fandom->slug]) }}">--}}
-{{--                {{ $fanfic->fandom->name }}--}}
-{{--            </a>--}}
+        @if($fanfic->fandoms_id !== null)
+            <!-- Якщо твір - фанфік, то виводяться фандоми до яких він відноситься
+            і персонажі, які присутні в фанфіку -->
 
-            <!-- Якщо фанфік належить певним фандомам, то генеруються посилання на усі пов'язані фандоми -->
-            @if($fanfic->fandoms_id !== null)
-                @php $fandoms = ''; @endphp
-                @foreach($fanfic->getFandomsAttribute() as $fandom)
-                    @php $fandoms .= "$fandom->name, "; @endphp
-                    <a class="fandom-link"
-                       href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}">
-                        {{ $fandom->name }}
+            <!-- Фандом, до якого належить фанфік -->
+            <p><span>Фандом:</span>
+
+                <!-- Якщо фанфік належить певним фандомам, то генеруються посилання на усі пов'язані фандоми -->
+                @if($fanfic->fandoms_id !== null)
+                    @php $fandoms = ''; @endphp
+                    @foreach($fanfic->getFandomsAttribute() as $fandom)
+                        @php $fandoms .= "$fandom->name, "; @endphp
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}">
+                            {{ $fandom->name }}
+                        </a>
+                    @endforeach
+                @else
+                    <!-- Якщо не належить жодному фандому, то встановлюється "Оригінальна робота" -->
+                    <a class="fandom-link" href="#">
+                        Оригінальна робота
                     </a>
-                @endforeach
-            @else
-                <!-- Якщо не належить жодному фандому, то встановлюється "Оригінальна робота" -->
-                <a class="fandom-link" href="#">
-                    Оригінальна робота
-                </a>
-            @endif
-        </p>
-
-        <!-- Перелік персонажів і пейрингів персонажів -->
-        @if(count($fanfic->characters['characters']) > 0 || count($fanfic->characters['parings']) > 0)
-            <p><span>Персонажі:</span>
-
-                <!-- Пейренги -->
-                @foreach($fanfic->characters['parings'] as $paring)
-                    @php
-                        foreach ($paring as $key => $character)
-                            $paring[$key] = \App\Models\Character::find($character)->name;
-                        $paring = implode('/', $paring)
-                    @endphp
-                    <a class="fandom-link"
-                       href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring]) }}">
-                        {{ $paring }}</a>
-                @endforeach
-
-                <!-- Персонажі -->
-                @foreach($fanfic->characters['characters'] as $character_id)
-                    @php $character = \App\Models\Character::find($character_id) @endphp
-                    <a class="fandom-link"
-                       href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
-                        {{ $character->name }}
-                    </a>
-                @endforeach
-
+                @endif
             </p>
+
+            <!-- Перелік персонажів і пейрингів персонажів -->
+            @if(count($fanfic->characters['characters']) > 0 || count($fanfic->characters['parings']) > 0)
+                <p><span>Персонажі:</span>
+
+                    <!-- Пейренги -->
+                    @foreach($fanfic->characters['parings'] as $paring)
+                        @php
+                            foreach ($paring as $key => $character)
+                                $paring[$key] = \App\Models\Character::find($character)->name;
+                            $paring = implode('/', $paring)
+                        @endphp
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring]) }}">
+                            {{ $paring }}</a>
+                    @endforeach
+
+                    <!-- Персонажі -->
+                    @foreach($fanfic->characters['characters'] as $character_id)
+                        @php $character = \App\Models\Character::find($character_id) @endphp
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
+                            {{ $character->name }}
+                        </a>
+                    @endforeach
+
+                </p>
+            @endif
+
+        @else
+            <!-- Якщо твір - оригінальний, то виводяться кастомні персонажі
+                і помітка, що це оригінальний твір -->
+
+                <p>Оригінальний твір</p>
+
+            @if(count($fanfic->characters) > 0)
+                <div>
+                    <p><span>Персонажі:</span>
+                    {{ implode(', ', $fanfic->characters) }}</p>
+                </div>
+            @endif
         @endif
 
         <!-- Перелік теґів, що містить фанфік -->
@@ -133,11 +147,11 @@
                 @foreach($fanfic->tags as $tag)
                     @if($tag->notification !== null)
                         <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name]) }}">
                             {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
                     @else
                         <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name]) }}">
                             {{ $tag->name }}</a>
                     @endif
                 @endforeach

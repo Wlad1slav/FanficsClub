@@ -75,4 +75,9 @@ class Character extends Model
 
     }
 
+    public static function convertOriginalCharactersToArray(?string $str): array
+    {
+        return array_filter(preg_split('/,\s?/', $str ?? ''));
+    }
+
 }

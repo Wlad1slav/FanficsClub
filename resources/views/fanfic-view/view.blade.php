@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/fanfic/view.css') }}">
 
     <div id="fanfic">
-        @if($fanfic->author == \Illuminate\Support\Facades\Auth::user())
+        @if(\App\Policies\FanfictionPolicy::isAuthorStatic(Auth::user(), $fanfic))
             <div class="author-actions">
 
                 <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">Редагувати</a>
@@ -81,52 +81,79 @@
                 </div>
             @endif
 
-            <div>
-                <!-- Фандоми, до яких належить фанфік -->
-                <h3>Фандоми</h3>
+            @if($fanfic->fandoms_id !== null)
+                <!-- Якщо твір - фанфік, то виводяться фандоми до яких він відноситься
+                і персонажі, які присутні в фанфіку -->
+                <div>
+                    <!-- Фандоми, до яких належить фанфік -->
+                    <h3>Фандоми</h3>
 
-                <!-- Якщо фанфік належить певним фандомам, то генеруються посилання на усі пов'язані фандоми -->
-                @php $fandoms = ''; @endphp
-                @foreach($fanfic->getFandomsAttribute() as $fandom)
-                    @php $fandoms .= "$fandom->name, "; @endphp
-                    <a class="fandom-link"
-                       href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}">
-                        {{ $fandom->name }}
-                    </a>
-                @endforeach
-            </div>
+                    <!-- Якщо фанфік належить певним фандомам, то генеруються посилання на усі пов'язані фандоми -->
+                    @php $fandoms = ''; @endphp
+                    @foreach($fanfic->getFandomsAttribute() as $fandom)
+                        @php $fandoms .= "$fandom->name, "; @endphp
+                        <a class="fandom-link"
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}">
+                            {{ $fandom->name }}
+                        </a>
+                    @endforeach
+                </div>
 
 
-            <div>
-                <!-- Перелік персонажів і пейрингів персонажів -->
-                @if(count($fanfic->characters['parings']) > 0) <!-- Стосунки -->
+                <div>
+                    <!-- Перелік персонажів і пейрингів персонажів -->
+                    @if(count($fanfic->characters['parings']) > 0) <!-- Стосунки -->
+                        <div>
+                            <h3>Стосунки</h3>
+                            @foreach($fanfic->characters['parings'] as $paring)
+                                @php
+                                    foreach ($paring as $key => $character)
+                                        $paring[$key] = \App\Models\Character::find($character)->name;
+                                    $paring = implode('/', $paring)
+                                @endphp
+                                <a class="fandom-link"
+                                   href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring]) }}">
+                                    {{ $paring }}</a>
+                            @endforeach
+                        </div>
+                    @endif
+
+                </div>
+
+                <div>
+
+                    @if(count($fanfic->characters['characters']) > 0) <!-- Персонажі -->
+                        <div>
+                            <h3>Персонажі</h3>
+                            @foreach($fanfic->characters['characters'] as $character_id)
+                                @php $character = \App\Models\Character::find($character_id) @endphp
+                                <a class="fandom-link"
+                                   href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
+                                    {{ $character->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+
+                </div>
+
+            @else
+                <!-- Якщо твір - оригінальний, то виводяться кастомні персонажі
+                і помітка, що це оригінальний твір -->
+
+                <div>
+                    <p>Оригінальний твір</p>
+                </div>
+
+                @if(count($fanfic->characters) > 0)
                     <div>
-                        <h3>Стосунки</h3>
-                        @foreach($fanfic->characters['parings'] as $paring)
-                            @php
-                                foreach ($paring as $key => $character)
-                                    $paring[$key] = \App\Models\Character::find($character)->name;
-                                $paring = implode('/', $paring)
-                            @endphp
-                            <a class="fandom-link"
-                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring]) }}">
-                                {{ $paring }}</a>
-                        @endforeach
+                        <h3>Персонажі:</h3>
+                        <p>{{ implode(', ', $fanfic->characters) }}</p>
                     </div>
                 @endif
+            @endif
 
-                @if(count($fanfic->characters['characters']) > 0) <!-- Персонажі -->
-                    <div>
-                        <h3>Персонажі</h3>
-                        @foreach($fanfic->characters['characters'] as $character_id)
-                            @php $character = \App\Models\Character::find($character_id) @endphp
-                            <a class="fandom-link"
-                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
-                                {{ $character->name }}
-                            </a>
-                        @endforeach
-                    </div>
-                @endif
+            <div>
 
                 <!-- Перелік теґів, що містить фанфік -->
                 @if($fanfic->tags->count() > 0)
@@ -134,11 +161,11 @@
                     @foreach($fanfic->tags as $tag)
                         @if($tag->notification !== null)
                             <a class="fandom-link"
-                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name]) }}">
                                 {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
                         @else
                             <a class="fandom-link"
-                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'tags-selected' => $tag->name]) }}">
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name]) }}">
                                 {{ $tag->name }}</a>
                         @endif
                     @endforeach
