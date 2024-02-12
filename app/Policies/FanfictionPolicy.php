@@ -110,6 +110,17 @@ class FanfictionPolicy
             or in_array($user->id, $authors));
     }
 
+    public static function isAuthorStatic(User $user, Fanfiction $fanfiction)
+    {   // Перевіряє, чи є користувач автором чи співавтором
+
+        $authors = array_keys(array_filter($fanfiction->users_with_access, function($value) {
+            return $value === 'coauthor';
+        }));
+
+        return ($user->id === $fanfiction->author_id
+            or in_array($user->id, $authors));
+    }
+
     public function chapterBelongToFanfic(User $user, Fanfiction $fanfiction, ?Chapter $chapter)
     {
         return $fanfiction->id == $chapter->fanfiction->id;
