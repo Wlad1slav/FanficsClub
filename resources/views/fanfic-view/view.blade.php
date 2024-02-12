@@ -235,10 +235,10 @@
                         'url' => '#',
                     ])
 
-                    @include('widgets.button', [
-                        'title' => 'Зберегти в колекцію',
-                        'url' => '#',
-                    ])
+{{--                    @include('widgets.button', [--}}
+{{--                        'title' => 'Зберегти в колекцію',--}}
+{{--                        'url' => '#',--}}
+{{--                    ])--}}
 
                     @include('widgets.button', [
                         'title' => 'Завантажити',
