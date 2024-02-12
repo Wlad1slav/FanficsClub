@@ -68,6 +68,19 @@
 
             </div>
 
+            @if($fanfic->is_translate)
+                <!-- Якщо фанфік - переклад, то виводиться його автор -->
+                <div>
+                    <h3>Оригінал</h3>
+                    <a href="{{ $fanfic->original_url }}">{{ $fanfic->original_url }}</a>
+                </div>
+
+                <div>
+                    <h3>Автор оригінала</h3>
+                    <p>{{ $fanfic->original_author }}</p>
+                </div>
+            @endif
+
             <div>
                 <!-- Фандоми, до яких належить фанфік -->
                 <h3>Фандоми</h3>
