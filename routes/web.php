@@ -37,9 +37,14 @@ Route::get('/fandoms/{category_slug}',
 // Сторінки пов'язані з колекціями
 
 // Певна колекція
-Route::get('/collection/{id}',
-    [CollectionController::class, 'certainCollection']
-)->name('CertainCollectionPage');
+//Route::get('/collection/{id}',
+//    [CollectionController::class, 'view']
+//)->name('CollectionPage');
+//
+//// Сторінка з усіма збереженними колекціями користувача і тими, шо створив він
+//Route::get('/profile/collections',
+//    [CollectionController::class, 'collectionList']
+//)->name('CollectionListPage');
 
 // Сторінки пов'язані з фільтром фанфіків
 
@@ -110,7 +115,7 @@ Route::post('/profile/fanfic/{ff_slug}/edit',
 )->middleware('auth')->name('FanficEditAction');
 
 // Перегляд фанфіка
-Route::get('/fanfic/{ff_slug}/{chapter_slug?}',
+Route::get('/fanfic/{ff_slug}/chapter/{chapter_slug?}',
     [FanficitonController::class, 'view']
 )->name('FanficPage');
 
@@ -176,3 +181,14 @@ Route::post('/fanfic-edit/{ff_slug}/chapters',
     [ChapterController::class, 'changeSequence']
 )->name('ChapterSequenceChange');
 
+// Сторінки пов'язані з рейтингом фанфіків
+
+// Зміна послідовності розділів фанфіка
+Route::get('/fanfic/{ff_slug}/like',
+    [FanficitonController::class, 'giveLike']
+)->name('GiveLikeAction');
+
+// Зміна послідовності розділів фанфіка
+Route::get('/fanfic/{ff_slug}/dislike',
+    [FanficitonController::class, 'giveDislike']
+)->name('GiveDislikeAction');

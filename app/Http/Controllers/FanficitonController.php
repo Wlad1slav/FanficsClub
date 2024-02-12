@@ -6,8 +6,10 @@ use App\Models\AgeRating;
 use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Character;
+use App\Models\Dislike;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
+use App\Models\Like;
 use App\Models\Tag;
 use App\Models\User;
 use App\Rules\AgeRatingExists;
@@ -354,6 +356,40 @@ class FanficitonController extends Controller
         $fanfic->clearCache();
 
         return back();
+    }
+
+    public function giveLike(string $ff_slug)
+    {   // GiveLikeAction
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        $dislike = Dislike::where('gave_dislike', Auth::user()->id)->where('fanfiction', $fanfic->id);
+        if ($dislike) $dislike->delete();
+
+        Like::firstOrCreate([
+            'gave_like' => Auth::user()->id,
+            'fanfiction' => $fanfic->id,
+        ]);
+
+        $fanfic->clearCache();
+    }
+
+    public function giveDislike(string $ff_slug)
+    {   // GiveDislikeAction
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        $like = Like::where('gave_like', Auth::user()->id)->where('fanfiction', $fanfic->id)->first();
+        if ($like) $like->delete();
+
+        Dislike::firstOrCreate([
+            'gave_dislike' => Auth::user()->id,
+            'fanfiction' => $fanfic->id,
+        ]);
+
+        $fanfic->clearCache();
     }
 
 }
