@@ -93,7 +93,7 @@ class FanfictionPolicy
         //
     }
 
-    public function fanficAccess(?User $user, Fanfiction $fanfiction)
+    public function fanficAccess(?User $user, Fanfiction $fanfiction): bool
     {   // Перевіряє, чи є у користувача доступ до фанфіка
         if ($user === null) return false;
 
@@ -101,7 +101,7 @@ class FanfictionPolicy
             or $user->id === $fanfiction->author_id);
     }
 
-    public function isAuthor(?User $user, Fanfiction $fanfiction)
+    public function isAuthor(?User $user, Fanfiction $fanfiction): bool
     {   // Перевіряє, чи є користувач автором чи співавтором
 
         if ($user === null) return false;
@@ -114,7 +114,7 @@ class FanfictionPolicy
             or in_array($user->id, $authors));
     }
 
-    public static function isAuthorStatic(?User $user, Fanfiction $fanfiction)
+    public static function isAuthorStatic(?User $user, Fanfiction $fanfiction): bool
     {   // Перевіряє, чи є користувач автором чи співавтором
 
         if ($user === null) return false;
@@ -127,8 +127,18 @@ class FanfictionPolicy
             or in_array($user->id, $authors));
     }
 
-    public function chapterBelongToFanfic(User $user, Fanfiction $fanfiction, ?Chapter $chapter)
-    {
+    public function chapterBelongToFanfic(User $user, Fanfiction $fanfiction, ?Chapter $chapter): bool
+    {   // Перевіряє, чи належить розділ до певного фанфіку
         return $fanfiction->id == $chapter->fanfiction->id;
+    }
+
+    public function fanficIsntDraft(User $user, ?Fanfiction $fanfiction): bool
+    {   // Перевіряє, чи не чорнетка фанфік
+        return !$fanfiction->is_draft;
+    }
+
+    public function chapterIsntDraft(User $user, ?Chapter $chapter): bool
+    {   // Перевіряє, чи не чорнетка розділ
+        return !$chapter->is_draft;
     }
 }
