@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Character;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
+use App\Models\Subscribe;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -98,6 +99,25 @@ class UserProfileController extends Controller
         ];
 
         return view('profile.fanfic-list', $data);
+    }
+
+    public function subscribes()
+    {   // SubscribesListPage
+        // Сторінка з усіма підписами користувча
+
+        $user = Auth::user();
+
+        // Усі підписки авторизованого користувача
+        $subscribes = Cache::remember("subscribes_$user->id", 60*60*24, function () use ($user) {
+            return Subscribe::where('user_id', $user->id)->get();
+        });
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+            'subscribes' => $subscribes
+        ];
+
+        return view('profile.subscribes', $data);
     }
 
 }
