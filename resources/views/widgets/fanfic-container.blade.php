@@ -65,10 +65,10 @@
         @endif
 
         <!-- Рейтинг фанфіку -->
-        <p class="rating">&uarr; {{ $fanfic->rating }}</p>
+        <p class="rating">&uarr; {{ $fanfic->likes->count() }}</p>
 
         <!-- Анті-рейтинг фанфіку -->
-        <p class="anti-rating">&darr; {{ $fanfic->anti_rating }}</p>
+        <p class="anti-rating">&darr; {{ $fanfic->dislikes->count() }}</p>
 
     </div>
 

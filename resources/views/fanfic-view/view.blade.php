@@ -60,10 +60,10 @@
 
                 <div class="rating">
                     <!-- Рейтинг фанфіку -->
-                    <p class="rating grow">{{ $fanfic->rating }}</p>
+                    <p class="rating grow likes-count">{{ $fanfic->likes->count() }}</p>
                     <p>|</p>
                     <!-- Анті-рейтинг фанфіку -->
-                    <p class="anti-rating fall">{{ $fanfic->anti_rating }}</p>
+                    <p class="anti-rating fall dislikes-count">{{ $fanfic->dislikes->count() }}</p>
                 </div>
 
             </div>
@@ -227,8 +227,14 @@
                 </form>
 
                 <div>
-                    <a href="#" class="support positive">↑</a>
-                    <a href="#" class="support negative">↓</a>
+
+                    <a data-action="{{ route('GiveLikeAction', $fanfic->slug) }}"
+                       class="support positive like-btn {{ Auth::user()->isLikedFf($fanfic) ? 'selected' : '' }}">↑</a>
+
+                    <a data-action="{{ route('GiveDislikeAction', $fanfic->slug) }}"
+                       class="support negative dislike-btn {{ Auth::user()->isDislikedFf($fanfic) ? 'selected' : '' }}">↓</a>
+
+                    <script src="{{ asset('js/support-fanfic.js') }}"></script>
 
                     @include('widgets.button', [
                         'title' => 'Підписатися',

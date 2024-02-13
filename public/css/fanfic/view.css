@@ -130,14 +130,15 @@ h3 {
     border: 1px solid var(--clr-black);
     margin-bottom: 0;
     margin-right: var(--indent-small);
+    cursor: pointer;
 }
 
-.support.positive:hover {
+.support.positive:hover, .support.selected.positive  {
     background-color: var(--clr-positive);
     color: white;
 }
 
-.support.negative:hover {
+.support.negative:hover, .support.selected.negative {
     background-color: var(--clr-negative);
     color: white;
 }

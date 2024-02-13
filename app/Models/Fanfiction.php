@@ -54,6 +54,16 @@ class Fanfiction extends Model
         return $this->hasMany(Chapter::class);
     }
 
+    public function likes(): HasMany
+    {   // Отримати усі лайки, що були поставлені фанфіку
+        return $this->hasMany(Like::class, 'fanfiction');
+    }
+
+    public function dislikes(): HasMany
+    {   // Отримати усі діслайки, що були поставлені фанфіку
+        return $this->hasMany(Dislike::class, 'fanfiction');
+    }
+
     public function getTagsAttribute(): Collection
     {   // Повертає масив Laravel колекцій тегів фанфіку
         // ->tags

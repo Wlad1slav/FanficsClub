@@ -41,4 +41,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isLikedFf(Fanfiction $fanfic): bool
+    {
+        return Like::where('gave_like', $this->id)->where('fanfiction', $fanfic->id)->exists();
+    }
+
+    public function isDislikedFf(Fanfiction $fanfic): bool
+    {
+        return Dislike::where('gave_dislike', $this->id)->where('fanfiction', $fanfic->id)->exists();
+    }
 }

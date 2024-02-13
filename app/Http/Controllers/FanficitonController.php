@@ -373,6 +373,11 @@ class FanficitonController extends Controller
         ]);
 
         $fanfic->clearCache();
+
+        return response()->json([
+            'likes' => $fanfic->likes->count(),
+            'dislikes' => $fanfic->dislikes->count(),
+        ]);
     }
 
     public function giveDislike(string $ff_slug)
@@ -390,6 +395,11 @@ class FanficitonController extends Controller
         ]);
 
         $fanfic->clearCache();
+
+        return response()->json([
+            'likes' => $fanfic->likes->count(),
+            'dislikes' => $fanfic->dislikes->count(),
+        ]);
     }
 
 }
