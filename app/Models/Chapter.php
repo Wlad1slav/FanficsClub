@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,6 +24,11 @@ class Chapter extends Model
     public function fanfiction(): BelongsTo
     {   // Зв'язок з моделю Fanfiction
         return $this->belongsTo(Fanfiction::class);
+    }
+
+    public function reviews(): HasMany
+    {   // Отримати усі відгуки до розділу
+        return $this->hasMany(Review::class);
     }
 
     public static function getCached(Fanfiction $fanfic)

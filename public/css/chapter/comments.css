@@ -1,0 +1,91 @@
+#comments {
+    margin-top: var(--indent-large);
+}
+
+#comments h2 {
+    text-align: left;
+}
+
+#comments #leave-comment {
+    display: flex;
+    flex-direction: column;
+}
+
+#comments #leave-comment textarea {
+    margin-bottom: var(--indent-small);
+}
+
+#comments #leave-comment input {
+    padding: var(--indent-small);
+}
+
+.reviews {
+    margin-top: var(--indent-medium);
+    font-size: 17px;
+}
+
+.reviews .review {
+    margin-bottom: var(--indent-small);
+}
+
+.reviews .review .user {
+    display: flex;
+    border: 1px solid var(--clr-cta);
+    border-left: 8px solid var(--clr-base);
+    min-height: 100px;
+    background-color: var(--clr-bg-second);
+    padding: var(--indent-small);
+    position: relative;
+}
+
+.reviews .review .user.answer {
+    margin-left: 5%;
+    border-left: 4px solid var(--clr-base);
+}
+
+.reviews .review img {
+    margin-right: var(--indent-small);
+}
+
+.reviews .review .review-content .review-text {
+    word-break: break-word;
+    white-space: pre-line;
+}
+
+.reviews .review .action {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.reviews .review a {
+    color: var(--clr-grey);
+    text-decoration: none;
+    margin-right: var(--indent-medium);
+}
+
+.reviews .review a:hover {
+    color: var(--clr-base);
+}
+
+.leave-comment-to-review {
+    margin-top: var(--indent-small);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.leave-comment-to-review textarea {
+    margin-bottom: var(--indent-small);
+    width: 40%;
+}
+
+.leave-comment-to-review input {
+    padding: var(--indent-small);
+}
+
+.reviews .review h3 span {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: italic;
+}
