@@ -93,14 +93,18 @@ class FanfictionPolicy
         //
     }
 
-    public function fanficAccess(User $user, Fanfiction $fanfiction)
+    public function fanficAccess(?User $user, Fanfiction $fanfiction)
     {   // Перевіряє, чи є у користувача доступ до фанфіка
+        if ($user === null) return false;
+
         return (array_key_exists($user->id, $fanfiction->users_with_access ?? [])
             or $user->id === $fanfiction->author_id);
     }
 
-    public function isAuthor(User $user, Fanfiction $fanfiction)
+    public function isAuthor(?User $user, Fanfiction $fanfiction)
     {   // Перевіряє, чи є користувач автором чи співавтором
+
+        if ($user === null) return false;
 
         $authors = array_keys(array_filter($fanfiction->users_with_access ?? [], function($value) {
             return $value === 'coauthor';
@@ -110,8 +114,10 @@ class FanfictionPolicy
             or in_array($user->id, $authors));
     }
 
-    public static function isAuthorStatic(User $user, Fanfiction $fanfiction)
+    public static function isAuthorStatic(?User $user, Fanfiction $fanfiction)
     {   // Перевіряє, чи є користувач автором чи співавтором
+
+        if ($user === null) return false;
 
         $authors = array_keys(array_filter($fanfiction->users_with_access ?? [], function($value) {
             return $value === 'coauthor';
