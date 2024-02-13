@@ -10,6 +10,7 @@ use App\Models\Dislike;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
 use App\Models\Like;
+use App\Models\Subscribe;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\View;
@@ -86,13 +87,13 @@ class FanficitonController extends Controller
 
         $fanfic = Fanfiction::create($fanfic);
 
-        return redirect()->route('FanficPage', ['ff_slug'=>$fanfic->slug]);
+        return redirect()->route('FanficPage', ['ff_slug' => $fanfic->slug]);
     }
 
     public function view(string $ff_slug, ?string $chapter_slug = null)
     {   // FanficPage
         // Сторінка з переглядом певного фанфіка
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             // Передбачається, що фанфік в кешу зберігається 1 годину,
             // але якщо користувач його оновить, то кеш автоматом очиститься
             return Fanfiction::where('slug', $ff_slug)->first();
@@ -144,7 +145,7 @@ class FanficitonController extends Controller
     public function editPage(string $ff_slug)
     {
 
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -185,17 +186,17 @@ class FanficitonController extends Controller
             'fanfic' => $fanfic,
 
             // Усі вікові рейтинги
-            'ageRatings' => Cache::remember("age_ratings_all", 60*60*168, function () {
+            'ageRatings' => Cache::remember("age_ratings_all", 60 * 60 * 168, function () {
                 return AgeRating::all();
             }),
 
             // Усі категорії
-            'categories' => Cache::remember("categories_all", 60*60*168, function () {
+            'categories' => Cache::remember("categories_all", 60 * 60 * 168, function () {
                 return Category::all();
             }),
 
             // Усі фандоми, відсортировані по популярності
-            'fandoms' => Cache::remember("fandoms_all", 60*60*12, function () {
+            'fandoms' => Cache::remember("fandoms_all", 60 * 60 * 12, function () {
                 return Fandom::orderBy('fictions_amount', 'desc')->get();
             }),
 
@@ -203,7 +204,7 @@ class FanficitonController extends Controller
             'fandoms_selected' => $fanfic->fandoms->pluck('name')->toArray(),
 
             // Усі теґі
-            'tags' => Cache::remember("tags_all", 60*60*24, function () {
+            'tags' => Cache::remember("tags_all", 60 * 60 * 24, function () {
                 return Tag::all();
             }),
 
@@ -211,7 +212,7 @@ class FanficitonController extends Controller
             'tags_selected' => $fanfic->tags->pluck('name')->toArray(),
 
             // Усі користувачі, відсортировані по фандомам
-            'characters' => Cache::remember("characters_all", 60*60*24, function () {
+            'characters' => Cache::remember("characters_all", 60 * 60 * 24, function () {
                 return Character::orderBy('belonging_to_fandom_id')->get();
             }),
 
@@ -223,11 +224,12 @@ class FanficitonController extends Controller
 
     }
 
-    public function edit(Request $request, string $ff_slug) {
+    public function edit(Request $request, string $ff_slug)
+    {
         // FanficEditAction
         // Редагування фанфіка через форму
 
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -286,7 +288,7 @@ class FanficitonController extends Controller
         $fanfic->clearCache();
         $fanfic->update($newFanficInfo);
 
-        return redirect()->route('FanficEditPage', ['ff_slug'=>$fanfic->slug]);
+        return redirect()->route('FanficEditPage', ['ff_slug' => $fanfic->slug]);
     }
 
     public function usersAccess(string $ff_slug)
@@ -294,7 +296,7 @@ class FanficitonController extends Controller
         // Сторінка з усіма користувачами, які мають доступ до фанфіка
         // і формами для давання користувачам доступу
 
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -321,7 +323,7 @@ class FanficitonController extends Controller
     {   // GiveAccessAction
         // Додати соавтора чи редактора в фанфік
 
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -339,7 +341,7 @@ class FanficitonController extends Controller
         // $rights - рівень прав користувача
         // coauthor
         // editor
-        $fanfic->update(["users_with_access->$user->id" => $right ]);
+        $fanfic->update(["users_with_access->$user->id" => $right]);
 
         return back();
 
@@ -349,7 +351,7 @@ class FanficitonController extends Controller
     {   // PutUserAccessAction
         // Прибрати доступ у певного користувача
 
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -368,7 +370,7 @@ class FanficitonController extends Controller
 
     public function giveLike(string $ff_slug)
     {   // GiveLikeAction
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -380,7 +382,7 @@ class FanficitonController extends Controller
             'fanfiction' => $fanfic->id,
         ]);
 
-        $fanfic->clearCache();
+//        $fanfic->clearCache();
 
         return response()->json([
             'likes' => $fanfic->likes->count(),
@@ -390,7 +392,7 @@ class FanficitonController extends Controller
 
     public function giveDislike(string $ff_slug)
     {   // GiveDislikeAction
-        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
@@ -402,12 +404,36 @@ class FanficitonController extends Controller
             'fanfiction' => $fanfic->id,
         ]);
 
-        $fanfic->clearCache();
+//        $fanfic->clearCache();
 
         return response()->json([
             'likes' => $fanfic->likes->count(),
             'dislikes' => $fanfic->dislikes->count(),
         ]);
     }
+
+    public function subscribe(string $ff_slug)
+    {   // SubscribeAction
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        $subscribe = Subscribe::where('user_id', Auth::user()->id)
+            ->where('fanfiction_id', $fanfic->id);
+
+        if (!$subscribe->exists()) {// Якщо користувач не підписаний
+            Subscribe::firstOrCreate([
+                'user_id' => Auth::user()->id,
+                'fanfiction_id' => $fanfic->id,
+            ]);
+            return response()->json(['btn_text' => 'Відписатися']);
+        }
+        else { // Якщо користувач вже підписаний, то він відписується
+            $subscribe->delete();
+            return response()->json(['btn_text' => 'Підписатися']);
+        }
+    }
+
 
 }

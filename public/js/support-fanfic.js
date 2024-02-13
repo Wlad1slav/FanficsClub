@@ -1,3 +1,4 @@
+// Лайкнути фанфік
 $('.like-btn').click(function() {
     var action = $(this).data('action');
     $.ajax({
@@ -16,6 +17,7 @@ $('.like-btn').click(function() {
     });
 });
 
+// Діслайкнути фанфік
 $('.dislike-btn').click(function() {
     var action = $(this).data('action');
     $.ajax({
@@ -33,3 +35,19 @@ $('.dislike-btn').click(function() {
         }
     });
 });
+
+// Підписатися на фанфік чи відписатися
+$('.subscribe-btn').click(function() {
+    var action = $(this).data('action');
+    $.ajax({
+        type: "GET",
+        url: action,
+        data: {
+            _token: "{{ csrf_token() }}",
+        },
+        success: function(data) {
+            $('.subscribe-btn a').text(data.btn_text);
+        }
+    });
+});
+

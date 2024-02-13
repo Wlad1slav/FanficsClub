@@ -14,7 +14,8 @@ bool $hoverEffect - чи буде особливий ефект при наво�
     {{ $styles ?? '' }}
     @if($hoverEffect ?? false) hover-effect @endif"
     @if(isset($action)) onclick="{{ $action }}" @endif
-    @if(isset($id)) id="{{ $id }}" @endif>
+    @if(isset($id)) id="{{ $id }}" @endif
+    @if(isset($data)) data-{{ $data['name'] }}="{{ $data['value'] }}" @endif>
 
     <a @if(isset($url)) href="{{ $url }}" @endif>
         <p>{{ $title ?? 'Стандартна назва' }}</p>

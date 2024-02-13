@@ -192,3 +192,8 @@ Route::get('/fanfic/{ff_slug}/like',
 Route::get('/fanfic/{ff_slug}/dislike',
     [FanficitonController::class, 'giveDislike']
 )->middleware('auth')->name('GiveDislikeAction');
+
+// Підписатися на фанфік
+Route::get('/fanfic/{ff_slug}/subscribe',
+    [FanficitonController::class, 'subscribe']
+)->middleware('auth')->name('SubscribeAction');

@@ -7,10 +7,14 @@
 
 @section('content')
 
+    @php
+        $user = Auth::user();
+    @endphp
+
     <link rel="stylesheet" href="{{ asset('css/fanfic/view.css') }}">
 
     <div id="fanfic">
-        @if(\App\Policies\FanfictionPolicy::isAuthorStatic(Auth::user(), $fanfic))
+        @if(\App\Policies\FanfictionPolicy::isAuthorStatic($user, $fanfic))
             <div class="author-actions">
 
                 <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">Редагувати</a>
@@ -229,16 +233,15 @@
                 <div>
 
                     <a data-action="{{ route('GiveLikeAction', $fanfic->slug) }}"
-                       class="support positive like-btn {{ Auth::user()->isLikedFf($fanfic) ? 'selected' : '' }}">↑</a>
+                       class="support positive like-btn {{ $user->isLikedFf($fanfic) ? 'selected' : '' }}">↑</a>
 
                     <a data-action="{{ route('GiveDislikeAction', $fanfic->slug) }}"
-                       class="support negative dislike-btn {{ Auth::user()->isDislikedFf($fanfic) ? 'selected' : '' }}">↓</a>
-
-                    <script src="{{ asset('js/support-fanfic.js') }}"></script>
+                       class="support negative dislike-btn {{ $user->isDislikedFf($fanfic) ? 'selected' : '' }}">↓</a>
 
                     @include('widgets.button', [
-                        'title' => 'Підписатися',
-                        'url' => '#',
+                        'title' => $user->isSubscribed($fanfic) ? 'Відписатися' : 'Підписатися',
+                        'styles' => 'subscribe-btn',
+                        'data' => ['name' => 'action', 'value' => route('SubscribeAction', $fanfic->slug)]
                     ])
 
 {{--                    @include('widgets.button', [--}}
@@ -250,6 +253,8 @@
                         'title' => 'Завантажити',
                         'url' => '#',
                     ])
+
+                    <script src="{{ asset('js/support-fanfic.js') }}"></script>
                 </div>
 
             </div>
