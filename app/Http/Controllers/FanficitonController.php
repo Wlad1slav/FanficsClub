@@ -419,18 +419,22 @@ class FanficitonController extends Controller
             return Fanfiction::where('slug', $ff_slug)->first();
         });
 
-        $subscribe = Subscribe::where('user_id', Auth::user()->id)
+        $user = Auth::user();
+
+        $subscribe = Subscribe::where('user_id', $user->id)
             ->where('fanfiction_id', $fanfic->id);
 
         if (!$subscribe->exists()) {// Якщо користувач не підписаний
             Subscribe::firstOrCreate([
-                'user_id' => Auth::user()->id,
+                'user_id' => $user->id,
                 'fanfiction_id' => $fanfic->id,
             ]);
+            Subscribe::clearUserCache($user);
             return response()->json(['btn_text' => 'Відписатися']);
         }
         else { // Якщо користувач вже підписаний, то він відписується
             $subscribe->delete();
+            Subscribe::clearUserCache($user);
             return response()->json(['btn_text' => 'Підписатися']);
         }
     }
