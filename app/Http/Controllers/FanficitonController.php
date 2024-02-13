@@ -12,6 +12,7 @@ use App\Models\Fanfiction;
 use App\Models\Like;
 use App\Models\Tag;
 use App\Models\User;
+use App\Models\View;
 use App\Rules\AgeRatingExists;
 use App\Rules\CategoryExists;
 use App\Rules\FandomsExists;
@@ -109,6 +110,13 @@ class FanficitonController extends Controller
             if ($chapter->is_draft)
                 $this->authorize('fanficAccess', $fanfic ?? null);
         }
+
+        // Перегляд фанфіка зараховується
+        View::firstOrCreate([
+            'user_id' => Auth::user()->id ?? null,
+            'fanfiction_id' => $fanfic->id,
+            'ip' => request()->ip()
+        ]);
 
         $data = [
             'title' => $fanfic->title,
