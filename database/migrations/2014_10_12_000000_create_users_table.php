@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
 
+            $table->string('ip', 255)->nullable();
             $table->string('image', 255)->nullable();
             $table->text('profile_description')->nullable();
             $table->json('preferences_tags')->nullable();

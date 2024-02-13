@@ -37,6 +37,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'ip' => $request->ip()
         ]);
 
         Auth::login($user);
