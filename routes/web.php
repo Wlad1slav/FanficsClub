@@ -174,21 +174,21 @@ Route::post('/fanfic/{ff_slug}/',
 // Сторінка з усіма розділами фанфіка
 Route::get('/fanfic-edit/{ff_slug}/chapters',
     [ChapterController::class, 'chaptersList']
-)->name('ChapterListPage');
+)->middleware('auth')->name('ChapterListPage');
 
 // Зміна послідовності розділів фанфіка
 Route::post('/fanfic-edit/{ff_slug}/chapters',
     [ChapterController::class, 'changeSequence']
-)->name('ChapterSequenceChange');
+)->middleware('auth')->name('ChapterSequenceChange');
 
 // Сторінки пов'язані з рейтингом фанфіків
 
-// Зміна послідовності розділів фанфіка
+// Подобайка фанфіку
 Route::get('/fanfic/{ff_slug}/like',
     [FanficitonController::class, 'giveLike']
-)->name('GiveLikeAction');
+)->middleware('auth')->name('GiveLikeAction');
 
-// Зміна послідовності розділів фанфіка
+// Дісподобайка фанфіку
 Route::get('/fanfic/{ff_slug}/dislike',
     [FanficitonController::class, 'giveDislike']
-)->name('GiveDislikeAction');
+)->middleware('auth')->name('GiveDislikeAction');
