@@ -163,3 +163,13 @@ p.error-password {
     content: ' ↓';
     color: var(--clr-negative);
 }
+
+.huge-link {
+    font-size: var(--heading3-size);
+    color: var(--clr-grey);
+    text-decoration: underline dotted 1px;
+}
+
+.huge-link:hover {
+    color: var(--clr-base);
+}

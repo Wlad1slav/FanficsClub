@@ -92,6 +92,11 @@ Route::post('/profile/info/avatar',
     [UserProfileController::class, 'avatarUpload']
 )->middleware('auth')->name('AvatarUploadAction');
 
+// Сторінка з підписками користувача
+Route::get('/profile/subscribes',
+    [UserProfileController::class, 'subscribes']
+)->middleware('auth')->name('SubscribesListPage');
+
 // Сторінки пов'язані з фанфіками
 
 // Сторінка з формою створення фанфіка
