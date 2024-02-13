@@ -24,12 +24,12 @@
                 </p>
 
                 <p>
-                    <span class="grow">{{ $fanfic->rating }}</span> | <span
-                        class="fall">{{ $fanfic->anti_rating }}</span>
+                    <span class="grow">{{ $fanfic->likes->count() }}</span> | <span
+                        class="fall">{{ $fanfic->dislikes->count() }}</span>
                 </p>
 
                 <p>
-                    {{ $fanfic->views }}
+                    {{ $fanfic->views->count() }}
                 </p>
 
                 @include('widgets.button', [
