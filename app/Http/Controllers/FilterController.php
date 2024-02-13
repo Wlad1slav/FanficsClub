@@ -56,6 +56,8 @@ class FilterController extends Controller
                 ->whereJsonContains('characters->parings', $characters['parings'] ?? [])
                 ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
                 ->whereJsonContains('fandoms_id', Fandom::convertStrAttrToArray($request->fandoms_selected ?? null))
+                ->withCount('likes') // Додає підрахунок лайків як поле likes_count
+                ->withCount('dislikes') // Додає підрахунок діслайків як поле dislikes_count
                 ->orderBy($request->sort_by ?? 'updated_at', 'desc')
                 ->paginate(30);
         else // Оригінальні твори
@@ -64,6 +66,8 @@ class FilterController extends Controller
                 ->whereIn('age_rating_id', $request->age_rating ?? $standardAgeRatings)
                 ->whereIn('category_id', $request->category ?? $standardCategories)
                 ->whereJsonContains('tags', Tag::convertStrAttrToArray($request->tags_selected ?? null))
+                ->withCount('likes') // Додає підрахунок лайків як поле likes_count
+                ->withCount('dislikes') // Додає підрахунок діслайків як поле dislikes_count
                 ->orderBy($request->sort_by ?? 'updated_at', 'desc')
                 ->paginate(30);
 

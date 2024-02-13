@@ -37,9 +37,9 @@ return new class extends Migration
             $table->unsignedBigInteger('words_amount')->default(0);
             $table->unsignedBigInteger('chapters_amount')->default(0);
 
-            $table->unsignedBigInteger('views')->default(0);
-            $table->unsignedBigInteger('rating')->default(0);
-            $table->bigInteger('anti_rating')->default(0);
+//            $table->unsignedBigInteger('views')->default(0);
+//            $table->unsignedBigInteger('rating')->default(0);
+//            $table->bigInteger('anti_rating')->default(0);
 
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')

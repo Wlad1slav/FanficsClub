@@ -24,8 +24,8 @@
             <option value="updated_at" @selected(($_GET['sort_by'] ?? '') == 'updated_at')>Даті оновленя</option>
             <option value="created_at" @selected(($_GET['sort_by'] ?? '') == 'created_at')>Даті створеня</option>
             <option value="words_amount" @selected(($_GET['sort_by'] ?? '') == 'words_amount')>Словам</option>
-            <option value="rating" @selected(($_GET['sort_by'] ?? '') == 'rating')>Рейтингу</option>
-            <option value="anti_rating" @selected(($_GET['sort_by'] ?? '') == 'anti_rating')>Анті-Рейтингу</option>
+            <option value="likes_count" @selected(($_GET['sort_by'] ?? '') == 'rating')>Рейтингу</option>
+            <option value="dislikes_count" @selected(($_GET['sort_by'] ?? '') == 'anti_rating')>Анті-Рейтингу</option>
             <option value="views" @selected(($_GET['sort_by'] ?? '') == 'views')>Переглядам</option>
         </select>
 
@@ -51,13 +51,13 @@
 
         <!-- Віджет для виборів антрибутів
          Вибірається фандоми, по яким буде відбуватися пошук -->
-        <div id="ff-fields" class="{{ $_GET['type_of_works'] == 'original' ? 'no-display' : '' }}">
+        <div id="ff-fields" class="{{ ($_GET['type_of_works'] ?? '') == 'original' ? 'no-display' : '' }}">
             @include('widgets.select-attributes', [
                 'attrs' => $fandoms,
                 'heading' => 'Фандоми',
                 'textarea_selected_id_name' => 'fandoms_selected',
                 'placeholder' => 'Виберіть фандом',
-                'default_content' => "{$_GET['fandoms_selected']}, " ?? '',
+                'default_content' => isset($_GET['fandoms_selected']) ? "{$_GET['fandoms_selected']}, " : '',
             ])
 
             @include('widgets.characters-select') <!-- Віджет з вибором персонажів -->
