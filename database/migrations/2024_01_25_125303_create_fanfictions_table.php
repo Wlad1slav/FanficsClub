@@ -57,21 +57,18 @@ return new class extends Migration
             $table->boolean('is_frozen')->default(0);
             $table->boolean('is_completed')->default(0);
             $table->boolean('is_anonymous')->default(0);
-            $table->boolean('is_promotes')->default(0);
-            // $table->boolean('is_sequel')->default(0);
-            $table->boolean('is_postponed')->default(0);
 
-            $table->unsignedBigInteger('series_id')->nullable();
-            $table->foreign('series_id')
-                ->references('id')
-                ->on('series')
-                ->onDelete('set null');
+//            $table->unsignedBigInteger('series_id')->nullable();
+//            $table->foreign('series_id')
+//                ->references('id')
+//                ->on('series')
+//                ->onDelete('set null');
 
-            $table->unsignedBigInteger('sequel_id')->nullable();
-            $table->foreign('sequel_id')
-                ->references('id')
-                ->on('fanfictions')
-                ->onDelete('set null');
+//            $table->unsignedBigInteger('sequel_id')->nullable();
+//            $table->foreign('sequel_id')
+//                ->references('id')
+//                ->on('fanfictions')
+//                ->onDelete('set null');
 
             $table->unsignedBigInteger('prequel_id')->nullable();
             $table->foreign('prequel_id')
