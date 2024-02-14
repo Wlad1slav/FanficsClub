@@ -62,6 +62,7 @@
     color: var(--clr-grey);
     text-decoration: none;
     margin-right: var(--indent-medium);
+    cursor: pointer;
 }
 
 .reviews .review a:hover {

@@ -232,17 +232,19 @@
 
                 <div>
 
-                    <a data-action="{{ route('GiveLikeAction', $fanfic->slug) }}"
-                       class="support positive like-btn {{ $user->isLikedFf($fanfic) ? 'selected' : '' }}">↑</a>
+                    @if($user !== null)
+                        <a data-action="{{ route('GiveLikeAction', $fanfic->slug) }}"
+                           class="support positive like-btn {{ $user->isLikedFf($fanfic) ? 'selected' : '' }}">↑</a>
 
-                    <a data-action="{{ route('GiveDislikeAction', $fanfic->slug) }}"
-                       class="support negative dislike-btn {{ $user->isDislikedFf($fanfic) ? 'selected' : '' }}">↓</a>
+                        <a data-action="{{ route('GiveDislikeAction', $fanfic->slug) }}"
+                           class="support negative dislike-btn {{ $user->isDislikedFf($fanfic) ? 'selected' : '' }}">↓</a>
 
-                    @include('widgets.button', [
-                        'title' => $user->isSubscribed($fanfic) ? 'Відписатися' : 'Підписатися',
-                        'styles' => 'subscribe-btn',
-                        'data' => ['name' => 'action', 'value' => route('SubscribeAction', $fanfic->slug)]
-                    ])
+                        @include('widgets.button', [
+                            'title' => $user->isSubscribed($fanfic) ? 'Відписатися' : 'Підписатися',
+                            'styles' => 'subscribe-btn',
+                            'data' => ['name' => 'action', 'value' => route('SubscribeAction', $fanfic->slug)]
+                        ])
+                    @endif
 
 {{--                    @include('widgets.button', [--}}
 {{--                        'title' => 'Зберегти в колекцію',--}}

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Fanfiction;
+use App\Models\Review;
 use App\Rules\ChaptersBelongToFanfic;
 use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class ChapterController extends Controller
@@ -262,6 +264,54 @@ class ChapterController extends Controller
         $fanfic->save();
 
         return back();
+    }
+
+    public function review(Request $request, string $ff_slug, string $chapter_slug)
+    {   // ReviewAction
+        // Залишити відгук під розділом
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        $chapter = Chapter::firstCached($chapter_slug);
+
+        // Перевірка, чи належить розділ до фанфіка
+        $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
+
+//        // Перевірка, чи не чорнетка фанфік
+//        $this->authorize('fanficIsntDraft', $chapter ?? null);
+//
+//        // Перевірка, чи не чорнетка розділ
+//        $this->authorize('chapterIsntDraft', $chapter ?? null);
+
+        $request->validate([
+            'comment' => ['required'],
+//            'answer_to_review' => ['exists:App\Models\Review,id'],
+//            'answer_to_user' => ['exists:App\Models\User,id'],
+        ]);
+
+        $user = Auth::user()->id;
+
+        $newReview = Review::create([
+            'user_id' => $user,
+            'chapter_id' => $chapter->id,
+            'answer_to_review' => $request->answer_to_review ?? null,
+            'answer_to_user' => $request->answer_to_user ?? null,
+            'content' => $request->comment
+        ]);
+
+        Review::clearChapterCache($chapter);
+
+        $data = [
+            'user' => $newReview->user,
+            'content' => $newReview->content,
+            'created_at' => $newReview->created_at->format('Y-m-d H:i:s'),
+            'answer_to' => $request->answer_to_review ?? null,
+        ];
+
+        return response()->json($data);
+
     }
 
 }

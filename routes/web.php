@@ -186,6 +186,11 @@ Route::post('/fanfic-edit/{ff_slug}/chapters',
     [ChapterController::class, 'changeSequence']
 )->middleware('auth')->name('ChapterSequenceChange');
 
+// Залишити відгук під розділом
+Route::get('/fanfic/{ff_slug}/chapter/{chapter_slug}/review',
+    [ChapterController::class, 'review']
+)->middleware('auth')->name('ReviewAction');
+
 // Сторінки пов'язані з рейтингом фанфіків
 
 // Подобайка фанфіку

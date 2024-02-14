@@ -41,13 +41,16 @@
     <h2>Коментарі</h2>
     <div id="leave-comment">
         <textarea name="comment" id="add_comment" cols="30" rows="10" maxlength="1000"></textarea>
-        <input type="submit" value="Відправити">
+        <input class="send-review"
+               type="submit"
+               value="Відправити" data-action="{{ route('ReviewAction', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}">
     </div>
 
     <div class="reviews">
-        @foreach($chapter->reviews as $review)
+
+        @foreach(($reviews ?? \App\Models\Review::getCached($chapter)) as $review)
             @if($review->answer_to_review == null)
-                <div class="review">
+                <div class="review" id="{{ $review->id }}">
                     <div class="user">
                         <img class="avatar"
                              src="{{ $review->user->image !== null ?
@@ -61,7 +64,9 @@
                         </div>
 
                         <div class="action">
-                            <a href="#">Відповісти</a>
+                            <a onclick="answerToReviewTextarea({{ $review->id }}, '{{ $review->user->name }}', {{ $review->user->id }})">
+                                Відповісти
+                            </a>
                             <a href="#">Поскаржитися</a>
                         </div>
                     </div>
@@ -83,20 +88,27 @@
                             </div>
 
                             <div class="action">
-                                <a href="#">Відповісти</a>
+                                <a onclick="answerToReviewTextarea({{ $review->id }}, '{{ $answer->user->name }}', {{ $review->user->id }})">
+                                    Відповісти
+                                </a>
                                 <a href="#">Поскаржитися</a>
                             </div>
                         </div>
                     @endforeach
 
-                    <div class="leave-comment-to-review">
-                        <textarea name="comment" id="add_comment" maxlength="1000"></textarea>
-                        <input type="submit" value="Відповісти">
+                    <div id="answer-{{ $review->id }}" class="leave-comment-to-review no-display">
+                        <textarea name="comment"
+                                  id="add_comment_to_{{ $review->id }}"
+                                  data-action="{{ route('ReviewAction', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug]) }}"
+                                  maxlength="1000"></textarea>
+                        <input type="submit" onclick="answerToReview({{ $review->id }})"
+                               value="Відповісти">
                     </div>
-                @endif
-
-            </div>
+                </div>
+            @endif
         @endforeach
     </div>
 
 </div>
+
+<script src="{{ asset('js/live-review.js') }}"></script>
