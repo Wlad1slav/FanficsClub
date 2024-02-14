@@ -279,16 +279,10 @@ class ChapterController extends Controller
         // Перевірка, чи належить розділ до фанфіка
         $this->authorize('chapterBelongToFanfic', [$fanfic ?? null, $chapter ?? null]);
 
-//        // Перевірка, чи не чорнетка фанфік
-//        $this->authorize('fanficIsntDraft', $chapter ?? null);
-//
-//        // Перевірка, чи не чорнетка розділ
-//        $this->authorize('chapterIsntDraft', $chapter ?? null);
-
         $request->validate([
-            'comment' => ['required'],
-//            'answer_to_review' => ['exists:App\Models\Review,id'],
-//            'answer_to_user' => ['exists:App\Models\User,id'],
+            'comment' => ['required', 'max:1000'],
+            'answer_to_review' => ['exists:App\Models\Review,id'],
+            'answer_to_user' => ['exists:App\Models\User,id'],
         ]);
 
         $user = Auth::user()->id;
