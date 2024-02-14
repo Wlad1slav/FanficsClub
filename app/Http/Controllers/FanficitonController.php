@@ -10,6 +10,7 @@ use App\Models\Dislike;
 use App\Models\Fandom;
 use App\Models\Fanfiction;
 use App\Models\Like;
+use App\Models\Review;
 use App\Models\Subscribe;
 use App\Models\Tag;
 use App\Models\User;
@@ -112,6 +113,8 @@ class FanficitonController extends Controller
                 $this->authorize('fanficAccess', $fanfic ?? null);
         }
 
+        $reviews = Review::getCached($chapter ?? null);
+
         // Перегляд фанфіка зараховується
         View::firstOrCreate([
             'user_id' => Auth::user()->id ?? null,
@@ -134,9 +137,10 @@ class FanficitonController extends Controller
             // По стандарту - перший розділ.
             'chapter' => $chapter ?? null,
 
+            'reviews' => $reviews ?? null,
+
             // Усі користувачі, що мають доступ до фанфіку
             'usersWithAccess' => $fanfic->usersWithAccess()
-
         ];
 
         return view('fanfic-view.view', $data);
