@@ -122,6 +122,30 @@
 
         </div>
 
+        @if(\Illuminate\Support\Facades\Auth::user()->fanfictions->count() > 0)
+            <!-- Приквел фанфіка -->
+            <div class="field">
+
+                <label for="prequel" class="main required">Приквел</label>
+
+                <div>
+                    <select name="prequel" id="prequel">
+                        <option>Немає</option>
+                        @foreach(\Illuminate\Support\Facades\Auth::user()->fanfictions as $fanfic)
+                            <option value="{{ $fanfic->id }}">{{ $fanfic->title }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('prequel')
+                    <p class="error">{{ $message }}</p>
+                    @enderror
+
+                    <p class="notify">Ви можете указати попередній фанфік серії, якщо такий є</p>
+                </div>
+
+            </div>
+        @endif
+
         <!-- Автор оригінала (з'являється, якщо тип фанфіка - переклад) -->
         <div class="field no-display" id="with-translate-1">
 

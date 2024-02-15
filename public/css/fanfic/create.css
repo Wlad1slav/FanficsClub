@@ -18,7 +18,7 @@ form {
     align-items: stretch!important;
 }
 
-input:not(input[type='radio']):not(input[type='checkbox']):not(input[type='submit']) {
+input:not(input[type='radio']):not(input[type='checkbox']):not(input[type='submit']), select {
     margin: 0;
     padding: var(--indent-small);
 }
@@ -55,4 +55,9 @@ input[type='submit'] {
     margin-top: var(--indent-medium);
     padding: var(--indent-small);
     font-size: var(--heading3-size);
+}
+
+.notify {
+    /*margin-bottom: 0;*/
+    margin-top: var(--indent-tiny);
 }

@@ -20,6 +20,7 @@ use App\Rules\CategoryExists;
 use App\Rules\FandomsExists;
 use App\Rules\TagsExists;
 use App\Rules\UserNotOwnedFanfic;
+use App\Rules\UserOwnedFanfic;
 use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,15 +38,14 @@ class FanficitonController extends Controller
 
         $request->validate([
             'type_of_work' => 'required',
-//            'anonymity' => 'required',
             'originality_of_work' => 'required',
             'ff_name' => ['required', 'string'],
-//            'characters' => ['string'],
             'age_rating' => ['required', new AgeRatingExists()],
             'category' => ['required', new CategoryExists()],
             'tags_selected' => [new TagsExists()],
             'ff_description' => ['max:550'],
             'ff_notes' => ['max:550'],
+            'prequel' => [new UserOwnedFanfic()]
         ]);
 
         // Якщо твір є фанфіком по певному фандому, то валідується
@@ -71,6 +71,7 @@ class FanficitonController extends Controller
             'category_id' => $request->category,
             'age_rating_id' => $request->age_rating,
             'is_anonymous' => ($request->anonymity ?? 0) == 1,
+            'prequel_id' => ($request->prequel ?? '-1') !== '-1' ? ($request->prequel ?? null) : null,
         ];
 
         // Якщо твір є перекладом, то валідується
@@ -248,6 +249,7 @@ class FanficitonController extends Controller
             'tags_selected' => [new TagsExists()],
             'ff_description' => ['max:550'],
             'ff_notes' => ['max:550'],
+            'prequel' => [new UserOwnedFanfic()],
 
             'fandoms_selected' => [new FandomsExists()],
         ]);
@@ -274,6 +276,7 @@ class FanficitonController extends Controller
             'age_rating_id' => $request->age_rating,
             'is_anonymous' => ($request->anonymity ?? 0) == 1,
             'is_draft' => ($request->is_draft ?? 0) == 1,
+            'prequel_id' => ($request->prequel ?? '-1') !== '-1' ? ($request->prequel ?? null) : null,
         ];
 
         // Якщо твір є перекладом, то валідується

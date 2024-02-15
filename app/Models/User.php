@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -58,5 +59,10 @@ class User extends Authenticatable
     {
         return Subscribe::where('user_id', Auth::user()->id)
             ->where('fanfiction_id', $fanfic->id)->exists();
+    }
+
+    public function fanfictions(): HasMany
+    {   // Отримати усі фанфіки, що належать користувачу
+        return $this->hasMany(Fanfiction::class, 'author_id');
     }
 }
