@@ -344,6 +344,8 @@ class FanficitonController extends Controller
         $user = User::where('email', $request->email ?? null)->first();
 
         $fanfic->clearCache();
+        Cache::pull("access_editor_$user->id");
+        Cache::pull("access_coauthor_$user->id");
 
         // $rights - рівень прав користувача
         // coauthor
@@ -371,6 +373,8 @@ class FanficitonController extends Controller
         $fanfic->update(['users_with_access' => $users]);
 
         $fanfic->clearCache();
+        Cache::pull("access_editor_$userId");
+        Cache::pull("access_coauthor_$userId");
 
         return back();
     }

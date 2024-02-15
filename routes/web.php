@@ -97,6 +97,11 @@ Route::get('/profile/subscribes',
     [UserProfileController::class, 'subscribes']
 )->middleware('auth')->name('SubscribesListPage');
 
+// Сторінка з усіма фанфіками, до яких користувач має доступ
+Route::get('/profile/access',
+    [UserProfileController::class, 'access']
+)->middleware('auth')->name('AccessFanficsListPage');
+
 // Сторінки пов'язані з фанфіками
 
 // Сторінка з формою створення фанфіка

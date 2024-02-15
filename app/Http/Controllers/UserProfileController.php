@@ -120,4 +120,27 @@ class UserProfileController extends Controller
         return view('profile.subscribes', $data);
     }
 
+    public function access()
+    {   // AccessFanficsListPage
+        // Сторінка з усіма фанфіками, до яких користувач має доступ
+
+        $user = Auth::user();
+
+        $editorAccess = Cache::remember("access_editor_$user->id", 60*60*24, function () use ($user) {
+            return Fanfiction::whereJsonContains("users_with_access->$user->id", 'editor')->get();
+        });
+
+        $coauthorAccess = Cache::remember("access_coauthor_$user->id", 60*60*24, function () use ($user) {
+            return Fanfiction::whereJsonContains("users_with_access->$user->id", 'coauthor')->get();
+        });
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+            'editorAccess' => $editorAccess,
+            'coauthorAccess' => $coauthorAccess,
+        ];
+
+        return view('profile.fanfics-with-access', $data);
+    }
+
 }
