@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChapterController;
-use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FanficitonController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -217,3 +217,17 @@ Route::get('/fanfic/{ff_slug}/dislike',
 Route::get('/fanfic/{ff_slug}/subscribe',
     [FanficitonController::class, 'subscribe']
 )->middleware('auth')->name('SubscribeAction');
+
+// Сторінки пов'язані з запитами користувачів
+
+// Форма з відправкою запиту на переклад з іншої мови
+Route::get('/user-request/fanfic-robot-translate',
+    [RequestsController::class, 'fanficTranslatePage']
+)->name('FanficTranslatePage');
+
+// Відправка запиту на переклад з іншої мови
+Route::post('/user-request/fanfic-robot-translate',
+    [RequestsController::class, 'fanficTranslate']
+)->name('FanficTranslateAction');
+
+
