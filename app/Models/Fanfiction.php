@@ -43,6 +43,19 @@ class Fanfiction extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function prequel(): BelongsTo
+    {   // Повертає фанфік, який є приквелом до цього
+        return $this->belongsTo(self::class);
+    }
+
+    public function sequel(): ?Fanfiction
+    {   // Повертає фанфік, який є сиквелом фанфіку
+
+        return Fanfiction::where('prequel_id', $this->id)
+            ->where('is_draft', false)
+            ->first();
+    }
+
 //    public function fandom(): BelongsTo
 //    {   // Зв'язок з моделю Fandom
 //        // для кожного екземпляра Fanfiction можна отримати фандом

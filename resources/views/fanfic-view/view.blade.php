@@ -178,6 +178,31 @@
 
             </div>
 
+            <div>
+
+                @if($fanfic->prequel_id !== null)
+                    <p>
+                        <h3>Приквел: </h3>
+                        <a class="fandom-link"
+                           href="{{ route('FanficPage', $fanfic->prequel->slug) }}">
+                            {{ $fanfic->prequel->title }}
+                        </a>
+                    </p>
+                @endif
+
+                @php $sequel = $fanfic->sequel() @endphp
+                    @if($sequel !== null)
+                        <p>
+                            <h3>Сиквел: </h3>
+                            <a class="fandom-link"
+                               href="{{ route('FanficPage', $sequel->slug) }}">
+                                {{ $sequel->title }}
+                            </a>
+                        </p>
+                    @endif
+
+            </div>
+
                 <div class="statistic">                                         <!-- Статистика по фанфіку -->
                 <p>Створено: {{ $fanfic->created_at->format('Y-m-d') }}</p>     <!-- Дата створення -->
                 <p>Оновлено: {{ $fanfic->updated_at->format('Y-m-d H:i') }}</p>                      <!-- Дата останнього оновлення -->

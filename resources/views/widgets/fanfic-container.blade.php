@@ -158,6 +158,16 @@
             </p>
         @endif
 
+        @if($fanfic->prequel_id !== null)
+             <p>
+                 <span>Сиквел твору: </span>
+                 <a class="fandom-link"
+                    href="{{ route('FanficPage', $fanfic->prequel->slug) }}">
+                    {{ $fanfic->prequel->title }}
+                 </a>
+             </p>
+        @endif
+
         <!-- Опис фанфіка -->
         <p class="description">{{ $fanfic->description }}</p>
 
