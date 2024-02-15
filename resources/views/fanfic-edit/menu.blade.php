@@ -1,6 +1,7 @@
 <nav>
     <div>
         <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">Розділи</a>
+        <a href="{{ route('StatisticFanficPage', ['ff_slug' => $fanfic->slug]) }}">Статистика</a>
         @if(\App\Policies\FanfictionPolicy::isAuthorStatic(Auth::user(), $fanfic))
             <a href="{{ route('FanficEditPage', ['ff_slug' => $fanfic->slug]) }}">Редагувати твір</a>
             <a href="{{ route('ChapterCreatePage', ['ff_slug' => $fanfic->slug]) }}">Створити розділ</a>

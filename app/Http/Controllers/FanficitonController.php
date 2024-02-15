@@ -450,5 +450,22 @@ class FanficitonController extends Controller
         }
     }
 
+    public function statistic(string $ff_slug)
+    {
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->first();
+        });
+
+        $this->authorize('fanficAccess', $fanfic ?? null);
+
+        $data = [
+            'navigation' => require_once 'navigation.php',
+
+            'fanfic' => $fanfic,
+        ];
+
+        return view('fanfic-edit.statistic', $data);
+    }
+
 
 }

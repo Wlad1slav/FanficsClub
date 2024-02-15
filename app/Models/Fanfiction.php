@@ -82,6 +82,11 @@ class Fanfiction extends Model
         return $this->hasMany(View::class);
     }
 
+    public function subscribes(): HasMany
+    {   // Отримати усі підписки на фанфік
+        return $this->hasMany(Subscribe::class);
+    }
+
     public function getTagsAttribute(): Collection
     {   // Повертає масив Laravel колекцій тегів фанфіку
         // ->tags

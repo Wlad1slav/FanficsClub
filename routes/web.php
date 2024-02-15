@@ -149,6 +149,11 @@ Route::get('/fanfic-edit/access/{ff_slug}/put-{userId}',
     [FanficitonController::class, 'putUserAccess']
 )->name('PutUserAccessAction');
 
+// Сторінка зі статистокою по фанфіку
+Route::get('/fanfic-edit/statistic/{ff_slug}',
+    [FanficitonController::class, 'statistic']
+)->name('StatisticFanficPage');
+
 // Сторінки пов'язані з розділами
 
 // Форма для створення нового розділа
