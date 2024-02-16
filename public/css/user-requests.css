@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: var(--indent-medium);
 }
 
 .request-description div, .request-description form {
@@ -17,6 +18,7 @@
 .description {
     background-color: var(--clr-bg-second);
     padding: var(--indent-small);
+    width: 40%;
 }
 
 h1 {
@@ -24,18 +26,30 @@ h1 {
 }
 
 h2 {
-    text-align: right;
     border-bottom: 4px solid var(--clr-base);
 }
 
-input:not(input[type='submit']) {
+.request-description h2 {
+    text-align: right;
+}
+
+input:not(input[type='submit']), select, textarea {
     width: 100%;
 }
 
-input {
+input:not(input[type='file']),
+textarea, select {
     padding: var(--indent-small);
 }
 
 label {
     font-weight: var(--bond-font-weight);
+}
+
+input, select, textarea {
+    margin-bottom: var(--indent-small);
+}
+
+input[type='submit'] {
+    margin-top: var(--indent-small);
 }

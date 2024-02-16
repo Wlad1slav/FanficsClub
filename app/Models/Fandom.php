@@ -42,31 +42,31 @@ class Fandom extends Model
             'fandom_category_id' => 1, // Медіагіганти
             'description' => null,
             'related_media_giant_fandom_id' => null,
-            'image' => 'images/fandoms/fandom-harry-potter.webp'
+            'image' => 'storage/fandoms/fandom-harry-potter.webp'
         ],[
             'name' => 'Зоряні Війни',
             'fandom_category_id' => 1,
             'description' => null,
             'related_media_giant_fandom_id' => null,
-            'image' => 'images/fandoms/fandom-star-wars.webp'
+            'image' => 'storage/fandoms/fandom-star-wars.webp'
         ],[
             'name' => 'Marvel',
             'fandom_category_id' => 1,
             'description' => null,
             'related_media_giant_fandom_id' => null,
-            'image' => 'images/fandoms/fandom-marvel.webp'
+            'image' => 'storage/fandoms/fandom-marvel.webp'
         ],[
             'name' => 'Boku no Hero Academia',
             'fandom_category_id' => 4, // Аніме & Манга
             'description' => null,
             'related_media_giant_fandom_id' => null,
-            'image' => 'images/fandoms/fandom-boku-no-hero-academia.webp'
+            'image' => 'storage/fandoms/fandom-boku-no-hero-academia.webp'
         ],[
             'name' => 'Всесвіт Д.Р.Р. ТОЛКІНА',
             'fandom_category_id' => 2, // Книги & Література
             'description' => null,
             'related_media_giant_fandom_id' => null,
-            'image' => 'images/fandoms/fandom-lord-of-the-rings.webp'
+            'image' => 'storage/fandoms/fandom-lord-of-the-rings.webp'
         ],
     ];
 

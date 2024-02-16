@@ -24,7 +24,7 @@
         @foreach($fandoms as $fandom)
             <a href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}"
                class="fandom no-select clickable enlargement"
-               style="background-image: url('{{ asset($fandom->image) }}')">
+               style="background-image: url('{{ asset($fandom->image ?? 'images/fandoms/base.webp') }}')">
 
                <div class="info">
                    <div>

@@ -29,6 +29,12 @@ return new class extends Migration
 
             $table->text('description')->nullable();
 
+            $table->unsignedBigInteger('added_by_user')->nullable();
+            $table->foreign('added_by_user')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
+
             $table->timestamps();
 
             $table->bigInteger('fictions_amount')->default(0);
