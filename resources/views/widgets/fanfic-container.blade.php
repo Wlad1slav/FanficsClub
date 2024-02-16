@@ -158,7 +158,7 @@
             </p>
         @endif
 
-        @if($fanfic->prequel_id !== null)
+        @if($fanfic->prequel_id !== null and isset($fanfic->prequel_id))
              <p>
                  <span>Сиквел твору: </span>
                  <a class="fandom-link"
