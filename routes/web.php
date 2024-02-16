@@ -157,3 +157,7 @@ Route::post('/user-request/add/fandom', [RequestsController::class, 'addFandom']
 Route::get('/user-request/add/tag', [RequestsController::class, 'addTagForm'] )->name('AddTagPage');
 Route::post('/user-request/add/tag', [RequestsController::class, 'addTag'] )->middleware('auth')->name('AddTagAction');
 
+// Форма для додавання персонажа
+Route::get('/user-request/add/character', [RequestsController::class, 'addCharacterForm'] )->name('AddCharacterPage');
+Route::post('/user-request/add/character', [RequestsController::class, 'addCharacter'] )->middleware('auth')->name('AddCharacterAction');
+

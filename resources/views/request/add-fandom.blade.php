@@ -59,7 +59,7 @@
                 <p class="error">{{ $message }}</p>
             @enderror
 
-            <input type="submit" value="Відправити">
+            <input type="submit" value="Додати">
 
 
             @if(session('success'))

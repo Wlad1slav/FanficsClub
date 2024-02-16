@@ -36,6 +36,6 @@ return [
     'Чогось не вистачає?' => [
         'Додати фандом' => route('AddFandomPage'),
         'Додати теґ' => route('AddTagPage'),
-        'Додати персонажа' => '#',
+        'Додати персонажа' => route('AddCharacterPage'),
     ],
 ];

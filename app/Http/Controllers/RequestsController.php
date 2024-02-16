@@ -127,8 +127,6 @@ class RequestsController extends Controller
             $request->file('fandom_image')->storeAs('public/fandoms', "$slug.$extension");
         }
 
-        Cache::pull('fandoms_all');
-
         Fandom::create([
             'slug' => $slug,
             'name' => $request->fandom_name,
@@ -139,7 +137,9 @@ class RequestsController extends Controller
             'added_by_user' => Auth::user()->id,
         ]);
 
-        return back()->with('success', 'Фандом успішно доданий на сайт.');
+        Cache::pull('fandoms_all');
+
+        return back()->with('success', "Фандом $request->fandom_name успішно доданий на сайт.");
     }
 
     public function addTagForm()
@@ -167,8 +167,6 @@ class RequestsController extends Controller
             'related_fandom' => [new FandomExists()],
         ]);
 
-        Cache::pull('tags_all');
-
         Tag::create([
             'name' => $request->tag_name,
             'description' => $request->tag_description ?? null,
@@ -176,7 +174,46 @@ class RequestsController extends Controller
             'added_by_user' => Auth::user()->id
         ]);
 
-        return back()->with('success', 'Теґ успішно доданий на сайт.');
+        Cache::pull('tags_all');
+
+        return back()->with('success', "Теґ $request->tag_name успішно доданий на сайт.");
+    }
+
+    public function addCharacterForm()
+    {   // AddCharacterPage
+
+        $data = [
+            'title' => 'Додати персонажа',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+
+            'fandoms' => Cache::remember("fandoms_all", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->get();
+            }),
+        ];
+
+        return view('request.add-character', $data);
+    }
+
+    public function addCharacter(Request $request)
+    {   // AddCharacterAction
+
+        $request->validate([
+            'character_name' => ['required', 'string', 'unique:characters,name'],
+            'related_fandom' => ['required', new FandomExists()],
+        ]);
+
+        $fandom = Fandom::where('name', $request->related_fandom)->first();
+
+        Character::create([
+            'name' => $request->character_name,
+            'belonging_to_fandom_id' => $fandom->id,
+            'added_by_user' => Auth::user()->id
+        ]);
+
+        Cache::pull('characters_all');
+
+        return back()->with('success', "Персонаж $request->character_name успішно доданий для фандому $fandom->name.");
     }
 
 }
