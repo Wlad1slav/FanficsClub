@@ -1,0 +1,30 @@
+footer {
+    background: var(--footer-background);
+    color: var(--clr-white);
+    padding: 1% 5%;
+}
+
+footer p {
+    text-align: center;
+    font-style: italic;
+}
+
+footer a {
+    color: var(--clr-white);
+    /*text-decoration: none;*/
+}
+
+footer h4, footer a {
+    margin-bottom: 5px;
+}
+
+.links {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: var(--indent-medium);
+}
+
+.links div {
+    display: flex;
+    flex-direction: column;
+}
