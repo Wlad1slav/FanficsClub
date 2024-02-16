@@ -108,7 +108,7 @@ class RequestsController extends Controller
     {   // AddFandomAction
 
         $request->validate([
-            'fandom_name' => ['required', 'string'],
+            'fandom_name' => ['required', 'string', 'unique:fandoms,name'],
             'fandom_description' => ['max:500'],
             'fandom_category' => [new FandomCategoryExists()],
             'related_mediagiant' => [new FandomExists()],
@@ -127,6 +127,8 @@ class RequestsController extends Controller
             $request->file('fandom_image')->storeAs('public/fandoms', "$slug.$extension");
         }
 
+        Cache::pull('fandoms_all');
+
         Fandom::create([
             'slug' => $slug,
             'name' => $request->fandom_name,
@@ -138,6 +140,43 @@ class RequestsController extends Controller
         ]);
 
         return back()->with('success', 'Фандом успішно доданий на сайт.');
+    }
+
+    public function addTagForm()
+    {   // AddTagPage
+
+        $data = [
+            'title' => 'Додати теґ',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+
+            'fandoms' => Cache::remember("fandoms_all", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->get();
+            }),
+        ];
+
+        return view('request.add-tag', $data);
+    }
+
+    public function addTag(Request $request)
+    {   // AddTagAction
+
+        $request->validate([
+            'tag_name' => ['required', 'string', 'unique:tags,name'],
+            'tag_description' => ['max:500'],
+            'related_fandom' => [new FandomExists()],
+        ]);
+
+        Cache::pull('tags_all');
+
+        Tag::create([
+            'name' => $request->tag_name,
+            'description' => $request->tag_description ?? null,
+            'belonging_to_fandom_id' => Fandom::where('name', $request->related_fandom)->first()?->id,
+            'added_by_user' => Auth::user()->id
+        ]);
+
+        return back()->with('success', 'Теґ успішно доданий на сайт.');
     }
 
 }

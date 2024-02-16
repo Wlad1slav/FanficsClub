@@ -33,6 +33,12 @@ return new class extends Migration
                 ->on('fandoms')
                 ->onDelete('cascade');
 
+            $table->unsignedBigInteger('added_by_user')->nullable();
+            $table->foreign('added_by_user')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
+
             $table->timestamps();
         });
     }

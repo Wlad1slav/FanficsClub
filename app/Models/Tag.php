@@ -18,31 +18,14 @@ class Tag extends Model
 
     private bool $hasSlug = false;
 
-    private array $BASE_ROWS = [
-        [
-            'name' => 'AU',
-            'description' => '',
-            'notification' => null,
-        ],[
-            'name' => 'OOC',
-            'description' => '',
-            'notification' => null,
-        ],[
-            'name' => 'Драма',
-            'description' => '',
-            'notification' => null,
-        ],[
-            'name' => 'PWP',
-            'description' => '',
-            'notification' => '18+',
-        ],
-    ];
+    private array $BASE_ROWS = [];
 
     public function __construct()
     {
 
         if ($this->count() === 0)
             // Якщо таблиця пустая, то в ній генеруються стандартні рядки
+            $this->BASE_ROWS = include '../config/default-database/tags.php';
             $this->generate();
     }
 

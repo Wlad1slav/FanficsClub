@@ -153,3 +153,7 @@ Route::post('/user-request/fanfic-transfer', [RequestsController::class, 'fanfic
 Route::get('/user-request/add/fandom', [RequestsController::class, 'addFandomForm'] )->name('AddFandomPage');
 Route::post('/user-request/add/fandom', [RequestsController::class, 'addFandom'] )->middleware('auth')->name('AddFandomAction');
 
+// Форма для додавання теґу
+Route::get('/user-request/add/tag', [RequestsController::class, 'addTagForm'] )->name('AddTagPage');
+Route::post('/user-request/add/tag', [RequestsController::class, 'addTag'] )->middleware('auth')->name('AddTagAction');
+
