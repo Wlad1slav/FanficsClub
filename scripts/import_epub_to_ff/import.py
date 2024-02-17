@@ -19,11 +19,13 @@ content_dict = read_epub_content_to_dict(fanfic_original_path)
 
 chapters_table = rep.Repository('chapters')
 
+chapter_id = random.randint(100000, 999999)
+
 for title, content in content_dict.items():
     # print(f"Chapter: {title}\nContent: {content}\n\n")
     chapters_table.create_row(
         {
-            'id': random.randint(10000, 99999),
+            'id': chapter_id,
             'fanfiction_id': fanfic_id,
             'title': str(title),
             'slug': slug_generate(title),
@@ -33,5 +35,7 @@ for title, content in content_dict.items():
             'created_at': datetime.now()
         }
     )
+
+    chapter_id += 1
 
     print(f"Розділ {title} ({slug_generate(title)}) згенерований\n")
