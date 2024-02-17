@@ -28,7 +28,7 @@ return new class extends Migration
                 ->unique();
             $table->longText('content');
             $table->json('additional_descriptions')->nullable();
-            $table->unsignedBigInteger('views')->default(0);
+            // $table->unsignedBigInteger('views')->default(0);
             $table->boolean('is_draft')->default(1);
 
             $table->timestamps();
