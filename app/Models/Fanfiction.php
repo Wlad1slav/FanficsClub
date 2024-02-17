@@ -139,4 +139,35 @@ class Fanfiction extends Model
         Cache::pull("chapters_ff_{$this->id}_all_ids_array");
     }
 
+    // Метод для підрахування кількості слів в фанфіку
+    public function countWordsAmount(): int
+    {
+        $amount = 0;
+
+        foreach ($this->chapters as $chapter) {
+            preg_match_all("/\b[\p{L}\p{N}]+\b/u", $chapter->content, $matches);
+            $amount += count($matches[0]);
+        }
+
+        return $amount;
+    }
+
+    // Метод для оновлення довжини фанфіку (у словах)
+    public function refreshWordsAmount(): void
+    {
+        $this->update([
+            'words_amount' => $this->countWordsAmount()
+        ]);
+        $this->clearCache();
+    }
+
+    // Метод для оновлення сіквенції розділів фанфіку
+    public function refreshSequence(): void
+    {
+        $this->update([
+            'chapters_sequence' => $this->chapters->pluck('id')
+        ]);
+        $this->clearCache();
+    }
+
 }
