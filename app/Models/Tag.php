@@ -23,10 +23,11 @@ class Tag extends Model
     public function __construct()
     {
 
-        if ($this->count() === 0)
+        if ($this->count() === 0) {
             // Якщо таблиця пустая, то в ній генеруються стандартні рядки
             $this->BASE_ROWS = include '../config/default-database/tags.php';
             $this->generate();
+        }
     }
 
 }
