@@ -151,6 +151,12 @@ p.error-password {
     font-weight: var(--bond-font-weight);
 }
 
+p.alert-success {
+    color: var(--clr-positive-dark);
+    font-weight: var(--bond-font-weight);
+    border-bottom: 2px solid var(--clr-positive);
+}
+
 .notify {
     font-size: calc(var(--font-size)/1.3);
 }
