@@ -13,7 +13,8 @@
     font-size: 17px;
     word-break: break-word;
     white-space: pre-line;
-    margin: 0;
+    line-height: 1.7;
+    margin-bottom: var(--indent-medium);
 }
 
 .chapter-notify,

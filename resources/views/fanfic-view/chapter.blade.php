@@ -12,7 +12,11 @@
 
     <div class="chapter-content">
 {{--        {!! nl2br(e($chapter->content)) !!}--}}
-        <p>{{ $chapter->content }}</p>
+{{--        <p>{{ $chapter->content }}</p>--}}
+
+        @foreach(explode("\n",$chapter->content) as $paragraph)
+            <p>{{ $paragraph }}</p>
+        @endforeach
     </div>
 
         @if($chapter->additional_descriptions['notes'])
