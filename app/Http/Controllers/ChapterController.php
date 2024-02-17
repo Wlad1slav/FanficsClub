@@ -6,10 +6,12 @@ use App\Models\Chapter;
 use App\Models\Fanfiction;
 use App\Models\Review;
 use App\Rules\ChaptersBelongToFanfic;
+use App\Rules\ReviewExists;
 use App\Traits\SlugGenerationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ChapterController extends Controller
 {
@@ -77,6 +79,8 @@ class ChapterController extends Controller
 
         $fanfic->clearCache(); // Видалення фанфіку з кешу
         $fanfic->save();
+
+        $fanfic->refreshWordsAmount();
 
         return redirect(route('FanficPage', [
                 'ff_slug' => $fanfic->slug,
@@ -159,6 +163,8 @@ class ChapterController extends Controller
             // Якщо value is_draft рівен одному, то розділ зберігається, як чорнетка
             'is_draft' => ($request->is_draft ?? 0) == 1
         ]);
+
+        $fanfic->refreshWordsAmount();
 
         return back();
 
@@ -306,6 +312,21 @@ class ChapterController extends Controller
 
         return response()->json($data);
 
+    }
+
+    public function complain(string $fs, string $cs, int $review_id)
+    {   // ReviewComplainAction
+
+//        $request->validate([
+//            'review_id' => ['required', new ReviewExists()],
+//        ]);
+
+        $table = DB::table('review_complains');
+
+        $table->insert([
+            'review_id' => intval($review_id),
+            'user_accuses' => Auth::user()->id,
+        ]);
     }
 
 }

@@ -30,8 +30,8 @@
           class="select-chapter">
         @csrf
         <select name="chapter" id="chapter-select">
-            @foreach($chapters as $chapter)
-                <option value="{{ $chapter->slug }}">{{ $chapter->title }}</option>
+            @foreach($chapters as $chapter_el)
+                <option value="{{ $chapter_el->slug }}">{{ $chapter_el->title }}</option>
             @endforeach
         </select>
 
@@ -40,6 +40,8 @@
 </div>
 
 <link rel="stylesheet" href="{{ asset('css/chapter/comments.css') }}">
+
+<script src="{{ asset('js/confirm-action.js') }}"></script>
 
 <div id="comments">
     <h2>Коментарі</h2>
@@ -71,7 +73,7 @@
                             <a onclick="answerToReviewTextarea({{ $review->id }}, '{{ $review->user->name }}', {{ $review->user->id }})">
                                 Відповісти
                             </a>
-                            <a href="#">Поскаржитися</a>
+                            <a onclick="confirmAction('{{ route('ReviewComplainAction', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug, 'review_id' => $review->id]) }}', 'Ви впевненні, що хочете поскаржитися на користувача {{ $review->user->name }}?', false)">Поскаржитися</a>
                         </div>
                     </div>
 

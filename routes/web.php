@@ -124,6 +124,9 @@ Route::post('/fanfic-edit/{ff_slug}/chapters', [ChapterController::class, 'chang
 // Залишити відгук під розділом
 Route::get('/fanfic/{ff_slug}/chapter/{chapter_slug}/review', [ChapterController::class, 'review'] )->middleware('auth')->name('ReviewAction');
 
+// Поскаржитися на коментар під розділом
+Route::get('/fanfic/{ff_slug}/chapter/{chapter_slug}/review/complain-{review_id}', [ChapterController::class, 'complain'] )->middleware('auth')->name('ReviewComplainAction');
+
 /////////////////////////////////////////////
 // МАРШРУТИ ПОВ'ЯЗАНІ З РЕЙТИНГОМ ФАНФІКІВ //
 /////////////////////////////////////////////

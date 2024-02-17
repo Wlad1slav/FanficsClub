@@ -1,4 +1,4 @@
-function confirmAction(action, question) {
+function confirmAction(action, question, reload=true) {
     // Підтвердження дії
     const isConfirmed = confirm(question);
 
@@ -8,6 +8,9 @@ function confirmAction(action, question) {
             type: "GET",
             url: action,
         });
-        location.reload();
+
+        if (reload) {
+            location.reload();
+        }
     }
 }
