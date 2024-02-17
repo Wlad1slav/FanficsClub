@@ -4,11 +4,13 @@
     {{ $title }} :: Фанфіки українською
 @endsection
 
-
 @section('content')
 
     @php
         $user = Auth::user();
+
+        //$fanfic->refreshSequence();
+        //$fanfic->refreshWordsAmount();
     @endphp
 
     <link rel="stylesheet" href="{{ asset('css/fanfic/view.css') }}">
@@ -43,13 +45,13 @@
                     <!-- Якщо фанфік - переклад з іншої мови, то
                      додається примітка у короткій інформації -->
                     @if($fanfic->is_translate)
-                        <p class="translate-notify">Переклад</p>
+                        <p class="translate-notify" style="letter-spacing: 2px;">Переклад</p>
                     @elseif($fanfic->is_robot_translate)
-                        <p class="translate-notify"
+                        <p class="translate-notify" style="letter-spacing: 2px;"
                            title="Фанфік був перекладений роботом.">Роботичний переклад</p>
-                    @elseif($fanfic->is_postponed)
-                        <p class="translate-notify"
-                           title="Фанфік був перенесений з іншого сайту.">Перенесено</p>
+{{--                    @elseif($fanfic->is_postponed)--}}
+{{--                        <p class="translate-notify"--}}
+{{--                           title="Фанфік був перенесений з іншого сайту.">Перенесено</p>--}}
                     @endif
 
                     <!-- Статус фанфіка -->
@@ -207,7 +209,7 @@
                 <p>Створено: {{ $fanfic->created_at->format('Y-m-d') }}</p>     <!-- Дата створення -->
                 <p>Оновлено: {{ $fanfic->updated_at->format('Y-m-d H:i') }}</p>                      <!-- Дата останнього оновлення -->
                 <p>Слов: {{ $fanfic->words_amount }}</p>                        <!-- Кількість слів -->
-                <p>Розділів: {{ $fanfic->chapters_amount }}</p>                 <!-- Кількість розділів -->
+                <p>Розділів: {{ $chapters !== null ? $chapters->count() : 0 }}</p>  <!-- Кількість розділів -->
                 <p>Переглядів: {{ $fanfic->views->count() }}</p>                         <!-- Кількість переглядів -->
             </div>
 
@@ -217,7 +219,14 @@
             <h1>{{ $fanfic->title }}</h1>
 
 
-            <h2>{{ $fanfic->is_anonymous ? 'Аноним' : $fanfic->author->name }}</h2>
+            @if($fanfic->fictitious_author === null)
+                <h2>{{ $fanfic->is_anonymous ? 'Аноним' : $fanfic->author->name }}</h2>
+
+            @else
+                <h2>{{ $fanfic->fictitious_author }}</h2>
+            @endif
+
+
             @if($fanfic->users_with_access !== null and count($fanfic->users_with_access) > 0)
                 @foreach($usersWithAccess as $user)
                     <p class="another-author">{{ $user->name }}</p>

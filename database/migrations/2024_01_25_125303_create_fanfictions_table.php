@@ -35,7 +35,6 @@ return new class extends Migration
             $table->json('characters')->nullable();
 
             $table->unsignedBigInteger('words_amount')->default(0);
-            $table->unsignedBigInteger('chapters_amount')->default(0);
 
 //            $table->unsignedBigInteger('views')->default(0);
 //            $table->unsignedBigInteger('rating')->default(0);
@@ -88,6 +87,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->boolean('is_banned')->default(0);
+
+            $table->string('fictitious_author')->nullable();
 
             $table->softDeletes();
         });
