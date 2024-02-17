@@ -117,12 +117,15 @@
         </div>
 
         <!-- Автор оригінала (з'являється, якщо тип фанфіка - переклад) -->
-        <div class="field no-display" id="with-translate-1">
+        <div class="field {{ !$fanfic->is_translate ? 'no-display' : '' }}" id="with-translate-1">
 
             <label for="ff_original_author" class="main required">Автор оригінала</label>
 
             <div>
-                <input type="text" name="ff_original_author" id="ff_original_author">
+                <input type="text"
+                       name="ff_original_author"
+                       id="ff_original_author"
+                       value="{{ $fanfic->original_author }}">
 
                 @error('ff_original_author')
                 <p class="error">{{ $message }}</p>
@@ -132,13 +135,16 @@
         </div>
 
         <!-- Посилання на оригінал (з'являється, якщо тип фанфіка - переклад) -->
-        <div class="field no-display" id="with-translate-2">
+        <div class="field {{ !$fanfic->is_translate ? 'no-display' : '' }}" id="with-translate-2">
 
             <label for="ff_original_link" class="main required">Посилання на оригінал</label>
 
             <div>
-                <input type="text" name="ff_original_link" id="ff_original_link"
-                       placeholder="https://archiveofourown.org/works/0000000">
+                <input type="url"
+                       name="ff_original_link"
+                       id="ff_original_link"
+                       placeholder="https://archiveofourown.org/works/0000000"
+                       value="{{ $fanfic->original_url }}">
 
                 @error('ff_original_link')
                 <p class="error">{{ $message }}</p>

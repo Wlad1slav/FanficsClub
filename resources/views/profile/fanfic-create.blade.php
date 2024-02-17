@@ -130,7 +130,7 @@
 
                 <div>
                     <select name="prequel" id="prequel">
-                        <option>Немає</option>
+                        <option value="-1">Немає</option>
                         @foreach(\Illuminate\Support\Facades\Auth::user()->fanfictions as $fanfic)
                             <option value="{{ $fanfic->id }}">{{ $fanfic->title }}</option>
                         @endforeach
