@@ -55,17 +55,16 @@ class FanficitonController extends Controller
                 'fandoms_selected' => ['required', new FandomsExists()],
             ]);
 
-
         $fanfic = [
             'slug' => self::createOriginalSlug($request->ff_name, Fanfiction::class),
             'author_id' => Auth::user()->id,
-            'fandoms_id' => ($request->originality_of_work ?? 1) === 0 ? // Якщо оригінальність вибрана, як "Оригінальний твір"
+            'fandoms_id' => ($request->originality_of_work ?? 1) == 0 ? // Якщо оригінальність вибрана, як "Оригінальний твір"
                 Fandom::convertStrAttrToArray($request->fandoms_selected ?? null) : null, // то встановлюється null
             'title' => $request->ff_name,
             'description' => $request->ff_description,
             'additional_descriptions' => $request->ff_notes,
             'tags' => Tag::convertStrAttrToArray($request->tags_selected),
-            'characters' => ($request->originality_of_work ?? 1) === 0 ? // Якщо оригінальність вибрана, як "Оригінальний твір"
+            'characters' => ($request->originality_of_work ?? 1) == 0 ? // Якщо оригінальність вибрана, як "Оригінальний твір"
                 Character::convertCharactersStrToArray($request->characters) :
                 Character::convertOriginalCharactersToArray($request->characters_original), // то повертається просто масив строк імен оригінальних персонажів
             'category_id' => $request->category,
@@ -100,6 +99,8 @@ class FanficitonController extends Controller
             // але якщо користувач його оновить, то кеш автоматом очиститься
             return Fanfiction::where('slug', $ff_slug)->first();
         });
+
+//        dump(json_encode($fanfic->chapters->pluck('id')));
 
         if ($fanfic->is_draft)
             $this->authorize('fanficAccess', $fanfic ?? null);
