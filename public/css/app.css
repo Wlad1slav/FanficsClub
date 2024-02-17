@@ -25,6 +25,7 @@
     --clr-bg: var(--clr-white);
     --clr-bg-second: rgb(240,240,240);
     --clr-positive: rgb(10, 180, 10);
+    --clr-positive-dark: rgb(10, 150, 10);
     --clr-negative: rgb(180, 10, 10);
 
     /* indents */
@@ -40,6 +41,7 @@
 
     /* header */
     --nav-background: linear-gradient(0.5turn, var(--clr-dark-base), var(--clr-base));
+    --footer-background: linear-gradient(0.5turn, var(--clr-dark-base), rgb(152, 43, 43));
 
     /* animations */
     --animation: 0.2s ease;
