@@ -164,3 +164,7 @@ Route::post('/user-request/add/tag', [RequestsController::class, 'addTag'] )->mi
 Route::get('/user-request/add/character', [RequestsController::class, 'addCharacterForm'] )->name('AddCharacterPage');
 Route::post('/user-request/add/character', [RequestsController::class, 'addCharacter'] )->middleware('auth')->name('AddCharacterAction');
 
+// Форма для додавання персонажа
+Route::get('/user-request/report', [RequestsController::class, 'reportForm'] )->name('ReportPage');
+Route::post('/user-request/report', [RequestsController::class, 'report'] )->middleware('auth')->name('ReportAction');
+

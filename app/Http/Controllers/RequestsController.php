@@ -216,4 +216,50 @@ class RequestsController extends Controller
         return back()->with('success', "Персонаж $request->character_name успішно доданий для фандому $fandom->name.");
     }
 
+    public function reportForm()
+    {   // ReportPage
+
+        $data = [
+            'title' => 'Повідомити про помилку',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+        ];
+
+        return view('request.report-problem', $data);
+    }
+
+    public function report(Request $request)
+    {   // ReportAction
+
+        $request->validate([
+            'report_theme' => ['required', 'string', 'max:255'],
+            'report_message' => ['required'],
+            'screenshot' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:1024'],
+        ]);
+
+        $user = Auth::user();
+
+        // Збереження скріншоту в повідомленні
+        if ($request->hasFile('screenshot')) {
+            // Розширення скріншоту
+            $extension = $request->file('screenshot')->getClientOriginalExtension();
+
+            // Генерація назви для зображення
+            $fileNameToStore= "storage/reports/{$user->id}_". date('Y-m-d_H-i-s') .".$extension";
+            $request->file('screenshot')->storeAs('public/reports',
+                "{$user->id}_". date('Y-m-d_H-i-s') .".$extension");
+        }
+
+        $table = DB::table('reports');
+
+        $table->insert([
+            'report_theme' => $request->report_theme,
+            'report_message' => $request->report_message,
+            'screenshot' => $fileNameToStore ?? null,
+            'user_id' => $user->id,
+        ]);
+
+        return back()->with('success', "Повідомлення успішно відправлено!");
+    }
+
 }
