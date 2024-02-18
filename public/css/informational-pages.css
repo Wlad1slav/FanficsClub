@@ -1,0 +1,46 @@
+h1 {
+    border-bottom: 8px solid var(--clr-base);
+}
+
+h2, h3 {
+    margin-bottom: 0;
+}
+
+div.info-section {
+    border-bottom: 4px dotted var(--clr-base);
+    margin-bottom: var(--indent-medium);
+    padding: var(--indent-medium);
+}
+
+ul.normal-list, .normal-list ul {
+    padding: revert;
+}
+
+.large-text p, .large-text b, .large-text a, .large-text span {
+    font-size: 18px;
+}
+
+.large-text p {
+    width: 70%;
+}
+
+.large-text span {
+    color: var(--clr-dark-base);
+}
+
+ul.rules h3, ul.rules b {
+    font-size: 18px;
+}
+
+ul.rules {
+    list-style-type: decimal;
+}
+
+ul.under-rules {
+    list-style-type: lower-alpha;
+}
+
+ul.rules li::marker, ul.rules li {
+    font-size: 16px;
+}
+

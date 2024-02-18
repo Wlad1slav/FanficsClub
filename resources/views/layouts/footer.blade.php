@@ -5,20 +5,20 @@
     <div class="links">
         <div>
             <h4>Про сайт</h4>
-            <a href="#">Мапа сайту</a>
-            <a href="#">Зв'язок з нами</a>
-            <a href="#">Про нас</a>
+            <a href="{{ route('AboutSitePage') }}#about-us">Про нас</a>
+            <a href="{{ route('AboutSitePage') }}#contact-us">Зв'язок з нами</a>
+            <a href="{{ route('AboutSitePage') }}#site-map">Мапа сайту</a>
         </div>
 
         <div>
             <h4>Політика</h4>
-            <a href="#">Політика конфіденційності</a>
             <a href="#">Користувача угода</a>
+            <a href="#">Політика конфіденційності</a>
         </div>
 
         <div>
             <h4>Правила</h4>
-            <a href="#">Викладення творів</a>
+            <a href="{{ route('RulesPage') }}#publish">Викладення творів</a>
             <a href="#">Вміст творів</a>
             <a href="#">Коментарі під розділами</a>
         </div>

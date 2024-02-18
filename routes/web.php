@@ -5,15 +5,11 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FanficitonController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
-
-Route::get('/doc', function () {
-    return view('welcome');
-});
 
 // Головна сторінка
 Route::get('/', [HomeController::class, 'index'] )->name('HomePage');
@@ -25,6 +21,9 @@ Route::get('/', [HomeController::class, 'index'] )->name('HomePage');
 // Усі категорії фандомів
 Route::get('/fandoms', [FandomController::class, 'fandomCategories'] )->name('FandomsCategoriesPage');
 Route::redirect('/fandom', '/fandoms');
+
+// П'ядесят найпопулярніших фандомів
+Route::get('/fandoms/top', [FandomController::class, 'top'] )->name('TopFandomsPage');
 
 // Усі фандоми за певною категорією
 Route::get('/fandoms/{category_slug}', [FandomController::class, 'certainCategory'] )->name('CertainCategoryPage');
@@ -168,3 +167,12 @@ Route::post('/user-request/add/character', [RequestsController::class, 'addChara
 Route::get('/user-request/report', [RequestsController::class, 'reportForm'] )->name('ReportPage');
 Route::post('/user-request/report', [RequestsController::class, 'report'] )->middleware('auth')->name('ReportAction');
 
+////////////////////////////////////////////////////
+// МАРШРУТИ ПОВ'ЯЗАНІ З ІНФОРМАЦІЙНИМИ СТОРІНКАМИ //
+////////////////////////////////////////////////////
+
+// Про сайт (Про нас / Контакти / Мапа сайту)
+Route::get('/about', [InformationController::class, 'aboutSite'] )->name('AboutSitePage');
+
+// Правила (Викладення творів / Вміст творів / Коментарі під розділами)
+Route::get('/rules', [InformationController::class, 'rules'] )->name('RulesPage');
