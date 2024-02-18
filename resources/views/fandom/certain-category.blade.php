@@ -33,7 +33,7 @@
             <div id="{{ $letter }}" class="fandoms-container">
                 <h2>{{ $letter }}</h2>
                 @foreach($fandoms_ as $fandom)
-                    <p><a class="fandom-link" href="{{ route('FilterPage', ['fandoms-selected' => $fandom->name]) }}">
+                    <p><a class="fandom-link" href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name, 'type_of_works' => 'fanfic']) }}">
                             {{ $fandom['name'] }}</a> ({{ $fandom['fictions_amount'] }})
                     </p>
                 @endforeach

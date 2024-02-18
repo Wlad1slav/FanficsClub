@@ -26,7 +26,7 @@
                 <h2>{{ $categoryName }}</h2>
                 @foreach($categoryContent['fandoms'] as $fandom)
                     <p>
-                        <a class="fandom-link" href="{{ route('FilterPage', ['fandoms-selected' => $fandom->name]) }}">
+                        <a class="fandom-link" href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name, 'type_of_works' => 'fanfic']) }}">
                             {{ $fandom->name }}</a>
                         ({{ $fandom['fictions_amount'] }})
                     </p>

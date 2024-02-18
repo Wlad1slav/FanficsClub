@@ -87,7 +87,7 @@
                     @foreach($fanfic->getFandomsAttribute() as $fandom)
                         @php $fandoms .= "$fandom->name, "; @endphp
                         <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name]) }}">
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandom->name, 'type_of_works' => 'fanfic']) }}">
                             {{ $fandom->name }}
                         </a>
                     @endforeach
@@ -111,7 +111,7 @@
                             $paring = implode('/', $paring)
                         @endphp
                         <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring]) }}">
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $paring, 'type_of_works' => 'fanfic']) }}">
                             {{ $paring }}</a>
                     @endforeach
 
@@ -119,7 +119,7 @@
                     @foreach($fanfic->characters['characters'] as $character_id)
                         @php $character = \App\Models\Character::find($character_id) @endphp
                         <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name]) }}">
+                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms, 'characters' => $character->name, 'type_of_works' => 'fanfic']) }}">
                             {{ $character->name }}
                         </a>
                     @endforeach
@@ -145,14 +145,30 @@
         @if($fanfic->tags->count() > 0)
             <p><span>Теґи:</span>
                 @foreach($fanfic->tags as $tag)
-                    @if($tag->notification !== null)
-                        <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name]) }}">
-                            {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
+
+                    @if($fanfic->fandoms_id !== null)
+                        @if($tag->notification !== null)
+                            <a class="fandom-link"
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name, 'type_of_works' => 'fanfic']) }}">
+                                {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
+                        @else
+                            <a class="fandom-link"
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name, 'type_of_works' => 'fanfic']) }}">
+                                {{ $tag->name }}</a>
+                        @endif
+
                     @else
-                        <a class="fandom-link"
-                           href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name]) }}">
-                            {{ $tag->name }}</a>
+                        @if($tag->notification !== null)
+                            <a class="fandom-link"
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name, 'type_of_works' => 'original']) }}">
+                                {{ $tag->name }} <span>{{ $tag->notification }}</span></a>
+                        @else
+                            <a class="fandom-link"
+                               href="{{ route('FilterPage', ['fandoms_selected' => $fandoms ?? '', 'tags_selected' => $tag->name, 'type_of_works' => 'original']) }}">
+                                {{ $tag->name }}</a>
+                        @endif
+
+
                     @endif
                 @endforeach
             </p>
@@ -176,7 +192,11 @@
     <div class="statistic">                                                 <!-- Статистика по фанфіку -->
         <p>Оновлено: {{ $fanfic->updated_at->format('Y-m-d H:i') }}</p>     <!-- Дата останнього оновлення -->
         <p>Слов: {{ $fanfic->words_amount }}</p>                            <!-- Кількість слів -->
-        <p>Розділів: {{ $fanfic->chapters_amount }}</p>                     <!-- Кількість розділів -->
+
+        @if($fanfic->chapters_amount !== null)
+            <p>Розділів: {{ $fanfic->chapters_amount }}</p>                     <!-- Кількість розділів -->
+        @endif
+
         <p>Переглядів: {{ $fanfic->views->count() }}</p>                             <!-- Кількість переглядів -->
     </div>
 

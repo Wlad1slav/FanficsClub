@@ -17,8 +17,9 @@ function getFandomsForNavigation(): array
 
 return [
     'Популярне' => [
-        'Фанфіки' => route('FilterPage', ['sort_by' => 'likes_count']),
-        'Фандоми' => '#',
+        'Фанфіки' => route('FilterPage', ['sort_by' => 'likes_count', 'type_of_works' => 'fanfic']),
+        'Оригінальні твори' => route('FilterPage', ['sort_by' => 'likes_count', 'type_of_works' => 'original']),
+        'Фандоми' => route('TopFandomsPage'),
 //        'Серії' => '#',
         //'Автори' => '#',
     ],
