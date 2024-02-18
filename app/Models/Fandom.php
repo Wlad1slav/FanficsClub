@@ -67,6 +67,12 @@ class Fandom extends Model
             'description' => null,
             'related_media_giant_fandom_id' => null,
             'image' => 'storage/fandoms/fandom-lord-of-the-rings.webp'
+        ],[
+            'name' => 'Пісня льоду й полум\'я',
+            'fandom_category_id' => 2, // Книги & Література
+            'description' => null,
+            'related_media_giant_fandom_id' => null,
+            'image' => 'storage/fandoms/a-song-of-ice-and-fire.webp'
         ],
     ];
 
@@ -97,6 +103,9 @@ class Fandom extends Model
             $fandom->fictions_amount = $fandom->calculatePopularity();
             $fandom->save();
         }
+
+        Cache::pull('top_fandoms');
+        Cache::pull('top_fandoms_50');
     }
 
     public static function getFandomsOrderedByCategories(?int $fandomsInOneCategory = null): array

@@ -53,4 +53,30 @@ class FandomController extends Controller
 
         return view('fandom.categories', $data);
     }
+
+    public function top()
+    {   // TopFandomsPage
+        // П'ядесят найпопулярніших фандомів
+
+        $data = [
+            'title' => 'Фандоми',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+
+            // Усі категорії з 5-ю найпопулярнішими фандомами по ним
+            'fandomsOrganisedByCategories' => Fandom::getFandomsOrderedByCategories(5),
+
+            // П'ять найпопулярніших фандомів
+            'fandoms' => Cache::remember("top_fandoms", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->take(5)->get();
+            }),
+
+            // П'ядесят найпопулярніших фандомів
+            'fandoms_50' => Cache::remember("top_fandoms_50", 60*60*12, function () {
+                return Fandom::orderBy('fictions_amount', 'desc')->take(50)->get();
+            }),
+        ];
+
+        return view('fandom.top', $data);
+    }
 }

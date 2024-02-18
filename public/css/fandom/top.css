@@ -1,0 +1,21 @@
+.top p {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: var(--indent-small) 0;
+}
+
+.top p, .top a, .top span {
+    font-size: 20px;
+    background-color: var(--clr-cta);
+    color: var(--clr-black);
+}
+
+.top a, .top span {
+    width: 30%;
+    margin: 0;
+}
+
+.top a:hover {
+    color: var(--clr-base);
+}
