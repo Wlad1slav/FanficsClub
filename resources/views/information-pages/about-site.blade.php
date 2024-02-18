@@ -129,9 +129,9 @@
                     <li>
                         <a href="#">Правила</a>
                         <ul>
-                            <li> <a href="#">Викладення творів</a></li>
-                            <li> <a href="#">Вміст творів</a></li>
-                            <li> <a href="#">Коментарі під розділами</a></li>
+                            <li> <a href="{{ route('RulesPage') }}#publish">Викладення творів</a></li>
+                            <li> <a href="{{ route('RulesPage') }}#ff-content">Вміст творів</a></li>
+                            <li> <a href="{{ route('RulesPage') }}#reviews-rules">Коментарі під розділами</a></li>
                         </ul>
                     </li>
 

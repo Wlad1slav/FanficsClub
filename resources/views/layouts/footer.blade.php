@@ -19,8 +19,8 @@
         <div>
             <h4>Правила</h4>
             <a href="{{ route('RulesPage') }}#publish">Викладення творів</a>
-            <a href="#">Вміст творів</a>
-            <a href="#">Коментарі під розділами</a>
+            <a href="{{ route('RulesPage') }}#ff-content">Вміст творів</a>
+            <a href="{{ route('RulesPage') }}#reviews-rules">Коментарі під розділами</a>
         </div>
     </div>
 
