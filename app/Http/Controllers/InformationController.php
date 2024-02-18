@@ -41,4 +41,28 @@ class InformationController extends Controller
         return view('information-pages.rules', $data);
     }
 
+    public function userAgreement()
+    {   // UserAgreementPage
+
+        $data = [
+            'title' => 'Користувацька угода',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+        ];
+
+        return view('information-pages.user-agreement', $data);
+    }
+
+    public function privacyPolicy()
+    {   // PrivacyPolicyPage
+
+        $data = [
+            'title' => 'Політика конфіденційності',
+            'metaDescription' => '',
+            'navigation' => require_once 'navigation.php',
+        ];
+
+        return view('information-pages.privacy-policy', $data);
+    }
+
 }

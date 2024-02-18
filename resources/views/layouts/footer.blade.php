@@ -12,8 +12,8 @@
 
         <div>
             <h4>Політика</h4>
-            <a href="#">Користувача угода</a>
-            <a href="#">Політика конфіденційності</a>
+            <a href="{{ route('UserAgreementPage') }}">Користувацька угода</a>
+            <a href="{{ route('PrivacyPolicyPage') }}">Політика конфіденційності</a>
         </div>
 
         <div>

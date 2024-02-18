@@ -176,3 +176,9 @@ Route::get('/about', [InformationController::class, 'aboutSite'] )->name('AboutS
 
 // Правила (Викладення творів / Вміст творів / Коментарі під розділами)
 Route::get('/rules', [InformationController::class, 'rules'] )->name('RulesPage');
+
+// Користувацька угода
+Route::get('/user-agreement', [InformationController::class, 'userAgreement'] )->name('UserAgreementPage');
+
+// Політика конфіденційності
+Route::get('/privacy-policy', [InformationController::class, 'privacyPolicy'] )->name('PrivacyPolicyPage');
