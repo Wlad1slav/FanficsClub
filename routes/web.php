@@ -6,7 +6,9 @@ use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FanficitonController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\MailSendController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -49,6 +51,13 @@ Route::post('/login', [AuthController::class, 'login'] )->middleware('guest')->n
 
 // Виход з профіля
 Route::get('/logout', [AuthController::class, 'logout'] )->middleware('auth')->name('LogoutAction');
+
+// Відновлення паролю
+Route::get('/forgot-password', [ResetPasswordController::class, 'forgotPasswordPage'] )->middleware('guest')->name('ForgotPasswordPage');
+Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword'] )->middleware('guest')->name('ForgotPasswordAction');
+
+Route::get('/reset-password', [ResetPasswordController::class, 'create'])->middleware('guest')->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'store'])->middleware('guest')->name('password.update');
 
 ///////////////////////////////////
 // МАРШРУТИ ПОВ'ЯЗАНІ З ПРОФІЛЕМ //
@@ -182,3 +191,5 @@ Route::get('/user-agreement', [InformationController::class, 'userAgreement'] )-
 
 // Політика конфіденційності
 Route::get('/privacy-policy', [InformationController::class, 'privacyPolicy'] )->name('PrivacyPolicyPage');
+
+//Route::get('/test-mail', [MailSendController::class, 'welcome'] )->name('TestMailSend');

@@ -52,7 +52,7 @@
                     <input type="checkbox" name="remember" id="remember">
                     Запам'ятати мене
                 </label>
-                <a href="#">Забули пароль?</a>
+                <a href="{{ route('ForgotPasswordPage') }}">Забули пароль?</a>
             </div>
         </label>
 
@@ -60,5 +60,10 @@
             <input type="submit" value="Увійти">
         </div>
 
+        @if(session('status'))
+            <p class="alert-success">Пароль був успішно змінений</p>
+        @endif
+
     </form>
+
 @endsection

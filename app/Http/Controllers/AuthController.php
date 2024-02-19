@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -81,7 +82,7 @@ class AuthController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {   // LogoutAction - get
         // Виход користувача з акаунту
 
