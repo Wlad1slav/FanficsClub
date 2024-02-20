@@ -19,6 +19,11 @@ class Subscribe extends Model
         return $this->belongsTo(Fanfiction::class);
     }
 
+    public function user(): BelongsTo
+    {   // Зв'язок з моделю User
+        return $this->belongsTo(User::class);
+    }
+
     public static function clearUserCache(?User $user): void
     {   // Видалення кешу підписок користувача
         Cache::pull("subscribes_$user->id");

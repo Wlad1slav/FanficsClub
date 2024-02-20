@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Mail\NewChapterMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 
 class Chapter extends Model
 {
@@ -62,5 +64,18 @@ class Chapter extends Model
     public function clearCache(): void
     {
         Cache::pull("chapter_$this->slug");
+    }
+
+    public function notifySubscribers()
+    {   // Розсилка підписникам фанфіку
+        // Повідомлення про викладення нового розділу
+
+        $subscribes = Cache::remember("fanfic_subscribes_{$this->fanfiction->slug}", 60 * 60, function () {
+            return $this->fanfiction->subscribes()->with('user')->get();
+        });
+
+        foreach ($subscribes as $subscribe)
+            Mail::to($subscribe->user->email)
+                ->send(new NewChapterMail($this->fanfiction, $this));
     }
 }

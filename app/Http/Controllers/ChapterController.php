@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewChapterMail;
+use App\Mail\WelcomeMail;
 use App\Models\Chapter;
 use App\Models\Fanfiction;
 use App\Models\Review;
@@ -12,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ChapterController extends Controller
 {
@@ -43,7 +46,7 @@ class ChapterController extends Controller
         // Створення розділу для певного фанфіка
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60*60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('author')->first();
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
@@ -65,7 +68,10 @@ class ChapterController extends Controller
             ],
 
             // Якщо value is_draft рівен одному, то розділ зберігається, як чорнетка
-            'is_draft' => ($request->is_draft ?? 0) == 1
+            'is_draft' => ($request->is_draft ?? 0) == 1,
+
+            // Якщо розділ - не чорнетка, то зберігається дата його публікації
+            'published' => ($request->is_draft ?? 0) != 1 ? date('Y-m-d H:i:s') : null,
         ]);
 
         // Додавання нового розділу в масив з послідовносттю розділів в фанфіку
@@ -82,10 +88,19 @@ class ChapterController extends Controller
 
         $fanfic->refreshWordsAmount();
 
-        return redirect(route('FanficPage', [
-                'ff_slug' => $fanfic->slug,
-                'chapter_slug' => $chapter->slug,
-            ]) . '#chapter');
+
+        if ($chapter->published !== null) {
+
+            // Розсилка підписникам фанфіку
+            $chapter->notifySubscribers();
+
+            return redirect(route('FanficPage', [
+                    'ff_slug' => $fanfic->slug,
+                    'chapter_slug' => $chapter->slug,
+                ]) . '#chapter');
+        }
+
+        return redirect()->route('ChapterEditPage', ['ff_slug' => $fanfic->slug, 'chapter_slug' => $chapter->slug,]);
 
     }
 
@@ -151,6 +166,9 @@ class ChapterController extends Controller
         $fanfic->clearCache(); // Видалення фанфіку з кешу
         $chapter->clearCache(); // Видалення розділу з кешу
 
+        // Чи був вже опублікований розділ
+        $wasPublished = $chapter->published !== null;
+
         $chapter->update([
             'title' => $request->chapter_title ?? "Розділ " . ($fanfic->chapters->count() + 1),
             'slug' => $slug,
@@ -161,10 +179,26 @@ class ChapterController extends Controller
             ],
 
             // Якщо value is_draft рівен одному, то розділ зберігається, як чорнетка
-            'is_draft' => ($request->is_draft ?? 0) == 1
+            'is_draft' => ($request->is_draft ?? 0) == 1,
+
+            // Якщо розділ ще не був опублікований, то перевіряється, чи тепер він чорнетка
+            // Якщо розділ - не чорнетка, то зберігається дата його публікації
+            'published' => $chapter->published === null ?
+                (($request->is_draft ?? 0) != 1 ? date('Y-m-d H:i:s') : null) : $chapter->published,
         ]);
 
         $fanfic->refreshWordsAmount();
+
+        if ($chapter->published !== null and !$wasPublished) {
+
+            // Розсилка підписникам фанфіку
+            $chapter->notifySubscribers();
+
+            return redirect(route('FanficPage', [
+                    'ff_slug' => $fanfic->slug,
+                    'chapter_slug' => $chapter->slug,
+                ]) . '#chapter');
+        }
 
         return back();
 

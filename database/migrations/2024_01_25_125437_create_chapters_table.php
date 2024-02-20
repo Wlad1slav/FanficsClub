@@ -31,6 +31,8 @@ return new class extends Migration
             // $table->unsignedBigInteger('views')->default(0);
             $table->boolean('is_draft')->default(1);
 
+            $table->dateTime('published')->nullable();
+
             $table->timestamps();
 
             $table->softDeletes();
