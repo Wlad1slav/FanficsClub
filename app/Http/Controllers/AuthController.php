@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +32,7 @@ class AuthController extends Controller
 
         $request->validate([
             'name' => 'required|string|unique:users',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:8',
         ]);
 
@@ -41,9 +43,12 @@ class AuthController extends Controller
             'ip' => $request->ip()
         ]);
 
-        Auth::login($user);
+        // event(new Registered($user));
+        // Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        $user->sendEmailVerificationNotification();
+
+        return redirect()->route('verification.notice');
 
     }
 
@@ -89,6 +94,32 @@ class AuthController extends Controller
         Auth::logout();
 
         return redirect()->route('LoginPage');
+    }
+
+    public function verifyNote()
+    {   // verification.notice
+        // Сторінка, яка повідомляє про те,
+        // що користувачу на пошту було вислане підтвердження для входу
+
+        $data = [
+            'title' => 'Будь ласка, підтвердіть пошту',
+            'metaDescription' => null,
+            'navigation' => require_once 'navigation.php',
+            'user' => Auth::user()
+        ];
+
+        return view('auth.verify', $data);
+
+    }
+
+    public function verify(EmailVerificationRequest $request)
+    {   // verification.verify
+        // Логіка підтвердження пошти
+
+        $request->fulfill();
+
+        return redirect()->intended(RouteServiceProvider::HOME);
+
     }
 
 }

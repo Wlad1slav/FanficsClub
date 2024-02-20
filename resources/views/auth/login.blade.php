@@ -25,7 +25,7 @@
                 required>
 
             @error('email')
-                <p class="error">{{ $message }}</p>
+            <p class="error">{{ $message }}</p>
             @enderror
         </label>
 
@@ -40,11 +40,11 @@
                    required>
 
             @error('password')
-                <p class="error-password">{{ $message }}</p>
+            <p class="error-password">{{ $message }}</p>
             @enderror
 
             @error('error')
-                <p class="error-password">{{ $message }}</p>
+            <p class="error-password">{{ $message }}</p>
             @enderror
 
             <div class="additional">
