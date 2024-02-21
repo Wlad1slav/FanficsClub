@@ -28,3 +28,13 @@ footer h4, footer a {
     display: flex;
     flex-direction: column;
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    footer {
+        padding-top: var(--indent-small);
+    }
+    footer p, footer a {
+        font-size: 10px;
+    }
+}

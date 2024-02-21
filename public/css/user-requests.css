@@ -53,3 +53,18 @@ input, select, textarea {
 input[type='submit'] {
     margin-top: var(--indent-small);
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .request-description {
+        display: block;
+    }
+
+    .request-description div, .request-description form, .description {
+        width: auto;
+    }
+
+    input:not(input[type='submit']), select, textarea {
+        width: 95%;
+    }
+}

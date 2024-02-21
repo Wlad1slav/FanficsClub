@@ -30,7 +30,7 @@ header h1 {
 }
 
 header a:not(.logo), header p:not(.logo) {
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     padding: 6px;
     text-decoration: none;
     margin: 0;
@@ -127,3 +127,23 @@ nav ul li ul li a {
 /*nav ul li ul li a:hover {*/
 /*    background: var(--clr-cta-light);*/
 /*}*/
+
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    header div, header nav {
+        /*display: block;*/
+    }
+
+    header nav {
+        height: 100px;
+    }
+
+    nav ul li ul {
+        width: 122px;
+    }
+
+    header #greeting-line {
+        text-align: center;
+    }
+}

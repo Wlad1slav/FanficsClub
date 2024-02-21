@@ -1,3 +1,19 @@
+.mobile {
+    display: none;
+}
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .mobile {
+        display: block;
+    }
+
+    .desktop {
+        display: none!important;
+    }
+}
+
+
 body {
     margin: 0;
     font-family: var(--font-family);
@@ -11,11 +27,25 @@ body {
     line-height: 1.5;
 }
 
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    * {
+        line-height: 1.2;
+    }
+}
+
 .content {
     margin: var(--indent-on-sides);
     padding: var(--indent-medium);
     background-color: var(--clr-bg);
     min-height: 100vh;
+}
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .content {
+        padding: var(--indent-small);
+    }
 }
 
 .full-width.content {
@@ -80,6 +110,14 @@ td:last-of-type {
 td, th {
     padding: var(--indent-small);
     word-wrap: break-word;
+}
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    td, th {
+        padding: var(--indent-tiny);
+        font-size: 12px;
+    }
 }
 
 .fandom-link {

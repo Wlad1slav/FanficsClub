@@ -1,3 +1,7 @@
+.mobile-list {
+    display: none;
+}
+
 #popular-fandoms-list .list {
     display: flex;
     justify-content: space-evenly;
@@ -86,4 +90,35 @@
 .fandoms-container h2 {
     margin: 0;
     font-size: calc(var(--heading2-size)/2);
+}
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    #popular-fandoms-list .list {
+        display: none;
+    }
+
+    .mobile-list {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: var(--indent-medium);
+    }
+
+    .mobile-list div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--clr-bg-second);
+        border-bottom: 2px solid var(--clr-cta-dark);
+        padding-left: var(--indent-tiny);
+    }
+
+    .mobile-list div img {
+        width: 50px;
+        height: auto;
+    }
+
+    .mobile-list div a {
+        margin-bottom: 0;
+    }
 }

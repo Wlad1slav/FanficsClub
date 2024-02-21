@@ -35,7 +35,13 @@
                 @include('widgets.button', [
                     'title' => 'Більше...',
                     'url' => route('CertainCategoryPage', ['category_slug' => $categoryContent['slug']]),
-                    'styles' => 'a right bottom'
+                    'styles' => 'a right bottom desktop'
+                ])
+
+                @include('widgets.button', [
+                    'title' => 'Більше...',
+                    'url' => route('CertainCategoryPage', ['category_slug' => $categoryContent['slug']]),
+                    'styles' => 'mobile'
                 ])
             </div>
 

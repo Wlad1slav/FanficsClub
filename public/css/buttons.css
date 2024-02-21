@@ -64,6 +64,14 @@
     margin-bottom: 0;
 }
 
+.mrg-right a {
+    margin-right: var(--indent-small);
+}
+
+.mrg-left a {
+    margin-left: var(--indent-small);
+}
+
 /* особливий ефект для кнопки доступний з класом hover-effect */
 .button.hover-effect a {
     white-space: nowrap;
@@ -79,7 +87,7 @@
 .button span {
     position: absolute;
     right: 0;
-    bottom: -70%;
+    bottom: -98%;
     margin-right: var(--indent-small);
     transform: translateY(-50%);
     display: none;
@@ -89,4 +97,11 @@
 
 .button a:hover span {
     display: initial;
+}
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .button span {
+        bottom: -80%;
+    }
 }

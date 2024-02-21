@@ -41,3 +41,10 @@
 #auth .additional label {
     display: block;
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    #auth {
+        padding: 0;
+    }
+}

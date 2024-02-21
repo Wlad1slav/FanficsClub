@@ -6,7 +6,7 @@
     --clr-text: var(--clr-black);
     --clr-heading: var(--clr-text);
     --heading1-size: 50px;
-    --heading2-size: 40px;
+    --heading2-size: 30px;
     --heading3-size: 20px;
     --heading-font: var(--font-family); /* шрифт заголовку */
 
@@ -62,5 +62,16 @@
     --btn-animation: all 0.5s ease;
     --btn-width-long: 200px;
     --btn-width-hover-long: 240px;
+}
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    :root {
+        --heading1-size: 40px;
+        --heading2-size: 30px;
+        --heading3-size: 20px;
+
+        --indent-on-sides: 0 0;
+    }
 }
 

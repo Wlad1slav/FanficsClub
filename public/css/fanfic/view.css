@@ -169,3 +169,36 @@ h3 {
 .another-author {
     text-align: center;
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .ff-info {
+        margin: 0;
+        padding: var(--indent-tiny);
+        margin-bottom: var(--indent-medium);
+    }
+
+    .short-info p {
+        font-size: var(--font-size);
+    }
+
+    .author-actions {
+        margin-right: 0;
+    }
+
+    .statistic {
+        display: block;
+    }
+
+    .statistic p {
+        margin: 0;
+    }
+
+    #chapter-select {
+        width: 80%;
+    }
+
+    .review-content .review-text {
+        margin-top: var(--indent-small);
+    }
+}

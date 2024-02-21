@@ -96,3 +96,18 @@ h3 {
 .fanfic-profile-container .button a:hover {
     justify-content: unset;
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    #page {
+        display: block;
+    }
+
+    .content {
+        width: auto;
+    }
+
+    #page nav {
+        width: auto;
+    }
+}

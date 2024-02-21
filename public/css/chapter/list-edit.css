@@ -31,3 +31,10 @@ input[type='number'] {
 .draft {
     opacity: 0.5;
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    form div {
+        width: auto;
+    }
+}

@@ -68,4 +68,10 @@ textarea#characters {
     width: 15%;
 }
 
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    #filter form textarea {
+        width: 95%;
+    }
+}
 

@@ -14,3 +14,14 @@
 .fandom-categories-list .fandom-category-container h2 {
     font-size: calc(var(--heading2-size)/2);
 }
+
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .fandom-categories-list .fandom-category-container {
+        width: 48%;
+    }
+
+    .fandom-categories-list .fandom-category-container a {
+        font-size: 12px;
+    }
+}
