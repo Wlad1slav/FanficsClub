@@ -88,6 +88,9 @@ class ChapterController extends Controller
 
         $fanfic->refreshWordsAmount();
 
+        // Генерація нових файлів з цими фанфіками
+        $fanfic->fb2();
+        $fanfic->pdf();
 
         if ($chapter->published !== null) {
 
@@ -151,6 +154,8 @@ class ChapterController extends Controller
 
         $chapter = Chapter::firstCached($chapter_slug);
 
+        $chapters = Chapter::getCached($fanfic);
+
         // Перевірка, чи користувач має доступ до фанфіка, якому належить розділ
         $this->authorize('fanficAccess', $chapter->fanfiction ?? null);
 
@@ -159,7 +164,7 @@ class ChapterController extends Controller
 
         if ($chapter->title !== $request->chapter_title)
             $slug = self::createOriginalSlug(
-                $request->chapter_title ?? "Розділ " . ($fanfic->chapters->count() + 1) . "-$fanfic->id",
+                $request->chapter_title ?? "Розділ " . ($chapters->count() + 1) . "-$fanfic->id",
                 new Chapter());
         else $slug = $chapter->slug;
 
@@ -170,7 +175,7 @@ class ChapterController extends Controller
         $wasPublished = $chapter->published !== null;
 
         $chapter->update([
-            'title' => $request->chapter_title ?? "Розділ " . ($fanfic->chapters->count() + 1),
+            'title' => $request->chapter_title ?? "Розділ " . ($chapters->count() + 1),
             'slug' => $slug,
             'content' => $request->chapter_content,
             'additional_descriptions' => [
@@ -188,6 +193,10 @@ class ChapterController extends Controller
         ]);
 
         $fanfic->refreshWordsAmount();
+
+        // Генерація нових файлів з цими фанфіками
+        $fanfic->fb2();
+        $fanfic->pdf();
 
         if ($chapter->published !== null and !$wasPublished) {
 
@@ -235,6 +244,10 @@ class ChapterController extends Controller
 
         // Видаляє розділ
         $chapter->delete();
+
+        // Генерація нових файлів з цими фанфіками
+        $fanfic->fb2();
+        $fanfic->pdf();
 
         return back();
     }
@@ -302,6 +315,10 @@ class ChapterController extends Controller
         $fanfic->clearCache();
         $fanfic->chapters_sequence = array_values($sequence);
         $fanfic->save();
+
+        // Генерація нових файлів з цими фанфіками
+        $fanfic->fb2();
+        $fanfic->pdf();
 
         return back();
     }

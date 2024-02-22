@@ -6,7 +6,6 @@ use App\Http\Controllers\FandomController;
 use App\Http\Controllers\FanficitonController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\InformationController;
-use App\Http\Controllers\MailSendController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserProfileController;
@@ -114,6 +113,10 @@ Route::get('/fanfic-edit/access/{ff_slug}/put-{userId}', [FanficitonController::
 
 // Сторінка зі статистокою по фанфіку
 Route::get('/fanfic-edit/statistic/{ff_slug}', [FanficitonController::class, 'statistic'] )->middleware(['auth', 'verified'])->name('StatisticFanficPage');
+
+// Сторінка з варіантами для завантаження фанфіку
+Route::get('/fanfic/{ff_slug}/download', [FanficitonController::class, 'downloadPage'] )->name('DownloadFanficPage');
+Route::get('/fanfic/{ff_slug}/download/{format}', [FanficitonController::class, 'download'] )->middleware(['auth', 'verified'])->name('DownloadFanficAction');
 
 ////////////////////////////////////
 // МАРШРУТИ ПОВ'ЯЗАНІ З РОЗДІЛАМИ //

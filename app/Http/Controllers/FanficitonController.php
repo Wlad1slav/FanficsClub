@@ -22,9 +22,12 @@ use App\Rules\TagsExists;
 use App\Rules\UserNotOwnedFanfic;
 use App\Rules\UserOwnedFanfic;
 use App\Traits\SlugGenerationTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use PHPePub\Core\EPub;
+use TCPDF;
 
 class FanficitonController extends Controller
 {
@@ -97,7 +100,7 @@ class FanficitonController extends Controller
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
             // Передбачається, що фанфік в кешу зберігається 1 годину,
             // але якщо користувач його оновить, то кеш автоматом очиститься
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
 //        dump(json_encode($fanfic->chapters->pluck('id')));
@@ -152,7 +155,7 @@ class FanficitonController extends Controller
     {
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
@@ -236,7 +239,7 @@ class FanficitonController extends Controller
         // Редагування фанфіка через форму
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
@@ -255,10 +258,17 @@ class FanficitonController extends Controller
             'fandoms_selected' => [new FandomsExists()],
         ]);
 
-        if ($fanfic->title !== $request->ff_name)
+        if ($fanfic->title !== $request->ff_name) {
             $slug = self::createOriginalSlug(
                 $request->ff_name,
                 new Fanfiction());
+
+            $regenerate_files = true; // Чи треба перезаписати книги
+
+            // Видалення старих файлів фанфіків
+            unlink(public_path("storage/fanfics/{$fanfic->slug}.fb2"));
+            unlink(public_path("storage/fanfics/{$fanfic->slug}.pdf"));
+        }
         else $slug = $fanfic->slug;
 
 
@@ -296,6 +306,11 @@ class FanficitonController extends Controller
         $fanfic->clearCache();
         $fanfic->update($newFanficInfo);
 
+        if($regenerate_files ?? false) {
+            $fanfic->fb2();
+            $fanfic->pdf();
+        }
+
         return redirect()->route('FanficEditPage', ['ff_slug' => $fanfic->slug]);
     }
 
@@ -305,7 +320,7 @@ class FanficitonController extends Controller
         // і формами для давання користувачам доступу
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
@@ -332,7 +347,7 @@ class FanficitonController extends Controller
         // Додати соавтора чи редактора в фанфік
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
@@ -362,7 +377,7 @@ class FanficitonController extends Controller
         // Прибрати доступ у певного користувача
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         // Перевірка, чи користувач має доступ до фанфіка
@@ -383,7 +398,7 @@ class FanficitonController extends Controller
     public function giveLike(string $ff_slug)
     {   // GiveLikeAction
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         $dislike = Dislike::where('gave_dislike', Auth::user()->id)->where('fanfiction', $fanfic->id);
@@ -405,7 +420,7 @@ class FanficitonController extends Controller
     public function giveDislike(string $ff_slug)
     {   // GiveDislikeAction
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         $like = Like::where('gave_like', Auth::user()->id)->where('fanfiction', $fanfic->id)->first();
@@ -428,7 +443,7 @@ class FanficitonController extends Controller
     {   // SubscribeAction
 
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         $user = Auth::user();
@@ -454,7 +469,7 @@ class FanficitonController extends Controller
     public function statistic(string $ff_slug)
     {
         $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
-            return Fanfiction::where('slug', $ff_slug)->first();
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
         });
 
         $this->authorize('fanficAccess', $fanfic ?? null);
@@ -466,6 +481,49 @@ class FanficitonController extends Controller
         ];
 
         return view('fanfic-edit.statistic', $data);
+    }
+
+    public function downloadPage(string $ff_slug)
+    {   // DownloadFanficPage
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
+            return Fanfiction::where('slug', $ff_slug)->with('chapters')->first();
+        });
+
+        $data = [
+            'title' => "Завантажити фанфік $fanfic->title",
+            'meta-description' => $fanfic->description,
+            'navigation' => require_once 'navigation.php',
+
+            'fanfic' => $fanfic,
+        ];
+
+        return view('fanfic-view.download', $data);
+    }
+
+    public function download(string $ff_slug, string $format)
+    {   // DownloadFanficAction
+        // Завантаження певного фанфіка
+
+        $fanfic = Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
+            return Fanfiction::with('chapters')->where('slug', $ff_slug)->first();
+        });
+
+        if ($format == 'pdf') {
+
+            if (!file_exists(public_path("storage/fanfics/{$fanfic->slug}.pdf")))
+                $fanfic->pdf();
+
+            return response()->download(public_path("storage/fanfics/{$fanfic->slug}.pdf"));
+
+        } elseif ($format == 'fb2')
+        {
+            if (!file_exists(public_path("storage/fanfics/{$fanfic->slug}.fb2")))
+                $fanfic->fb2();
+
+            return response()->download(public_path("storage/fanfics/{$fanfic->slug}.fb2"));
+        }
+
+        return back();
     }
 
 

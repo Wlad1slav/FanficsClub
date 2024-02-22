@@ -9,8 +9,8 @@
     @php
         $user = Auth::user();
 
-        //$fanfic->refreshSequence();
-        //$fanfic->refreshWordsAmount();
+//        $fanfic->refreshSequence();
+//        $fanfic->refreshWordsAmount();
     @endphp
 
     <link rel="stylesheet" href="{{ asset('css/fanfic/view.css') }}">
@@ -20,7 +20,7 @@
             <div class="author-actions">
 
                 <a href="{{ route('ChapterListPage', ['ff_slug' => $fanfic->slug]) }}">Редагувати</a>
-                <a href="{{ route('ChapterCreatePage', ['ff_slug' => $fanfic->slug]) }}">Нова глава</a>
+                <a href="{{ route('ChapterCreatePage', ['ff_slug' => $fanfic->slug]) }}">Новий розділ</a>
 
             </div>
         @endif
@@ -307,7 +307,7 @@
 
                     @include('widgets.button', [
                         'title' => 'Завантажити',
-                        'url' => '#',
+                        'url' => route('DownloadFanficPage', $fanfic->slug),
                     ])
 
                     <script src="{{ asset('js/support-fanfic.js') }}"></script>

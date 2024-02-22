@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
+use TCPDF;
 
 class Fanfiction extends Model
 {
@@ -144,7 +145,9 @@ class Fanfiction extends Model
     {
         $amount = 0;
 
-        foreach ($this->chapters as $chapter) {
+        $chapters = Chapter::getCached($this);
+
+        foreach ($chapters as $chapter) {
             preg_match_all("/\b[\p{L}\p{N}]+\b/u", $chapter->content, $matches);
             $amount += count($matches[0]);
         }
@@ -168,6 +171,130 @@ class Fanfiction extends Model
             'chapters_sequence' => $this->chapters->pluck('id')
         ]);
         $this->clearCache();
+    }
+
+    // Метод для збереження фанфіку в форматі pdf
+    public function pdf()
+    {
+        // Створення нового PDF документа
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // Встановлення інформації про документ
+        $pdf->SetCreator('fanfics.com.ua');
+        $pdf->SetAuthor($this->author);
+        $pdf->SetTitle($this->title);
+
+        // Встановлення шапки та підвалу документа
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // Встановлення маржі
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // Встановлення автоматичного перенесення сторінок
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // Опис фанфіка
+        $pdf->AddPage();
+        $pdf->SetFont('dejavusans', 'B', 20);
+        $pdf->Write(0, $this->title, '', 0, 'C', true, 0, false, false, 0);
+        $pdf->Ln(10);
+        $pdf->SetFont('dejavusans', 'I', 16);
+        $pdf->Write(0, $this->description, '', 0, 'L', true, 0, false, false, 0);
+        $pdf->Ln(5);
+        $pdf->Write(0, route('FanficPage', ['ff_slug' => $this->slug]), '', 0, 'L', true, 0, false, false, 0);
+
+        $chapters = Chapter::getCached($this);
+
+        // Додавання тексту
+        foreach ($chapters as $chapter) {
+            if ($chapter->is_draft) continue;
+
+            // Додавання сторінки
+            $pdf->AddPage();
+
+            // Встановлення шрифту для заголовка: жирний і більший розмір
+            $pdf->SetFont('dejavusans', 'B', 16);
+
+            // Додавання назви розділу як заголовку
+            $pdf->Write(
+                0,
+                $chapter->title,
+                route('FanficPage', ['ff_slug' => $this->slug, 'chapter_slug' => $chapter->slug]),
+                0, 'C', true, 0, false, false, 0);
+
+            // Відступ після заголовку
+            $pdf->Ln(10); // Відступ 10 мм
+
+            // Встановлення шрифта тексту
+            $pdf->SetFont('dejavusans', '', 12);
+
+            // Розбивання вмісту розділу на абзаці
+            $paragraphs = explode("\n", $chapter->content);
+
+            foreach ($paragraphs as $paragraph) { // Додавання вмісту розділу
+                // Додавання абзацу
+                $pdf->Write(0, $paragraph, '', 0, 'L', true, 0, false, false, 0);
+                // Додавання відступу після абзацу
+                $pdf->Ln(5);
+            }
+        }
+
+        $path = public_path("storage/fanfics/{$this->slug}.pdf");
+
+        $pdf->Output($path, 'F'); // 'F' означає, що файл буде збережено на сервері
+    }
+
+    public function fb2()
+    {
+        $xml = new \SimpleXMLElement('<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" encoding="UTF-8"></FictionBook>');
+
+        // Додавання метаданих та іншої інформації
+        $description = $xml->addChild('description');
+
+        // Додавання title-info
+        $titleInfo = $description->addChild('title-info');
+        $bookTitle = $titleInfo->addChild('book-title', $this->title);
+
+        $author = $titleInfo->addChild('author');
+        $name = $author->addChild('first-name',
+            $this->is_translate ? $this->original_author : $this->author->name);
+
+        $genre = $titleInfo->addChild('genre', 'fanfic');
+
+        // Додавання document-info
+        $documentInfo = $description->addChild('document-info');
+        $authorOfDoc = $documentInfo->addChild('author');
+        $nickname = $authorOfDoc->addChild('nickname', $this->author->name);
+        $date = $documentInfo->addChild('date', date('Y-m-d')); // Текущая дата
+
+        $chapters = Chapter::getCached($this);
+
+        // Додавання розділів і їхнього контенту
+        foreach ($chapters as $chapter) {
+            if ($chapter->is_draft) continue;
+
+            $section = $xml->addChild('section');
+            $section->addChild('title', $chapter->title);
+
+            // Розбивання вмісту розділу на абзаці
+            $paragraphs = explode("\n", $chapter->content);
+
+            foreach ($paragraphs as $paragraph) { // Додавання вмісту розділу
+                $p = $section->addChild('p');
+                $p[0] = $paragraph;
+            }
+        }
+
+        // Генерація XML
+        $xmlContent = $xml->asXML();
+
+        $path = public_path("storage/fanfics/{$this->slug}.fb2");
+
+        // Віддача файлу
+        $xml->asXML($path);
     }
 
 }
