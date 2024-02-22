@@ -306,8 +306,8 @@ class Fanfiction extends Model
                 ->with('author')
                 ->with('category')
                 ->with('age_rating')
-                ->with('likes')
-                ->with('dislikes')
+                //->with('likes')
+                //->with('dislikes')
                 ->with('prequel')
                 ->with('views')
                 ->first();

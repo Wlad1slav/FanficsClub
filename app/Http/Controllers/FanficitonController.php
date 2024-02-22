@@ -383,14 +383,14 @@ class FanficitonController extends Controller
         $fanfic = Fanfiction::getCached($ff_slug);
 
         $dislike = Dislike::where('gave_dislike', Auth::user()->id)->where('fanfiction', $fanfic->id);
-        if ($dislike) $dislike->delete();
+        if ($dislike->exists()) $dislike->delete();
 
         Like::firstOrCreate([
             'gave_like' => Auth::user()->id,
             'fanfiction' => $fanfic->id,
         ]);
 
-//        $fanfic->clearCache();
+        // $fanfic->clearCache();
 
         return response()->json([
             'likes' => $fanfic->likes->count(),
@@ -403,14 +403,14 @@ class FanficitonController extends Controller
         $fanfic = Fanfiction::getCached($ff_slug);
 
         $like = Like::where('gave_like', Auth::user()->id)->where('fanfiction', $fanfic->id)->first();
-        if ($like) $like->delete();
+        if ($like->exists()) $like->delete();
 
         Dislike::firstOrCreate([
             'gave_dislike' => Auth::user()->id,
             'fanfiction' => $fanfic->id,
         ]);
 
-//        $fanfic->clearCache();
+        // $fanfic->clearCache();
 
         return response()->json([
             'likes' => $fanfic->likes->count(),
