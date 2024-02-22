@@ -20,15 +20,11 @@
 
 @section('content')
 
-    @foreach($errors as $error)
-        {{ $error }}
-    @endforeach
-
     <link rel="stylesheet" href="{{ asset('css/fanfic/create.css') }}">
 
     <h1>Створити фанфік</h1>
 
-    <form action="#" method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         @csrf
 
         <!-- Тип фанфіка (ориганільний твір/переклад) -->
@@ -63,11 +59,11 @@
                 </label>
 
                 @error('type_of_work')
-                <p class="error">{{ $message }}</p>
+                    <p class="error">{{ $message }}</p>
                 @enderror
 
                 @error('anonymity')
-                <p class="error">{{ $message }}</p>
+                    <p class="error">{{ $message }}</p>
                 @enderror
 
 
@@ -113,7 +109,7 @@
             <label for="ff_name" class="main required">Назва</label>
 
             <div>
-                <input type="text" name="ff_name" id="ff_name" required>
+                <input type="text" name="ff_name" id="ff_name" required value="{{ old('ff_name') }}">
 
                 @error('ff_name')
                 <p class="error">{{ $message }}</p>
@@ -132,7 +128,7 @@
                     <select name="prequel" id="prequel">
                         <option value="-1">Немає</option>
                         @foreach(\Illuminate\Support\Facades\Auth::user()->fanfictions as $fanfic)
-                            <option value="{{ $fanfic->id }}">{{ $fanfic->title }}</option>
+                            <option value="{{ $fanfic->id }}" @selected(old('prequel') == $fanfic->id)>{{ $fanfic->title }}</option>
                         @endforeach
                     </select>
 
@@ -152,7 +148,7 @@
             <label for="ff_original_author" class="main required">Автор оригінала</label>
 
             <div>
-                <input type="text" name="ff_original_author" id="ff_original_author">
+                <input type="text" name="ff_original_author" id="ff_original_author" value="{{ old('ff_original_author') }}">
 
                 @error('ff_original_author')
                 <p class="error">{{ $message }}</p>
@@ -167,7 +163,7 @@
             <label for="ff_original_link" class="main required">Посилання на оригінал</label>
 
             <div>
-                <input type="text" name="ff_original_link" id="ff_original_link"
+                <input type="text" name="ff_original_link" id="ff_original_link" value="{{ old('ff_original_link') }}"
                        placeholder="https://archiveofourown.org/works/0000000">
 
                 @error('ff_original_link')
@@ -186,6 +182,7 @@
                     'attrs' => $fandoms,
                     'textarea_selected_id_name' => 'fandoms_selected',
                     'placeholder' => 'Виберіть фандом',
+                    'default_content' => old('fandoms_selected')
                 ])
 
                 @error('fandoms_selected')
@@ -201,7 +198,10 @@
             <div>
                 @include('widgets.characters-select', ['has_label' => false]) <!-- Віджет з вибором персонажів -->
 
-                <textarea name="characters_original" id="characters-original" class="no-display" placeholder="Іван Мельник, Тарас Данилюк/Наталя Кринська..."></textarea>
+                <textarea name="characters_original"
+                          id="characters-original"
+                          class="no-display"
+                          placeholder="Іван Мельник, Тарас Данилюк/Наталя Кринська...">{{ old('characters_original') }}</textarea>
 {{--                    <p class="notify">Введіть імена оригінальних персонажів через кому</p>--}}
 
 
@@ -223,7 +223,8 @@
                         <input type="radio"
                                name="age_rating"
                                id="age_rating-{{ $rating->id }}"
-                               value="{{ $rating->id }}" required>
+                               value="{{ $rating->id }}" required
+                            @checked(old('age_rating') == $rating->id)>
                         <span style="background: rgb({{ $rating->rgb_color }})"
                               class="radio-color">{{ $rating->name }}</span>
                     </label>
@@ -248,7 +249,8 @@
                         <input type="radio"
                                name="category"
                                id="category-{{ $category->id }}"
-                               value="{{ $category->id }}" required>
+                               value="{{ $category->id }}" required
+                            @checked(old('category') == $category->id)>
 
                         <span style="background: rgb({{ $category->rgb_color }})"
                               class="radio-color">{{ $category->name }}</span>
@@ -273,6 +275,7 @@
                     'textarea_selected_id_name' => 'tags_selected',
                     'placeholder' => 'Виберіть теґ',
                     'rows' => 5,
+                    'default_content' => old('tags_selected')
                 ])
 
                 @error('tags_selected')
@@ -287,7 +290,10 @@
             <label for="ff_description" class="main">Опис</label>
 
             <div>
-                <textarea name="ff_description" id="ff_description" style="height: 150px;" maxlength="550"></textarea>
+                <textarea name="ff_description"
+                          id="ff_description"
+                          style="height: 150px;"
+                          maxlength="550">{{ old('ff_description') }}</textarea>
                 <p class="notify">550 символів</p>
 
                 @error('ff_description')
@@ -303,7 +309,7 @@
             <label for="ff_notes" class="main">Нотатки</label>
 
             <div>
-                <textarea name="ff_notes" id="ff_notes" style="height: 150px;" maxlength="550"></textarea>
+                <textarea name="ff_notes" id="ff_notes" style="height: 150px;" maxlength="550">{{ old('ff_notes') }}</textarea>
                 <p class="notify">550 символів</p>
 
                 @error('ff_notes')

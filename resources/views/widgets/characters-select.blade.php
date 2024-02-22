@@ -88,7 +88,7 @@
 <textarea id="characters"
           name="characters"
           rows="5"
-          style="margin-bottom: var(--indent-small);">{{ $_GET['characters'] ?? '' }}{{ $default_values ?? '' }}</textarea>
+          style="margin-bottom: var(--indent-small);">{{ $_GET['characters'] ?? '' }}{{ $default_values ?? '' }}{{ old('characters') }}</textarea>
 
 <div style="display: flex; align-items: flex-start; width: 100%;" id="characters-select">
     <div id="characters-select-container" style="width: 100%;">
