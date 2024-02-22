@@ -297,4 +297,21 @@ class Fanfiction extends Model
         $xml->asXML($path);
     }
 
+    public static function getCached($ff_slug): self
+    {
+        return Cache::remember("fanfic_$ff_slug", 60 * 60, function () use ($ff_slug) {
+            // Передбачається, що фанфік в кешу зберігається 1 годину,
+            // але якщо користувач його оновить, то кеш автоматом очиститься
+            return Fanfiction::where('slug', $ff_slug)
+                ->with('author')
+                ->with('category')
+                ->with('age_rating')
+                ->with('likes')
+                ->with('dislikes')
+                ->with('prequel')
+                ->with('views')
+                ->first();
+        });
+    }
+
 }
