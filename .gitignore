@@ -19,3 +19,6 @@ yarn-error.log
 scripts/venv
 __pycache__
 .pyc
+.fb2
+.epub
+.pdf
