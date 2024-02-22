@@ -30,8 +30,8 @@
           class="select-chapter">
         @csrf
         <select name="chapter" id="chapter-select">
-            @foreach($chapters as $chapter_el)
-                <option value="{{ $chapter_el->slug }}">{{ $chapter_el->title }}</option>
+            @foreach($chapters as $c)
+                <option value="{{ $c->slug }}" @selected($c==$chapter)>{{ $c->title }}</option>
             @endforeach
         </select>
 
