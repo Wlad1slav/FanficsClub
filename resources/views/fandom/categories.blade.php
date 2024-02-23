@@ -35,14 +35,14 @@
                 @include('widgets.button', [
                     'title' => 'Більше...',
                     'url' => route('CertainCategoryPage', ['category_slug' => $categoryContent['slug']]),
-                    'styles' => 'a right bottom desktop'
+                    'styles' => 'a right bottom'
                 ])
 
-                @include('widgets.button', [
-                    'title' => 'Більше...',
-                    'url' => route('CertainCategoryPage', ['category_slug' => $categoryContent['slug']]),
-                    'styles' => 'mobile'
-                ])
+{{--                @include('widgets.button', [--}}
+{{--                    'title' => 'Більше...',--}}
+{{--                    'url' => route('CertainCategoryPage', ['category_slug' => $categoryContent['slug']]),--}}
+{{--                    'styles' => 'mobile'--}}
+{{--                ])--}}
             </div>
 
         @endforeach

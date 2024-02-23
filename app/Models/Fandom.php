@@ -36,52 +36,16 @@ class Fandom extends Model
     protected $guarded = [];
     private bool $hasSlug = true;
 
-    private array $BASE_ROWS = [
-        [
-            'name' => 'Гаррі Поттер ДЖ. РОУЛІНГ',
-            'fandom_category_id' => 1, // Медіагіганти
-            'description' => null,
-            'related_media_giant_fandom_id' => null,
-            'image' => 'storage/fandoms/fandom-harry-potter.webp'
-        ],[
-            'name' => 'Зоряні Війни',
-            'fandom_category_id' => 1,
-            'description' => null,
-            'related_media_giant_fandom_id' => null,
-            'image' => 'storage/fandoms/fandom-star-wars.webp'
-        ],[
-            'name' => 'Marvel',
-            'fandom_category_id' => 1,
-            'description' => null,
-            'related_media_giant_fandom_id' => null,
-            'image' => 'storage/fandoms/fandom-marvel.webp'
-        ],[
-            'name' => 'Boku no Hero Academia',
-            'fandom_category_id' => 4, // Аніме & Манга
-            'description' => null,
-            'related_media_giant_fandom_id' => null,
-            'image' => 'storage/fandoms/fandom-boku-no-hero-academia.webp'
-        ],[
-            'name' => 'Всесвіт Д.Р.Р. ТОЛКІНА',
-            'fandom_category_id' => 2, // Книги & Література
-            'description' => null,
-            'related_media_giant_fandom_id' => null,
-            'image' => 'storage/fandoms/fandom-lord-of-the-rings.webp'
-        ],[
-            'name' => 'Пісня льоду й полум\'я',
-            'fandom_category_id' => 2, // Книги & Література
-            'description' => null,
-            'related_media_giant_fandom_id' => null,
-            'image' => 'storage/fandoms/a-song-of-ice-and-fire.webp'
-        ],
-    ];
+    private array $BASE_ROWS;
 
     public function __construct()
     {
 
-        if ($this->count() === 0)
-            // Якщо таблиця пустая, то в ній генеруються стандартні фандоми
+        if ($this->count() === 0) {
+            // Якщо таблиця пустая, то в ній генеруються стандартні рядки
+            $this->BASE_ROWS = include '../config/default-database/fandoms.php';
             $this->generate();
+        }
     }
 
     public function category(): BelongsTo
