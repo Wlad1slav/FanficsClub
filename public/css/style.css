@@ -218,3 +218,9 @@ p.alert-success {
 .huge-link:hover {
     color: var(--clr-base);
 }
+
+.site-info {
+    padding: 0 var(--indent-large);
+    font-size: 18px;
+    margin-bottom: var(--indent-medium);
+}

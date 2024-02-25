@@ -102,6 +102,7 @@
 /* Телефон (768px) */
 @media (max-width: 768px) {
     .button span {
-        bottom: -80%;
+        bottom: -85%;
+        font-size: 30px;
     }
 }

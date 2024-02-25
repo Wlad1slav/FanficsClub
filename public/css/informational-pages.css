@@ -44,3 +44,9 @@ ul.rules li::marker, ul.rules li {
     font-size: 16px;
 }
 
+/* Телефон (768px) */
+@media (max-width: 768px) {
+    .large-text p {
+        width: auto;
+    }
+}

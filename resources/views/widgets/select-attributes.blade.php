@@ -47,6 +47,6 @@
 
 <datalist id="list-{{ $listId }}">
     @foreach($attrs as $attr)
-        <option value="{{ $attr->name }}"></option>
+        <option value="{{ $attr->name }}">{{ $attr->name }}</option>
     @endforeach
 </datalist>

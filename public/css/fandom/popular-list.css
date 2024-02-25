@@ -51,7 +51,7 @@
 }
 
 /* 1550px */
-@media (max-width: 1550px) {
+@media (max-width: 1450px) {
     #popular-fandoms-list .fandom {
         width: 133px;
         height: 200px;

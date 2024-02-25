@@ -33,6 +33,8 @@
 
     <h1>Фанфіки Українською Мовою</h1>
 
+    <p class="site-info">Ласкаво просимо на наш сайт — осередок творчості та фантазії, де кожен може знайти щось для себе у величезному світі фанфіків. Ми — команда ентузіастів, яка об'єдналася з однією метою: створити унікальний простір для поклонників фанфіків українською мовою.</p>
+
     <div class="section">
         <!-- Строка з найпопулярнішими ФАНДОМАМИ -->
         @include('widgets.popular-fandoms-list', ['hasCta' => true, ''])
@@ -47,11 +49,11 @@
     </div>
 
     <!-- 5 останнє створенних фанфіків -->
-    <div class="section">
-        <h2>Нещодавно створені</h2>
-        @foreach($last_created_fanfics as $fanfic)
-            @include('widgets.fanfic-container', ['fanfic' => $fanfic])
-        @endforeach
-    </div>
+{{--    <div class="section">--}}
+{{--        <h2>Нещодавно створені</h2>--}}
+{{--        @foreach($last_created_fanfics as $fanfic)--}}
+{{--            @include('widgets.fanfic-container', ['fanfic' => $fanfic])--}}
+{{--        @endforeach--}}
+{{--    </div>--}}
 
 @endsection
