@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Cache;
 
 function getFandomsForNavigation(): array
 {
-    $fandoms = [];
+    $fandoms = ['Усі фандоми' => route('FandomsCategoriesPage')];
     $all = Cache::remember("top_fandoms", 60*60*12, function () {
         return Fandom::orderBy('fictions_amount', 'desc')->take(5)->get();
     });
