@@ -42,10 +42,13 @@ class Chapter extends Model
                 // Розділи сортируються згідно з заданим порядком в бд
                 $sequence = $fanfic->chapters_sequence;
                 $sequenceStr = implode(',', $sequence);
-                return Chapter::where('fanfiction_id', $fanfic->id)
-                    ->whereIn('id', $sequence)
-                    ->orderByRaw("FIELD(id, {$sequenceStr})")
-                    ->get();
+
+                if ($sequenceStr != '')
+                    return Chapter::where('fanfiction_id', $fanfic->id)
+                        ->whereIn('id', $sequence)
+                        ->orderByRaw("FIELD(id, {$sequenceStr})")
+                        ->get();
+                else return null;
             } else {
                 return null;
             }
