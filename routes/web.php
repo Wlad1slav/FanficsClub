@@ -8,6 +8,7 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -210,3 +211,9 @@ Route::get('/privacy-policy', [InformationController::class, 'privacyPolicy'] )-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//////////////////////////////////////////////
+// МАРШРУТИ ПОВ'ЯЗАНІ З ТЕСТУВАННЯМ ДОДАТКУ //
+//////////////////////////////////////////////
+
+Route::get('/test/mail', [TestController::class, 'testMail'])->name('test.mail');
