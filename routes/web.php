@@ -68,6 +68,9 @@ Route::get('/email/verify', [AuthController::class, 'verifyNote'])->middleware('
 // Підтверження пошти
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
 
+// Повторне надслання листу для підтверження в випадку, якщо користувач не підтвердив пошту
+Route::get('/email/resend', [AuthController::class, 'resend'])->middleware(['auth'])->name('verification.resend');
+
 
 ///////////////////////////////////
 // МАРШРУТИ ПОВ'ЯЗАНІ З ПРОФІЛЕМ //

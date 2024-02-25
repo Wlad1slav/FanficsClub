@@ -44,9 +44,10 @@ class AuthController extends Controller
         ]);
 
         // event(new Registered($user));
-        // Auth::login($user);
 
         $user->sendEmailVerificationNotification();
+
+        Auth::login($user);
 
         return redirect()->route('verification.notice');
 
@@ -120,6 +121,19 @@ class AuthController extends Controller
 
         return redirect()->intended(RouteServiceProvider::HOME);
 
+    }
+
+    public function resend(Request $request)
+    {   // Повторене надсилання листу в випадку, якщо користувач не підтвердив свою пошту
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('home')->with('message', 'Ваша електронна адреса вже підтверджена.');
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        return back()->with('resent', true)->with('message', 'Посилання для підтвердження пошти було надіслано.');
     }
 
 }

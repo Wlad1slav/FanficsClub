@@ -12,6 +12,14 @@
 
     <p style="text-align: center;">На адресу <b>{{ $user->email }}</b> відправлена форма для підтвердження електроної пошти.</p>
 
+    <p style="text-align: center;"><a href="{{ route('verification.resend') }}">Не прийшов лист?</a></p>
+
+    @if (session('message'))
+        <p class="alert-success" style="text-align: center;">
+            {{ session('message') }}
+        </p>
+    @endif
+
 @endsection
 
 
