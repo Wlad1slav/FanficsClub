@@ -87,6 +87,7 @@ class FanficitonController extends Controller
         }
 
         $fanfic = Fanfiction::create($fanfic);
+        Fandom::calculateAllPopularity();
 
         return redirect()->route('FanficPage', ['ff_slug' => $fanfic->slug]);
     }
